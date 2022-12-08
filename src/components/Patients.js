@@ -812,7 +812,7 @@ const Patients = (props) => {
 	
       
 
-      <Modal show={showModal} onHide={handleModalClose} size="lg">
+      <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit Patient </Modal.Title>
         </Modal.Header>
