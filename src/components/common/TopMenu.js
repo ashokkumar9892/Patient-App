@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Autocomplete } from '@material-ui/lab';
+import logoimage from '../../assets/images/logodashboard.png'
+
 
 import {
   Navbar,
@@ -867,7 +869,7 @@ const TopMenu = ({ changestyle, showSidebar }) => {
           <div className="nav-content d-flex">
             <div class="logo position-relative">
               <Link to="/dashboard">
-                <div><img src="https://www.linkpicture.com/q/WhatsApp_Image_2022-04-12_at_10.41.03_AM-removebg-preview.png" style={{ width: "70px" }} /></div>
+                <div><img src={logoimage} style={{ width: "70px" }} /></div>
               </Link>
             </div>
 
