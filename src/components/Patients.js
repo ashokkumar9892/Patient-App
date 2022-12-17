@@ -1159,7 +1159,7 @@ const Patients = (props) => {
       </Modal>
 
       <div >
-        <Modal show={showAssignDrModal} onHide={handleAssignDrModalClose}>
+        <Modal show={showAssignDrModal} onHide={handleAssignDrModalClose} backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Assign Care Team </Modal.Title>
           </Modal.Header>

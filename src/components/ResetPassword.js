@@ -114,6 +114,7 @@ const ResetPassword = (props) => {
       </div>
       <Modal
           show={coreContext.showForgotModal}
+          backdrop="static"
           onHide={coreContext.handleForgotModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Set New Password</Modal.Title>

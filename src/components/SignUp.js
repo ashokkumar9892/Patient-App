@@ -63,6 +63,7 @@ const SignUp = (props) => {
       <div className="row">
         <div className="col-md-3">
           <Modal
+          backdrop="static"
             show={coreContext.showPatientConfirmationModal}
             onHide={coreContext.handlePatientConfirmationModalClose}>
             <Modal.Header closeButton>

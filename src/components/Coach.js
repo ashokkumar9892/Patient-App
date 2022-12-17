@@ -168,6 +168,7 @@ const Coach = (props) => {
     <>
     
       <Modal
+      backdrop="static"
         show={coreContext.showProviderModal}
         onHide={coreContext.handleProviderModalClose}>
         <Modal.Header closeButton>
@@ -203,7 +204,7 @@ const Coach = (props) => {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showModal} onHide={handleModalClose} size="lg">
+      <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit Coach </Modal.Title>
         </Modal.Header>

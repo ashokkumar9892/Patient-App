@@ -141,7 +141,7 @@ return(
     <div className="col mb-2">
     <h1 className="mb-2 pb-0 display-4" id="title">Chat
     </h1>
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} backdrop="static" onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Chat</Modal.Title>
         </Modal.Header>

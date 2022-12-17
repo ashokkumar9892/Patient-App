@@ -164,6 +164,7 @@ const CareCoordinator = (props) => {
     <>
       <Modal
         show={coreContext.showProviderModal}
+        backdrop="static"
         onHide={coreContext.handleProviderModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Verification Code</Modal.Title>
@@ -198,7 +199,7 @@ const CareCoordinator = (props) => {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showModal} onHide={handleModalClose} size="lg">
+      <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit Care Coordinator </Modal.Title>
         </Modal.Header>

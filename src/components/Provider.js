@@ -428,6 +428,7 @@ useEffect(fetchProviders, [checked]);
 
       <Modal
         show={coreContext.showProviderModal}
+        backdrop="static"
         onHide={coreContext.handleProviderModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Verification Code</Modal.Title>
@@ -461,7 +462,7 @@ useEffect(fetchProviders, [checked]);
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showModal} onHide={handleModalClose} size="lg">
+      <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit Provider </Modal.Title>
         </Modal.Header>
