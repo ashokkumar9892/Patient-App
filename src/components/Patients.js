@@ -11,7 +11,7 @@ import DataGridComponent from "./common/DataGridComponent";
 import {
   BrowserRouter as Router,
   Route,
-  
+
   Redirect,
   Link
 } from "react-router-dom";
@@ -70,7 +70,7 @@ const Patients = (props) => {
   const [dcount, setdcount] = useState([""]);
   const [complex, setComplex] = useState();
 
-  const handleModalClose = () => {setShowModal(false);setdcount([""])};
+  const handleModalClose = () => { setShowModal(false); setdcount([""]) };
   const handleModalShow = () => setShowModal(true);
 
   const handleAssignDrModalClose = () => setAssignDrShowModal(false);
@@ -86,42 +86,42 @@ const Patients = (props) => {
   const [zip, setZip] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const diagonislist=[,"Select Diagnosis Id","D45- Polycythemia vera",
-  "G47.33- Obstructive sleep apnea (adult) (pediatric)",
-  "I10- Essential (primary) hypertension","K219",
-  "I13.10- Hypertensive heart and chronic kidney disease without heart",
-  "failure ",
-  "I509- Heart failure, unspecified",
-  "E03.9- Hypothyroidism, unspecified",
-  "E11.65- Type 2 diabetes mellitus with hyperglycemia",
-  "E11.9- Type 2 diabetes mellitus without complications",
-  "E61.1- Iron deficiency",
-  "E66.3- Overweight",
-  "E66.01- Morbid (severe) obesity due to excess calories",
-  "E66.9- Obesity, unspecified",
-  "E78.5- Hyperlipidemia, unspecified",
-  "F33.2- Major depressive disorder, recurrent severe without psychotic",
-  "features",
-  "F41.1- Generalized anxiety disorder",
-  "H10.9- Unspecified conjunctivitis",
-  "J32.4- Chronic pansinusitis",
-  "J45.40- Moderate persistent asthma, uncomplicated",
-  "J45.41- Moderate persistent asthma with (acute) exacerbation",
-  "K58.2- Mixed irritable bowel syndrome",
-  "M25.562- Pain in left knee",
-  "M54.50- Low back pain, unspecified",
-  "M79.7- Fibromyalgia",
-  "N92.5- Other specified irregular menstruation",
-  "R03.0- Elevated blood-pressure reading, without diagnosis of",
-  "hypertension",
-  "R53.83- Other fatigue",
-  "R73.03- Prediabetes",
-  "Z68.41- Body mass index [BMI] 40.0-44.9, adult",
-  "Z68.44- Body mass index [BMI] 60.0-69.9, adult",
-  "K580- unspecified","I639","E10.9","L67","L67.1","L82.1","N182","J449","E1140","E1151","E1132999","I739","I2510","E663","G4709","N925","H109"
+  const diagonislist = [, "Select Diagnosis Id", "D45- Polycythemia vera",
+    "G47.33- Obstructive sleep apnea (adult) (pediatric)",
+    "I10- Essential (primary) hypertension", "K219",
+    "I13.10- Hypertensive heart and chronic kidney disease without heart",
+    "failure ",
+    "I509- Heart failure, unspecified",
+    "E03.9- Hypothyroidism, unspecified",
+    "E11.65- Type 2 diabetes mellitus with hyperglycemia",
+    "E11.9- Type 2 diabetes mellitus without complications",
+    "E61.1- Iron deficiency",
+    "E66.3- Overweight",
+    "E66.01- Morbid (severe) obesity due to excess calories",
+    "E66.9- Obesity, unspecified",
+    "E78.5- Hyperlipidemia, unspecified",
+    "F33.2- Major depressive disorder, recurrent severe without psychotic",
+    "features",
+    "F41.1- Generalized anxiety disorder",
+    "H10.9- Unspecified conjunctivitis",
+    "J32.4- Chronic pansinusitis",
+    "J45.40- Moderate persistent asthma, uncomplicated",
+    "J45.41- Moderate persistent asthma with (acute) exacerbation",
+    "K58.2- Mixed irritable bowel syndrome",
+    "M25.562- Pain in left knee",
+    "M54.50- Low back pain, unspecified",
+    "M79.7- Fibromyalgia",
+    "N92.5- Other specified irregular menstruation",
+    "R03.0- Elevated blood-pressure reading, without diagnosis of",
+    "hypertension",
+    "R53.83- Other fatigue",
+    "R73.03- Prediabetes",
+    "Z68.41- Body mass index [BMI] 40.0-44.9, adult",
+    "Z68.44- Body mass index [BMI] 60.0-69.9, adult",
+    "K580- unspecified", "I639", "E10.9", "L67", "L67.1", "L82.1", "N182", "J449", "E1140", "E1151", "E1132999", "I739", "I2510", "E663", "G4709", "N925", "H109"
   ]
 
-  const editPatient = () => {};
+  const editPatient = () => { };
   const coreContext = useContext(CoreContext);
 
   const fetchPatients = () => {
@@ -133,24 +133,24 @@ const Patients = (props) => {
     if (checked) {
       coreContext.fetchPatientListfromApi(userType, userId, !checked);
     } else {
-      coreContext.fetchPatientListfromApi(userType, userId,!checked);
+      coreContext.fetchPatientListfromApi(userType, userId, !checked);
     }
   };
 
   const fetchProviders = () => {
     coreContext.fetchProviders();
   };
-  const handledcount = (index,val) => {
-    const value=[...dcount]
-    value[index]=val
+  const handledcount = (index, val) => {
+    const value = [...dcount]
+    value[index] = val
     setdcount(value);
-    
-    
+
+
   };
-  const handlefinalsubmit=()=>{
-    var newId= ""
-    dcount.map((curr)=>{
-      newId=newId+","+curr
+  const handlefinalsubmit = () => {
+    var newId = ""
+    dcount.map((curr) => {
+      newId = newId + "," + curr
     })
     coreContext.UpdatePatient(
       fname,
@@ -173,7 +173,7 @@ const Patients = (props) => {
       newId.substring(1),
       updateId,
       program,
-      
+
 
     );
     coreContext.cleanup1();
@@ -184,8 +184,8 @@ const Patients = (props) => {
   const fetchCareCoordinator = () => {
     coreContext.fetchCareCoordinator();
   };
-  const handlecptcode=(value)=>{
-    console.log("cpt",value)
+  const handlecptcode = (value) => {
+    console.log("cpt", value)
   }
 
   useEffect(fetchCareCoordinator, []);
@@ -221,29 +221,29 @@ const Patients = (props) => {
       patient.lastName = patient.name.split(",")[0].trim();
       patient.firstName = patient.name.split(",")[1].trim();
     }
-    if (patient.diagnosisId ) {
+    if (patient.diagnosisId) {
       setdcount(patient.diagnosisId.split(","))
     }
     setFName(patient.firstName);
     setLName(patient.lastName);
     setBirthDate(moment(patient.dob).format('YYYY-MM-DD'));
-    console.log(moment(patient.dob).format('YYYY-MM-DD'),"format")
+    console.log(moment(patient.dob).format('YYYY-MM-DD'), "format")
     setPhone(patient.mobile);
     setPatientId(patient.userId);
     setHeight(patient.height);
-    if(patient.program=="CCM\RPM"){
+    if (patient.program == "CCM\RPM") {
       setProgram("CCM\RPM")
-    }else if(patient.program=="RPM"){
+    } else if (patient.program == "RPM") {
       setProgram("RPM")
-    }else{
+    } else {
       setProgram("CCM")
     }
-    console.log(patient.gender,"patient.gender")
+    console.log(patient.gender, "patient.gender")
     // patient.gender == "Female" ? setGender(1) : setGender(0);
     patient.gender == "Female" ? setGender(1) : setGender(0);
     // setGender(patient.gender);
     // setLanguage(patient.language);
-    patient.language == "English"? setLanguage(0) : setLanguage(1);
+    patient.language == "English" ? setLanguage(0) : setLanguage(1);
     setWorkPhone(patient.workPhone);
     setMobilePhone(patient.mobilePhone);
     setStreet(patient.street);
@@ -258,7 +258,7 @@ const Patients = (props) => {
       setProvider("");
     } else {
       //console.log(coreContext.providerOptions,"coreContext.providerOptions")
-      
+
 
       // coreContext.providerOptions.filter((name)=>{
       //   console.log(name.name , "namefilter")
@@ -268,16 +268,16 @@ const Patients = (props) => {
       //   else{
       //     setProvider("");
       //   }
-        
+
       // })
       setProvider(
         coreContext.providerOptions.filter((name) =>
           name.name.includes(patient.ProviderName)
-        )[0].value !== undefined ?  coreContext.providerOptions.filter((name) =>
-        name.name.includes(patient.ProviderName)
-      )[0].value : ""
+        )[0].value !== undefined ? coreContext.providerOptions.filter((name) =>
+          name.name.includes(patient.ProviderName)
+        )[0].value : ""
       );
-    
+
 
       // setProvider(
       //   coreContext.providerOptions.filter((name) =>
@@ -361,70 +361,70 @@ const Patients = (props) => {
   useEffect(fetchPatients, [coreContext.patients.length]);
   useEffect(fetchPatients, [checked]);
   useEffect(() => {
-   
+
     return () => {
       coreContext.cleanup();
     };
-  },[]);
+  }, []);
   const deletePatient = (patient) => {
 
     swal({
       title: "Are you sure?",
-      
+
       icon: "warning",
       buttons: true,
       dangerMode: true,
     })
-    .then((willDelete) => {
-      if (willDelete) {
-        coreContext.DeletePatient(patient);
-        coreContext.cleanup1();
-        fetchPatients();
+      .then((willDelete) => {
+        if (willDelete) {
+          coreContext.DeletePatient(patient);
+          coreContext.cleanup1();
+          fetchPatients();
 
-      } else {
-        swal("Delete Cancelled");
-      }
-    });
-    
+        } else {
+          swal("Delete Cancelled");
+        }
+      });
+
   };
 
   const admincolumns = [
     {
       field: "name",
-      flex:1,
+      flex: 1,
       headerName: "Patient Name",
       width: 150,
-      
+
       renderCell: (params) => (
-        <div style={{marginLeft:"1em",paddingBottom:"1em"}}>
-        <Link to={`/patient-summary/${btoa(params.row.userId)}`}>
-          {" "}
-          {params.value
-          
-          }{" "}
-          {console.log(params,"edit")}
-        </Link>
+        <div style={{ marginLeft: "1em", paddingBottom: "1em" }}>
+          <Link to={`/patient-summary/${btoa(params.row.userId)}`}>
+            {" "}
+            {params.value
+
+            }{" "}
+            {console.log(params, "edit")}
+          </Link>
         </div>
       ),
     },
     {
       field: "ProviderName",
       headerName: "Provider",
-      flex:1,
-      
+      flex: 1,
+
       width: 150,
     },
     {
       field: "CareName",
       headerName: "Care Coordinator",
       width: 150,
-      flex:1,
-      
+      flex: 1,
+
     },
     {
       field: "CoachName",
       headerName: "Coach",
-      flex:1,
+      flex: 1,
       editable: false,
       width: 150,
     },
@@ -445,94 +445,94 @@ const Patients = (props) => {
     {
       field: "program",
       headerName: "Program",
-      
+
       editable: false,
-      
-      flex:1
-      
+
+      flex: 1
+
     },
     {
       field: "ActiveStatus",
       headerName: "ActiveStatus",
-      
+
       editable: false,
       type: "string",
-      flex:1,
+      flex: 1,
       renderCell: (params) => (
-        (params.value==="Deactive")?<div style={{marginLeft:"3em",paddingBottom:"1em"}}>Inactive </div>:<div style={{marginLeft:"3em" ,paddingBottom:"1em"}}>Active </div>
-        
-          
-        
+        (params.value === "Deactive") ? <div style={{ marginLeft: "3em", paddingBottom: "1em" }}>Inactive </div> : <div style={{ marginLeft: "3em", paddingBottom: "1em" }}>Active </div>
+
+
+
       ),
-    
+
     },
-    
+
     {
       field: "",
       headerName: "Action",
       width: 150,
-      flex:1,
+      flex: 1,
       renderCell: (params) => (
-        (!localStorage.getItem("userType").includes("test"))?        (params.row.ActiveStatus==="Active")?
-        <div style={{ width: "100px" ,paddingBottom:"1em"}}>
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => showEditForm(params.row)}>
-            {" "}
-            <PencilSquare />
-          </Link>
-         
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => {
-              deletePatient(params.row);
-              fetchPatients();
-            }}>
-            {" "}
-            <Trash />
-          </Link>
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => showAssignDoctor(params.row)}>
-            {" "}
-            <Person />
-          </Link>
-        </div>:<div style={{ width: "100px" }}>
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => {coreContext.ActivatePatient(params.row);coreContext.cleanup1();setChecked(false)}}>
-            {" "}
-             Activate
-          </Link>
-         
-          
-        
-        </div>:<div>Access Denied</div>
+        (!localStorage.getItem("userType").includes("test")) ? (params.row.ActiveStatus === "Active") ?
+          <div style={{ width: "100px", paddingBottom: "1em" }}>
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => showEditForm(params.row)}>
+              {" "}
+              <PencilSquare />
+            </Link>
+
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => {
+                deletePatient(params.row);
+                fetchPatients();
+              }}>
+              {" "}
+              <Trash />
+            </Link>
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => showAssignDoctor(params.row)}>
+              {" "}
+              <Person />
+            </Link>
+          </div> : <div style={{ width: "100px" }}>
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => { coreContext.ActivatePatient(params.row); coreContext.cleanup1(); setChecked(false) }}>
+              {" "}
+              Activate
+            </Link>
+
+
+
+          </div> : <div>Access Denied</div>
 
       ),
     },
     {
       field: "reading",
       headerName: "Inconsistent",
-      
+
       editable: false,
-      flex:1,
+      flex: 1,
       renderCell: (params) => (
-        
+
         <>
-      
-        <div style={{marginLeft:"2em"}}>
-  <input type="checkbox" checked={params.row.reading==='true'} onChange={(e)=>{coreContext.UpdateNotes(coreContext.patients.filter((curr)=>curr.userId===params.row.userId)[0],"","",e.target.checked);setComplex(e.target.checked);coreContext.fetchPatientListfromApi(localStorage.getItem("userType"),localStorage.getItem("userId"));coreContext.cleanup1();}} />
-  
-</div>
+
+          <div style={{ marginLeft: "2em" }}>
+            <input type="checkbox" checked={params.row.reading === 'true'} onChange={(e) => { coreContext.UpdateNotes(coreContext.patients.filter((curr) => curr.userId === params.row.userId)[0], "", "", e.target.checked); setComplex(e.target.checked); coreContext.fetchPatientListfromApi(localStorage.getItem("userType"), localStorage.getItem("userId")); coreContext.cleanup1(); }} />
+
+          </div>
         </>
       ),
     },
-    
+
   ];
 
   const columns = [
@@ -540,7 +540,7 @@ const Patients = (props) => {
       field: "name",
       headerName: "Patient Name",
       width: 220,
-      flex:1,
+      flex: 1,
       renderCell: (params) => (
         <Link to={`/patient-summary/${btoa(params.row.userId)}`}>
           {" "}
@@ -553,20 +553,20 @@ const Patients = (props) => {
       headerName: "Provider",
       editable: false,
       width: 200,
-      flex:1,
+      flex: 1,
     },
     {
       field: "CareName",
       headerName: "Care Coordinator",
       width: 150,
       editable: false,
-      flex:1,
+      flex: 1,
     },
     {
       field: "CoachName",
       headerName: "Coach",
       editable: false,
-      flex:1,
+      flex: 1,
       width: 150,
     },
     {
@@ -622,28 +622,28 @@ const Patients = (props) => {
       headerName: "Action",
       width: 120,
       renderCell: (params) => (
-        (!localStorage.getItem("userType").includes("test"))?
-        <div style={{ width: "100px" }}>
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => showEditForm(params.row)}>
-            {" "}
-            <PencilSquare />
-          </Link>
-          <Link
-            style={{ marginRight: "5px" }}
-            to="#"
-            onClick={() => {
-              deletePatient(params.row);
-              fetchPatients();
-            }}>
-            {" "}
-            <Trash />
-          </Link>
-          {/* <Link  style={{  marginRight: '5px' }} to="#" onClick={() => showAssignDoctor(params.row)}>  <Person /></Link> */}
-        </div>:
-        <div>Access Denied</div>
+        (!localStorage.getItem("userType").includes("test")) ?
+          <div style={{ width: "100px" }}>
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => showEditForm(params.row)}>
+              {" "}
+              <PencilSquare />
+            </Link>
+            <Link
+              style={{ marginRight: "5px" }}
+              to="#"
+              onClick={() => {
+                deletePatient(params.row);
+                fetchPatients();
+              }}>
+              {" "}
+              <Trash />
+            </Link>
+            {/* <Link  style={{  marginRight: '5px' }} to="#" onClick={() => showAssignDoctor(params.row)}>  <Person /></Link> */}
+          </div> :
+          <div>Access Denied</div>
       ),
     },
   ];
@@ -677,9 +677,9 @@ const Patients = (props) => {
       coreContext.patients.length > 0 &&
       usertype === "admin" &&
       coreContext.patients[0].name !== undefined
-      && coreContext.providerOptions.length>0 && coreContext.coachOptions.length>0 && coreContext.careCoordinatorOptions.length>0
-    ) 
-    console.log("uttkarsh patients",coreContext.patients)
+      && coreContext.providerOptions.length > 0 && coreContext.coachOptions.length > 0 && coreContext.careCoordinatorOptions.length > 0
+    )
+      console.log("uttkarsh patients", coreContext.patients)
     {
       return (
         <>
@@ -710,7 +710,7 @@ const Patients = (props) => {
             />
             {console.log(coreContext.patients[selectionModel])} */}
           {/* </div> */}
-          <DataGridComponent rows={coreContext.patients} columns={admincolumns} sortModal={[{ field: "name", sort: "asc" }]}/>
+          <DataGridComponent rows={coreContext.patients} columns={admincolumns} sortModal={[{ field: "name", sort: "asc" }]} />
           {/* <center>{select}sa</center> */}
         </>
       );
@@ -721,9 +721,9 @@ const Patients = (props) => {
       coreContext.patients[0].name !== undefined
     ) {
       return (
-        
-<DataGridComponent rows={coreContext.patients} columns={columns} sortModal={[{ field: "name", sort: "asc" }]}/>
-        );
+
+        <DataGridComponent rows={coreContext.patients} columns={columns} sortModal={[{ field: "name", sort: "asc" }]} />
+      );
     } else {
       return (
         <div
@@ -746,31 +746,31 @@ const Patients = (props) => {
 
   return (
     <React.Fragment>
-      
+
       <div className="col">
-<div className="page-title-container mb-3">
-<div className="row">
-<div className="col mb-2">
-<h1 className="mb-2 pb-0 display-4" id="title">Patient Information
-</h1>
-</div>
-<div className="col-sm-1 col-2" style={{width:"70px"}}>
-                                                <div className="form-group"><label for="inputName" className="text-14 mts text-black"><strong>Active</strong></label>
-                                                    
-                                           </div>
-                                            </div>
-						<div className="col-sm-3 col-5"><label className="switch">
-                                 <input type="checkbox" checked={checked} onChange={onToggleChangeActiveUsers}/>
-                             <span className="slider round"></span>
-                                 </label></div>
+        <div className="page-title-container mb-3">
+          <div className="row">
+            <div className="col mb-2">
+              <h1 className="mb-2 pb-0 display-4" id="title">Patient Information
+              </h1>
+            </div>
+            <div className="col-sm-1 col-2" style={{ width: "70px" }}>
+              <div className="form-group"><label for="inputName" className="text-14 mts text-black"><strong>Active</strong></label>
+
+              </div>
+            </div>
+            <div className="col-sm-3 col-5"><label className="switch">
+              <input type="checkbox" checked={checked} onChange={onToggleChangeActiveUsers} />
+              <span className="slider round"></span>
+            </label></div>
 
 
-</div>
-</div>
+          </div>
+        </div>
 
-<div className="row">
-<div className="col-xl-12">
-{/* <div className="card mb-3">
+        <div className="row">
+          <div className="col-xl-12">
+            {/* <div className="card mb-3">
 <div className="card-body">
 <div className="row mtm">
 				    <div className="col-sm-2 col-2" style={{width:"70px"}}>
@@ -785,32 +785,32 @@ const Patients = (props) => {
 						 </div>
 </div>
 </div> */}
-<div className="card mb-3">	
+            <div className="card mb-3">
 
-<div className="card-body">
-<div className="row">
-<div className="col-xl-12">
-<div className="table-responsive-sm mb-0">
-  {renderPatients()}
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-xl-12">
+                    <div className="table-responsive-sm mb-0">
+                      {renderPatients()}
 
-</div>
-	
-
-	
-</div>
-	
+                    </div>
 
 
 
-</div>
+                  </div>
 
-</div>
-	</div>
-</div>
-</div>
-	</div>
-	
-      
+
+
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
       <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
@@ -823,20 +823,20 @@ const Patients = (props) => {
             noValidate>
             <div className="row">
               <div className="col-md-6">
-              <label className="mt-2 mb-0">First Name</label>
+                <label className="mt-2 mb-0">First Name</label>
 
-                 <input type="text" className="form-control"   onChange={(e) => setFName(e.target.value)}
-                          
-                          value={fname}/>
-			
-<label className="mt-2 mb-0">Phone*</label>
-                
-                  <input type="text" className="form-control"   onChange={(e) => setPhone(e.target.value)}
-                          
-                          value={phone}/>
-<label className="mt-2 mb-0">Date of Birth</label>
+                <input type="text" className="form-control" onChange={(e) => setFName(e.target.value)}
+
+                  value={fname} />
+
+                <label className="mt-2 mb-0">Phone*</label>
+
+                <input type="text" className="form-control" onChange={(e) => setPhone(e.target.value)}
+
+                  value={phone} />
+                <label className="mt-2 mb-0">Date of Birth</label>
                 <input
-                type="date"
+                  type="date"
                   placeholder="Enter dob"
                   onChange={(e) => setBirthDate(e.target.value)}
                   className="form-control"
@@ -847,7 +847,7 @@ const Patients = (props) => {
                   value={birthDate}
                   pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                 />
-               {/* <DatePicker
+                {/* <DatePicker
                           className="form-control mt-2"
                           selected={birthDate}
                           required={true}
@@ -880,18 +880,18 @@ const Patients = (props) => {
                 />
                 <label className="mt-2 mb-0">Gender *</label>
 
-                
-                
-      <select className="form-select" value={gender} onChange={(e)=>{setGender(e.target.value)}} >
-      <option value="0">Male</option>
-      <option value="1">Female</option>
-      
-      
-    
-      
-      </select>
-      
-<label className="mt-2 mb-0">Mobile Phone*</label>
+
+
+                <select className="form-select" value={gender} onChange={(e) => { setGender(e.target.value) }} >
+                  <option value="0">Male</option>
+                  <option value="1">Female</option>
+
+
+
+
+                </select>
+
+                <label className="mt-2 mb-0">Mobile Phone*</label>
                 <input
                   className="form-control"
                   name="mobilePhone"
@@ -903,7 +903,7 @@ const Patients = (props) => {
                   maxLength={50}
                   onChange={(e) => setMobilePhone(e.target.value)}
                 />
-<label className="mt-2 mb-0">Mailing Address</label>
+                <label className="mt-2 mb-0">Mailing Address</label>
                 <input
                   className="form-control"
                   name="street"
@@ -915,7 +915,7 @@ const Patients = (props) => {
                   value={street}
                   onChange={(e) => setStreet(e.target.value)}
                 />
-<label className="mt-2 mb-0">City</label>
+                <label className="mt-2 mb-0">City</label>
                 <input
                   className="form-control"
                   name="city"
@@ -926,37 +926,37 @@ const Patients = (props) => {
                   value={city}
                   maxLength={50}
                   onChange={(e) => setCity(e.target.value)}
-                />  
+                />
                 <div className="row">
-                <div className="col-md-10">
+                  <div className="col-md-10">
 
-{
-                  dcount.map((curr,index)=>{
-                    return(
-                      <>
-                     
-                  <label className="mt-2 mb-0">Diagnosis</label>
-                
-                  {(curr!=="")?<>  
-                  
-                  
-                  <select className="form-select" value={dcount[index]} onChange={(e)=>{handledcount(index,e.target.value)}} >
-                  <option value=""></option>
-                    {   diagonislist.map((curr)=><option value={curr.split("-")[0]}>{curr}</option>)}
-    
-      
-      </select>
-      
-                  
-                   </>:""}             
-         
-                 
-                 
-                  </>
-                    )
-                  })}
+                    {
+                      dcount.map((curr, index) => {
+                        return (
+                          <>
+
+                            <label className="mt-2 mb-0">Diagnosis</label>
+
+                            {(curr !== "") ? <>
+
+
+                              <select className="form-select" value={dcount[index]} onChange={(e) => { handledcount(index, e.target.value) }} >
+                                <option value=""></option>
+                                {diagonislist.map((curr) => <option value={curr.split("-")[0]}>{curr}</option>)}
+
+
+                              </select>
+
+
+                            </> : ""}
+
+
+
+                          </>
+                        )
+                      })}
                     <Form.Group>
-                  {/* <label className="mt-2">Diagnosis</label>
+                      {/* <label className="mt-2">Diagnosis</label>
                   {
                   dcount.map((curr,index)=>{
                     return(
@@ -965,14 +965,14 @@ const Patients = (props) => {
                   </>
                     )
                   })} */}
-                   <Button className="mt-1 mb-1" onClick={()=>setdcount([...dcount,"Select Diagnosis Id"])}>+</Button>
-                  
-                </Form.Group>
-               
-                  
-                     </div>
-                  
+                      <Button className="mt-1 mb-1" onClick={() => setdcount([...dcount, "Select Diagnosis Id"])}>+</Button>
+
+                    </Form.Group>
+
+
                   </div>
+
+                </div>
               </div>
               <div className="col-md-6">
                 {console.log("sssss", provider)}
@@ -990,30 +990,30 @@ const Patients = (props) => {
                   maxLength={50}
                   errors={errors}
                 />
-<label className="mt-2 mb-0">Provider</label>
-                
-                 <select className="form-select" value={provider} onChange={(e)=>{setProvider(e.target.value)}} >
-      
-      {coreContext.providerOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
-      
+                <label className="mt-2 mb-0">Provider</label>
+
+                <select className="form-select" value={provider} onChange={(e) => { setProvider(e.target.value) }} >
+
+                  {coreContext.providerOptions.map((curr, index) => {
+                    return (<option value={curr.value}>{curr.name}</option>)
+
+                  })}
+
+                </select>
+
                 {/* {console.log(coreContext.careCoordinatorOptions,coreContext.coachOptions)} */}
                 <label className="mt-2 mb-0">Care Coordinator</label>
-                
-                 <select className="form-select" value={coordinator} onChange={(e)=>{setCoordinator(e.target.value)}} >
-      
-      {coreContext.careCoordinatorOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
-      
-<label className="mt-2 mb-0">Coach Name</label>
+
+                <select className="form-select" value={coordinator} onChange={(e) => { setCoordinator(e.target.value) }} >
+
+                  {coreContext.careCoordinatorOptions.map((curr, index) => {
+                    return (<option value={curr.value}>{curr.name}</option>)
+
+                  })}
+
+                </select>
+
+                <label className="mt-2 mb-0">Coach Name</label>
                 {/* <Input
                   label="Coach Name"
                   name="coach"
@@ -1026,16 +1026,16 @@ const Patients = (props) => {
                   options={coreContext.coachOptions}
                   onChange={(e) => setCoach(e.target.value)}
                 /> */}
-                <select className="form-select" value={coach} onChange={(e)=>{setCoach(e.target.value)}} >
-      
-      {coreContext.coachOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
-                
-<label className="mt-2 mb-0">Language</label>
+                <select className="form-select" value={coach} onChange={(e) => { setCoach(e.target.value) }} >
+
+                  {coreContext.coachOptions.map((curr, index) => {
+                    return (<option value={curr.value}>{curr.name}</option>)
+
+                  })}
+
+                </select>
+
+                <label className="mt-2 mb-0">Language</label>
                 <input
                   className="form-control"
                   name="language"
@@ -1048,7 +1048,7 @@ const Patients = (props) => {
                   options={coreContext.languageOptions}
                   onChange={(e) => setLanguage(e.target.value)}
                 />
-<label className="mt-2 mb-0">Work Phone</label>
+                <label className="mt-2 mb-0">Work Phone</label>
                 <input
                   className="form-control"
                   name="workPhone"
@@ -1060,7 +1060,7 @@ const Patients = (props) => {
                   maxLength={50}
                   onChange={(e) => setWorkPhone(e.target.value)}
                 />
-<label className="mt-2 mb-0">Zip Code</label>
+                <label className="mt-2 mb-0">Zip Code</label>
                 <input
                   className="form-control"
                   name="zip"
@@ -1072,7 +1072,7 @@ const Patients = (props) => {
                   value={zip}
                   onChange={(e) => setZip(e.target.value)}
                 />
-<label className="mt-2 mb-0">State</label>
+                <label className="mt-2 mb-0">State</label>
                 <input
                   className="form-control"
                   name="State"
@@ -1082,21 +1082,21 @@ const Patients = (props) => {
                   maxLength={50}
                   elementType="text"
                   value={state}
-                 
+
                   onChange={(e) => setState(e.target.value)}
                 />
                 <label className="mt-2 mb-0">Program</label>
-                
-                
-      <select className="form-select" value={program} onChange={(e)=>{setProgram(e.target.value)}} >
-      <option value="CCM/RPM">CCM and RPM</option>
-      <option value="CCM">CCM Only</option>
-      <option value="RPM">RPM Only</option>
-      
-    
-      
-      </select>
-      {/* <label className="mt-2 mb-0">CPT Code For RPM</label>
+
+
+                <select className="form-select" value={program} onChange={(e) => { setProgram(e.target.value) }} >
+                  <option value="CCM/RPM">CCM and RPM</option>
+                  <option value="CCM">CCM Only</option>
+                  <option value="RPM">RPM Only</option>
+
+
+
+                </select>
+                {/* <label className="mt-2 mb-0">CPT Code For RPM</label>
       <MultiSelect
       
         options={[
@@ -1128,7 +1128,7 @@ const Patients = (props) => {
         labelledBy="Select"
       />
        */}
-      
+
               </div>
             </div>
             <Input
@@ -1141,7 +1141,7 @@ const Patients = (props) => {
                 setdcount([""])
                 fetchPatients();
                 fetchPatients();
-                
+
 
                 //alert("updated");
               }}
@@ -1170,25 +1170,25 @@ const Patients = (props) => {
               noValidate>
               <div>
                 <div>
-                <label className="mt-2 mb-0">Provider Name</label>
-                           <select className="form-select" value={provider} onChange={(e)=>{setProvider(e.target.value)}} >
-      
-      {coreContext.providerOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
-      <label className="mt-2 mb-0">Care Coordinator Name</label>
-          <select className="form-select" value={coordinator} onChange={(e)=>{setCoordinator(e.target.value)}} >
-      
-      {coreContext.careCoordinatorOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
-      <label className="mt-2 mb-0">Coach Name</label>
+                  <label className="mt-2 mb-0">Provider Name</label>
+                  <select className="form-select" value={provider} onChange={(e) => { setProvider(e.target.value) }} >
+
+                    {coreContext.providerOptions.map((curr, index) => {
+                      return (<option value={curr.value}>{curr.name}</option>)
+
+                    })}
+
+                  </select>
+                  <label className="mt-2 mb-0">Care Coordinator Name</label>
+                  <select className="form-select" value={coordinator} onChange={(e) => { setCoordinator(e.target.value) }} >
+
+                    {coreContext.careCoordinatorOptions.map((curr, index) => {
+                      return (<option value={curr.value}>{curr.name}</option>)
+
+                    })}
+
+                  </select>
+                  <label className="mt-2 mb-0">Coach Name</label>
                   {/* <Input
                     label="Coach Name"
                     name="coach"
@@ -1200,19 +1200,19 @@ const Patients = (props) => {
                     options={coreContext.coachOptions}
                     onChange={(e) => setCoach(e.target.value)}
                   /> */}
-                  
-          <select className="form-select" value={coach} onChange={(e)=>{setCoach(e.target.value)}} >
-      
-      {coreContext.coachOptions.map((curr,index)=>{
-        return(<option value={curr.value}>{curr.name}</option>)
-        
- })}
-      
-      </select>
+
+                  <select className="form-select" value={coach} onChange={(e) => { setCoach(e.target.value) }} >
+
+                    {coreContext.coachOptions.map((curr, index) => {
+                      return (<option value={curr.value}>{curr.name}</option>)
+
+                    })}
+
+                  </select>
                 </div>
               </div>
               <input
-                
+
                 value="Submit"
                 className="btn btn-sm btn-primary mt-2"
                 onClick={() => {
@@ -1228,7 +1228,7 @@ const Patients = (props) => {
                 }}
                 elementType="button"
                 variant="primary"
-                
+
               />
               <br />
               <center> {coreContext.renderLoader()}</center>

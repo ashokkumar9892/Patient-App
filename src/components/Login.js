@@ -19,8 +19,14 @@ const Login = (props) => {
     //     coreContext.login(email, password, url);
     // }else{
     // coreContext.login(email, password);
-    coreContext.login(email, password, "/dashboard");
+    // coreContext.login(email, password, "/dashboard");
     // }
+
+    if (password != "") {
+      coreContext.login(email, password, "/dashboard");
+    } else {
+      alert("please enter the password!");
+    }
   };
 
   const [email, setEmail] = useState("");
@@ -118,102 +124,124 @@ const Login = (props) => {
     //   </div>
     // </div>
     <div className="h-100">
-<div className="fixed-background"></div>
-<div className="container-fluid p-0 h-100 position-relative">
-<div className="row g-0 h-100">
-<div className="offset-0 col-12 d-none d-lg-flex offset-md-1 col-lg h-lg-100">
-<div className="min-h-100 d-flex align-items-center">
-<div className="w-100 w-lg-75 w-xxl-50">
-<div>
-<div className="mb-5">
-<h1 className="display-1 text-white">Healthcare</h1>
-<h1 className="display-1 text-white">You Can Afford
-</h1>
-</div>
-<p className="h6 text-white lh-1-5 mb-5">
-Here at A Pattern Medical Clinic, our top priority is patient care. In order to make sure that we can see you, we choose rates that are well below the Emergency Room prices.
-</p>
-<div className="mb-5">
-<a className="btn btn-lg btn-outline-white" href="">Learn More</a>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div className="col-12 col-lg-auto h-100 pb-4 px-4 pt-0 p-lg-0">
-<div className="sw-lg-70 min-h-100 bg-foreground d-flex justify-content-center shadow-deep py-5 full-page-content-right-border">
-<div className="sw-lg-70 px-5" >
-	<div className="row mb-5" >
-	<div className="col-xl-12 text-center mt-7" >
-		<div className="sh-11">
-	
-<a href="">
-<div className="logo-default mx-auto"></div>
-</a>
-</div>
-		</div>
-	</div>
-	<div className="row">
-	<div className="col-xl-12">
-<form className="tooltip-end-bottom" onSubmit={handleSubmit(login)} noValidate>
-	<div className="row">
-	<div className="col-xl-12">
-		<div className="mb-3 filled form-group tooltip-end-top">
-			<i className="icon-14 bi-person-fill text-primary"></i>
-     
-<input className="form-control" name="email" placeholder="Enter Email"  minLength={5}
-          maxLength={55} onChange={onEmailChangedHandler} errors={errors}/>
-</div>
-	</div>
-	</div>
-	<div className="row">
-	<div className="col-xl-12">
-		<div className="mb-3 filled form-group tooltip-end-top">
-<i className="icon-14 bi-unlock text-primary">
-  
-</i>
-<input className="form-control pe-7" label="Password"
-              type="password"
-              register={register}
-              placeholder="Enter Password"
-              onChange={onPasswordChangedHandler}
-              required={true}
-              minLength={5}
-              maxLength={55}
-            
-              errors={errors}
-              name="password"/>
-<a className="text-small position-absolute t-3 e-3" href="reset-password">Forgot?</a>
-</div>
-	</div>
-	</div>
-	<div className="row">
-	<div className="col-xl-12 mx-auto text-center">
-		<button type="submit" className="btn btn-lg btn-info">Login</button>
-    <Input
-                variant="danger"
-                label={coreContext.message}
-                elementType="label"
-              />
-	</div>
-  <center> {coreContext.renderLoader()}</center>
-	</div>
-	</form>
-	
-<div className="row mt-5">
-	<div className="col-xl-12  text-center">
-		Don't have an account ? Please Contact  <br/>
-		<strong>A Pattern Medical Clinic (423) 455-2711</strong> </div>
-</div>
+      <div className="fixed-background"></div>
+      <div className="container-fluid p-0 h-100 position-relative">
+        <div className="row g-0 h-100">
+          <div className="offset-0 col-12 d-none d-lg-flex offset-md-1 col-lg h-lg-100">
+            <div className="min-h-100 d-flex align-items-center">
+              <div className="w-100 w-lg-75 w-xxl-50">
+                <div>
+                  <div className="mb-5">
+                    <h1 className="display-1 text-white">Healthcare</h1>
+                    <h1 className="display-1 text-white">You Can Afford</h1>
+                  </div>
+                  <p className="h6 text-white lh-1-5 mb-5">
+                    Here at A Pattern Medical Clinic, our top priority is
+                    patient care. In order to make sure that we can see you, we
+                    choose rates that are well below the Emergency Room prices.
+                  </p>
+                  <div className="mb-5">
+                    <a className="btn btn-lg btn-outline-white" href="">
+                      Learn More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-12 col-lg-auto h-100 pb-4 px-4 pt-0 p-lg-0">
+            <div className="sw-lg-70 min-h-100 bg-foreground d-flex justify-content-center shadow-deep py-5 full-page-content-right-border">
+              <div className="sw-lg-70 px-5">
+                <div className="row mb-5">
+                  <div className="col-xl-12 text-center mt-7">
+                    <div className="sh-11">
+                      <a href="">
+                        <div className="logo-default mx-auto"></div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-xl-12">
+                    <form
+                      className="tooltip-end-bottom"
+                      onSubmit={handleSubmit(login)}
+                      noValidate
+                    >
+                      <div className="row">
+                        <div className="col-xl-12">
+                          <div className="mb-3 filled form-group tooltip-end-top">
+                            <i className="icon-14 bi-person-fill text-primary"></i>
 
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-	</div>
-</div>
+                            <input
+                              className="form-control"
+                              name="email"
+                              placeholder="Enter Email"
+                              minLength={5}
+                              maxLength={55}
+                              onChange={onEmailChangedHandler}
+                              errors={errors}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-xl-12">
+                          <div className="mb-3 filled form-group tooltip-end-top">
+                            <i className="icon-14 bi-unlock text-primary"></i>
+                            <input
+                              className="form-control pe-7"
+                              label="Password"
+                              type="password"
+                              register={register}
+                              placeholder="Enter Password"
+                              onChange={onPasswordChangedHandler}
+                              required={true}
+                              minLength={5}
+                              maxLength={55}
+                              errors={errors}
+                              name="password"
+                            />
+                            <a
+                              className="text-small position-absolute t-3 e-3"
+                              href="reset-password"
+                            >
+                              Forgot?
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-xl-12 mx-auto text-center">
+                          <button type="submit" className="btn btn-lg btn-info">
+                            Login
+                          </button>
+                          <Input
+                            variant="danger"
+                            label={coreContext.message}
+                            elementType="label"
+                          />
+                        </div>
+                        <center> {coreContext.renderLoader()}</center>
+                      </div>
+                    </form>
+
+                    <div className="row mt-5">
+                      <div className="col-xl-12  text-center">
+                        Don't have an account ? Please Contact <br />
+                        <strong>
+                          A Pattern Medical Clinic (423) 455-2711
+                        </strong>{" "}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
