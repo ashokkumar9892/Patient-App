@@ -9,7 +9,6 @@ import Slider from "@mui/material/Slider";
 import swal from "sweetalert";
 import { Bar, Line, Scatter, Bubble, Stacked } from "react-chartjs-2";
 
-
 import {
   GenderMale,
   GenderFemale,
@@ -64,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const PatientSummary = (props) => {
   const classes = useStyles();
 
@@ -92,7 +90,7 @@ const PatientSummary = (props) => {
   const [pointcolor, setpointcolor] = useState([]);
   const [mainThresold, setMainThresold] = useState();
   const [cptcode, setcptcode] = useState([{ cptcode: "", program: "" }]);
-  const [dummycptcode, setDummycptcode] = useState([])
+  const [dummycptcode, setDummycptcode] = useState([]);
   const [row, setrow] = useState([]);
 
   const marks = [
@@ -190,57 +188,72 @@ const PatientSummary = (props) => {
   let [coordinator, setCoordinator] = useState("");
   const fetchbp = () => {
     if (coreContext.patientsForPatient[0]) {
-      const patientId = coreContext.patientsForPatient[0].ehrId
+      const patientId = coreContext.patientsForPatient[0].ehrId;
       coreContext.fetchBloodPressureForPatient(patientId, "patient");
     }
   };
   const fetchnewbp = () => {
     if (coreContext.patientsForPatient[0]) {
-      const patientId = coreContext.patientsForPatient[0].ehrId
-      const deviceid = coreContext.deviceDataForPatient.filter((a) => a.DeviceType == 'BP').map((b) => b.deviceID)
+      const patientId = coreContext.patientsForPatient[0].ehrId;
+      const deviceid = coreContext.deviceDataForPatient
+        .filter((a) => a.DeviceType == "BP")
+        .map((b) => b.deviceID);
 
-      coreContext.fetchnewBloodPressureForPatient(patientId, "patient", deviceid);
-
+      coreContext.fetchnewBloodPressureForPatient(
+        patientId,
+        "patient",
+        deviceid
+      );
     }
   };
   const fetchnewbg = () => {
     if (coreContext.patientsForPatient[0]) {
-      const patientId = coreContext.patientsForPatient[0].ehrId
-      const deviceid = coreContext.deviceDataForPatient.filter((a) => a.DeviceType == 'BG').map((b) => b.deviceID)
+      const patientId = coreContext.patientsForPatient[0].ehrId;
+      const deviceid = coreContext.deviceDataForPatient
+        .filter((a) => a.DeviceType == "BG")
+        .map((b) => b.deviceID);
 
-      coreContext.fetchnewBloodGlucoseForPatient(patientId, "patient", deviceid);
-
+      coreContext.fetchnewBloodGlucoseForPatient(
+        patientId,
+        "patient",
+        deviceid
+      );
     }
   };
 
   const fetchbg = () => {
     if (coreContext.patientsForPatient[0]) {
-      const patientId = coreContext.patientsForPatient[0].ehrId
+      const patientId = coreContext.patientsForPatient[0].ehrId;
       coreContext.fetchBloodGlucoseForPatient(patientId, "patient");
     }
-
   };
 
   useEffect(() => {
     const convert = (arr) => {
       const res = {};
-      arr.forEach((obj) => {
-         const key = `${obj.cptcode}${obj["program"]}`;
-         if (!res[key]) {
-            res[key] = { ...obj, count: 0 };
-         };
-         res[key].count += 1;
+      arr?.forEach((obj) => {
+        const key = `${obj.cptcode}${obj["program"]}`;
+        if (!res[key]) {
+          res[key] = { ...obj, count: 0 };
+        }
+        res[key].count += 1;
       });
-   return Object.values(res);
-};
-    setDummycptcode(convert(cptcode))
-  }, [cptcode])
+      return Object.values(res);
+    };
+    setDummycptcode(convert(cptcode));
+  }, [cptcode]);
 
   useEffect(fetchbp, [coreContext.patientsForPatient.length]);
-  useEffect(fetchnewbp, [coreContext.patientsForPatient.length, coreContext.deviceDataForPatient.length]);
-  useEffect(fetchnewbg, [coreContext.patientsForPatient.length, coreContext.deviceDataForPatient.length]);
+  useEffect(fetchnewbp, [
+    coreContext?.patientsForPatient?.length,
+    coreContext?.deviceDataForPatient?.length,
+  ]);
+  useEffect(fetchnewbg, [
+    coreContext?.patientsForPatient?.length,
+    coreContext?.deviceDataForPatient?.length,
+  ]);
 
-  useEffect(fetchbg, [coreContext.patientsForPatient.length]);
+  useEffect(fetchbg, [coreContext?.patientsForPatient?.length]);
   const fetchCareCoordinator = () => {
     const patientId = props.match.params.patient;
     setPatientId(patientId);
@@ -253,72 +266,62 @@ const PatientSummary = (props) => {
     setPatientId(patientId);
     coreContext.fetchProviders();
   };
-  useEffect(fetchProviders, [coreContext.providerData.length]);
+  useEffect(fetchProviders, [coreContext?.providerData?.length]);
   const fetchCoach = () => {
-    const patientId = props.match.params.patient;
+    const patientId = props?.match.params.patient;
     setPatientId(patientId);
     coreContext.fetchCoach();
   };
 
   useEffect(fetchCoach, []);
   useEffect(() => {
-
     const arr = [];
-    if (coreContext.patientsForPatient.length > 0) {
-      coreContext.patientsForPatient[0].cptcodeforccm.split(",").map((curr) => {
-        if (curr !== "")
-          arr.push({ cptcode: curr, program: "CCM" })
-      });
-      coreContext.patientsForPatient[0].cptcodeforrpm.split(",").map((curr) => {
-        if (curr !== "")
-          arr.push({ cptcode: curr, program: "RPM" })
-      });
+    if (coreContext?.patientsForPatient?.length > 0) {
+      coreContext?.patientsForPatient[0]?.cptcodeforccm
+        ?.split(",")
+        ?.map((curr) => {
+          if (curr !== "") arr.push({ cptcode: curr, program: "CCM" });
+        });
+      coreContext?.patientsForPatient[0]?.cptcodeforrpm
+        ?.split(",")
+        ?.map((curr) => {
+          if (curr !== "") arr.push({ cptcode: curr, program: "RPM" });
+        });
     }
-    setcptcode(arr)
-
-
-
-
-  }, [coreContext.patientsForPatient.length])
+    setcptcode(arr);
+  }, [coreContext.patientsForPatient.length]);
   useEffect(coreContext.setdefault, []);
   useEffect(coreContext.FetchBilligCode, []);
   const convertToadd = (arr) => {
-      const res = {};
-      const data=[];
-      const originalArr = []
-      arr.forEach((obj) => {
-        const key = `${obj.cptcode}${obj["program"]}`;
-         if (!res[key]) {
-            res[key] = { ...obj };
-            data.push(key)
-         }
-         else{
-             res[key].count = res[key].count+ obj.count
-         }
-       
-      });
-      data.forEach((item, index)=>{
-        originalArr[index] = res[item]
-      })
-      return originalArr;
-  }
+    const res = {};
+    const data = [];
+    const originalArr = [];
+    arr.forEach((obj) => {
+      const key = `${obj.cptcode}${obj["program"]}`;
+      if (!res[key]) {
+        res[key] = { ...obj };
+        data.push(key);
+      } else {
+        res[key].count = res[key].count + obj.count;
+      }
+    });
+    data.forEach((item, index) => {
+      originalArr[index] = res[item];
+    });
+    return originalArr;
+  };
 
   const handledcptcode = (index, val, prp) => {
     if (prp === "cptcode") {
-      const value = [...dummycptcode]
-      value[index].cptcode = val 
+      const value = [...dummycptcode];
+      value[index].cptcode = val;
       setDummycptcode(convertToadd(value));
-      
-    }
-
-     else {
-      const value = [...dummycptcode]
-      value[index].program = val 
+    } else {
+      const value = [...dummycptcode];
+      value[index].program = val;
       setDummycptcode(convertToadd(value));
     }
-  
   };
-
 
   const tt = [
     ...coreContext.providerData,
@@ -353,130 +356,172 @@ const PatientSummary = (props) => {
 
     //coreContext.fetchTaskTimerUser();
 
-    coreContext.fetchDeviceDataForPatient("PATIENT_" + patientId, userName, "patient");
-
+    coreContext.fetchDeviceDataForPatient(
+      "PATIENT_" + patientId,
+      userName,
+      "patient"
+    );
   };
   const onCreateBill = (cptcode) => {
-
     var cptrpm = "";
     var cptccm = "";
     cptcode.map((curr) => {
       if (curr.program == "CCM") {
         for (let i = 0; i < curr.count; i++) {
-          cptccm = cptccm + curr.cptcode + ","
+          cptccm = cptccm + curr.cptcode + ",";
         }
-       
-      }
-      else {
+      } else {
         for (let i = 0; i < curr.count; i++) {
-          cptrpm = cptrpm + curr.cptcode + ","
+          cptrpm = cptrpm + curr.cptcode + ",";
         }
-       
       }
-    })
+    });
 
     coreContext.UpdateCPT(coreContext.patientsForPatient[0], cptccm, cptrpm);
-
-  }
+  };
 
   const renderBilling = () => {
-
     return (
       <>
-        {dummycptcode.map((curr, index) => {
+        {dummycptcode?.map((curr, index) => {
           return (
             <>
               <div className="row mt-2">
                 <div className="col-xl-2">
                   <label>CPT Code</label>
                   {/* <input className="form-control" value={curr.cptcode} onChange={(e)=>{ handledcptcode(index,e.target.value,"cptcode")}}/> */}
-                  <select className="form-select" value={curr.cptcode} onChange={(e) => { handledcptcode(index, e.target.value, "cptcode") }}>
+                  <select
+                    className="form-select"
+                    value={curr.cptcode}
+                    onChange={(e) => {
+                      handledcptcode(index, e.target.value, "cptcode");
+                    }}
+                  >
                     <option value="">Select Code</option>
-                    {(coreContext.BillingCodes.length > 0) ?
-                      coreContext.BillingCodes.map((dbcode) =>
+                    {coreContext.BillingCodes.length > 0 ? (
+                      coreContext.BillingCodes.map((dbcode) => (
                         <option value={dbcode.code}>{dbcode.code}</option>
-                      ) :
-
+                      ))
+                    ) : (
                       <option value=""></option>
-
-                    }
-
-
+                    )}
                   </select>
-
                 </div>
                 <div className="col-xl-2">
                   <label>Program</label>
-                  <select className="form-select" value={curr.program} onChange={(e) => { handledcptcode(index, e.target.value, "program") }}>
+                  <select
+                    className="form-select"
+                    value={curr.program}
+                    onChange={(e) => {
+                      handledcptcode(index, e.target.value, "program");
+                    }}
+                  >
                     <option value="SelectUser">Select a Program</option>
                     <option value="CCM">CCM</option>
                     <option value="RPM">RPM</option>
-
                   </select>
-
                 </div>
                 <div className="col-xl-2">
                   <label>Description</label>
-                  <input className="form-control" value={(coreContext.BillingCodes.filter((curr1) => curr1.code == curr.cptcode).length > 0) ? coreContext.BillingCodes.filter((curr1) => curr1.code == curr.cptcode)[0].description : ""} />
-
+                  <input
+                    className="form-control"
+                    value={
+                      coreContext.BillingCodes.filter(
+                        (curr1) => curr1.code == curr.cptcode
+                      ).length > 0
+                        ? coreContext.BillingCodes.filter(
+                            (curr1) => curr1.code == curr.cptcode
+                          )[0].description
+                        : ""
+                    }
+                  />
                 </div>
                 <div className="col-xl-2">
                   <label>Cost</label>
-                  <input className="form-control" value={(coreContext.BillingCodes.filter((curr1) => curr1.code == curr.cptcode).length > 0) ? "$" + (coreContext.BillingCodes.filter((curr1) => curr1.code == curr.cptcode)[0].cost)*curr.count : ""} />
-
+                  <input
+                    className="form-control"
+                    value={
+                      coreContext.BillingCodes.filter(
+                        (curr1) => curr1.code == curr.cptcode
+                      ).length > 0
+                        ? "$" +
+                          coreContext.BillingCodes.filter(
+                            (curr1) => curr1.code == curr.cptcode
+                          )[0].cost *
+                            curr.count
+                        : ""
+                    }
+                  />
                 </div>
                 <div className="col-xl-2">
                   <label>number of multiplier</label>
                   <input className="form-control" value={curr.count} />
-
                 </div>
                 <div className="col-xl-1">
-                <button className="btn btn-primary mt-4" onClick={() =>{ 
-                   if(Object.keys(dummycptcode).length >0){
-                    let value = dummycptcode;
-                    value.splice(index, 1);
-                    if(Object.keys(value).length >0){
-                      // value[index].count= dummycptcode[index].count + 1;
-                      setDummycptcode(value)
-                    }
-                  
-                   }
-                  }}> <Trash /></button>
-                  </div>
+                  <button
+                    className="btn btn-primary mt-4"
+                    onClick={() => {
+                      if (Object.keys(dummycptcode)?.length > 0) {
+                        let value = dummycptcode;
+                        value?.splice(index, 1);
+                        if (Object.keys(value).length > 0) {
+                          // value[index].count= dummycptcode[index].count + 1;
+                          setDummycptcode(value);
+                        }
+                      }
+                    }}
+                  >
+                    {" "}
+                    <Trash />
+                  </button>
+                </div>
                 <div className="col-xl-1">
-
-                  <button className="btn btn-primary mt-4" onClick={() =>{ 
-                    if(Object.keys(dummycptcode).length >0){
-                    let value = dummycptcode;
-                    value[index].count= dummycptcode[index].count + 1;
-                    setDummycptcode(value)
-                    }
-                  }}>x2</button>
-                   
-
+                  <button
+                    className="btn btn-primary mt-4"
+                    onClick={() => {
+                      if (Object.keys(dummycptcode)?.length > 0) {
+                        let value = dummycptcode;
+                        value[index].count = dummycptcode[index].count + 1;
+                        setDummycptcode(value);
+                      }
+                    }}
+                  >
+                    x2
+                  </button>
                 </div>
               </div>
             </>
-          )
-        })
-
-        }
+          );
+        })}
         <div className="col-xl-3">
-
-          <button style={{ marginTop: "1.5em" }} className="btn btn-primary" onClick={() => setDummycptcode([...dummycptcode, { cptcode: "", program: "", count:1 }])}>Add row</button>
+          <button
+            style={{ marginTop: "1.5em" }}
+            className="btn btn-primary"
+            onClick={() =>
+              setDummycptcode([
+                ...dummycptcode,
+                { cptcode: "", program: "", count: 1 },
+              ])
+            }
+          >
+            Add row
+          </button>
         </div>
         <div className="col-xl-3">
-
-          <button style={{ marginTop: "1.5em" }} className="btn btn-primary" onClick={() => onCreateBill(dummycptcode)}>Create Bill</button>
+          <button
+            style={{ marginTop: "1.5em" }}
+            className="btn btn-primary"
+            onClick={() => onCreateBill(dummycptcode)}
+          >
+            Create Bill
+          </button>
         </div>
       </>
-    )
-
-
-  }
+    );
+  };
   const fetchtime = () => {
-    coreContext.fetchTimeLog("PATIENT_" + patientId)
-  }
+    coreContext.fetchTimeLog("PATIENT_" + patientId);
+  };
 
   const pateientvalue = useMemo(() => fetchPatient, []);
   useEffect(fetchPatient, []);
@@ -488,29 +533,35 @@ const PatientSummary = (props) => {
     [coreContext.patient.notes]
   );
   const checkthresoldvalue = () => {
-
-    if (coreContext.thresoldData.filter((curr) => curr.Element_value === "Blood Glucose").length === 0) {
+    if (
+      coreContext.thresoldData.filter(
+        (curr) => curr.Element_value === "Blood Glucose"
+      ).length === 0
+    ) {
       return "0";
-    }
-    else {
-      let ttt = coreContext.thresoldData.filter((curr) => curr.Element_value === "Blood Glucose")
+    } else {
+      let ttt = coreContext.thresoldData.filter(
+        (curr) => curr.Element_value === "Blood Glucose"
+      );
 
-      return String(ttt[0].bg_high)
+      return String(ttt[0].bg_high);
     }
-  }
+  };
   const checkadminthresoldvalue = () => {
-
-    if (coreContext.adminthresold.filter((curr) => curr.Element_value === "Blood Glucose").length === 0) {
+    if (
+      coreContext.adminthresold.filter(
+        (curr) => curr.Element_value === "Blood Glucose"
+      ).length === 0
+    ) {
       return "150";
+    } else {
+      let ttt = coreContext.adminthresold.filter(
+        (curr) => curr.Element_value === "Blood Glucose"
+      );
+
+      return String(ttt[0].bg_high);
     }
-    else {
-      let ttt = coreContext.adminthresold.filter((curr) => curr.Element_value === "Blood Glucose")
-
-      return String(ttt[0].bg_high)
-    }
-  }
-
-
+  };
 
   const checkthresoldMinvalue = () => {
     if (
@@ -520,7 +571,6 @@ const PatientSummary = (props) => {
     ) {
       return "0";
     } else {
-
       return String(
         coreContext.thresoldData.filter(
           (curr) => curr.Element_value === "Blood Glucose"
@@ -536,7 +586,6 @@ const PatientSummary = (props) => {
     ) {
       return "20";
     } else {
-
       return String(
         coreContext.adminthresold.filter(
           (curr) => curr.Element_value === "Blood Glucose"
@@ -546,21 +595,18 @@ const PatientSummary = (props) => {
   };
   const checkadmindiastolic = (type) => {
     if (type === "SYSTOLIC") {
-      let option = "systolic_high"
+      let option = "systolic_high";
     } else {
-      let option = "diastolic_high"
-
+      let option = "diastolic_high";
     }
 
     if (
-      coreContext.adminthresold.filter(
-        (curr) => curr.Element_value === type
-      ).length === 0
+      coreContext.adminthresold.filter((curr) => curr.Element_value === type)
+        .length === 0
     ) {
       return "20";
     } else {
       if (type === "SYSTOLIC") {
-
         return String(
           coreContext.adminthresold.filter(
             (curr) => curr.Element_value === type
@@ -574,27 +620,22 @@ const PatientSummary = (props) => {
           )[0].diastolic_high
         );
       }
-
-
     }
   };
   const checkdiastolic = (type) => {
     if (type === "SYSTOLIC") {
-      let option = "systolic_high"
+      let option = "systolic_high";
     } else {
-      let option = "diastolic_high"
-
+      let option = "diastolic_high";
     }
 
     if (
-      coreContext.thresoldData.filter(
-        (curr) => curr.Element_value === type
-      ).length === 0
+      coreContext.thresoldData.filter((curr) => curr.Element_value === type)
+        .length === 0
     ) {
       return "20";
     } else {
       if (type === "SYSTOLIC") {
-
         return String(
           coreContext.thresoldData.filter(
             (curr) => curr.Element_value === type
@@ -608,25 +649,52 @@ const PatientSummary = (props) => {
           )[0].diastolic_high
         );
       }
-
-
     }
   };
 
   //const tvalue=checkthresoldvalue();
-  const tvalue = useMemo(() => checkthresoldvalue(), [JSON.stringify(coreContext.thresoldData)]);
-  const tadminvalue = useMemo(() => checkadminthresoldvalue(), [JSON.stringify(coreContext.adminthresold)])
-  const tvaluemin = useMemo(() => checkthresoldMinvalue(), [JSON.stringify(coreContext.thresoldData)]);
-  const tadminvaluemin = useMemo(() => checkadminthresoldMinvalue(), [JSON.stringify(coreContext.adminthresold)])
-  const tadmindiastolic = useMemo(() => checkadmindiastolic("DIASTOLIC"), [JSON.stringify(coreContext.adminthresold)])
-  const tadminsystolic = useMemo(() => checkadmindiastolic("SYSTOLIC"), [JSON.stringify(coreContext.adminthresold)])
-  const tsystolic = useMemo(() => checkdiastolic("SYSTOLIC"), [JSON.stringify(coreContext.thresoldData)])
-  const tdiastolic = useMemo(() => checkdiastolic("DIASTOLIC"), [JSON.stringify(coreContext.thresoldData)])
-
+  const tvalue = useMemo(
+    () => checkthresoldvalue(),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
+  const tadminvalue = useMemo(
+    () => checkadminthresoldvalue(),
+    [JSON.stringify(coreContext.adminthresold)]
+  );
+  const tvaluemin = useMemo(
+    () => checkthresoldMinvalue(),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
+  const tadminvaluemin = useMemo(
+    () => checkadminthresoldMinvalue(),
+    [JSON.stringify(coreContext.adminthresold)]
+  );
+  const tadmindiastolic = useMemo(
+    () => checkadmindiastolic("DIASTOLIC"),
+    [JSON.stringify(coreContext.adminthresold)]
+  );
+  const tadminsystolic = useMemo(
+    () => checkadmindiastolic("SYSTOLIC"),
+    [JSON.stringify(coreContext.adminthresold)]
+  );
+  const tsystolic = useMemo(
+    () => checkdiastolic("SYSTOLIC"),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
+  const tdiastolic = useMemo(
+    () => checkdiastolic("DIASTOLIC"),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
 
   //const tMinvalue=checkthresoldMinvalue();
-  const tMinvalue = useMemo(() => checkthresoldMinvalue(), [JSON.stringify(coreContext.thresoldData)]);
-  const tadminMinvalue = useMemo(() => checkadminthresoldMinvalue(), [JSON.stringify(coreContext.adminthresold)]);
+  const tMinvalue = useMemo(
+    () => checkthresoldMinvalue(),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
+  const tadminMinvalue = useMemo(
+    () => checkadminthresoldMinvalue(),
+    [JSON.stringify(coreContext.adminthresold)]
+  );
 
   //alert(tvalue)
   //alert(alert(checkthresoldvalue()))
@@ -647,14 +715,13 @@ const PatientSummary = (props) => {
                 setslider(100);
               }}
               value={from}
-            // dateFormat="MM/dd/yyyy hh:mm:ss aa"
+              // dateFormat="MM/dd/yyyy hh:mm:ss aa"
             />
           </div>
           <div className="col-xl-1">
             <label>To:</label>
           </div>
           <div className="col-xl-4 ">
-
             <DatePicker
               selected={to}
               onChange={(e) => {
@@ -676,9 +743,11 @@ const PatientSummary = (props) => {
     );
   };
   const fetchadmintd = () => {
-    coreContext.fetchadminThresold("ADMIN_" + localStorage.getItem("userId"), "admin")
-  }
-
+    coreContext.fetchadminThresold(
+      "ADMIN_" + localStorage.getItem("userId"),
+      "admin"
+    );
+  };
 
   useEffect(fetchTd, [JSON.stringify(coreContext.thresoldData)]);
   useEffect(fetchadmintd, [JSON.stringify(coreContext.adminthresold)]);
@@ -714,7 +783,6 @@ const PatientSummary = (props) => {
       <>
         <div className="row">
           <div className="col-xl-12">
-
             <Slider
               aria-label="Restricted values"
               step={null}
@@ -729,7 +797,6 @@ const PatientSummary = (props) => {
                 //setto(new Date())
               }}
             />
-
           </div>
         </div>
       </>
@@ -739,738 +806,820 @@ const PatientSummary = (props) => {
     setfrom(
       new Date(new Date().setDate(new Date().getDate() - fetchsliderdays()))
     );
-
   }, [slider]);
 
-  const getbpdata = React.useCallback((index) => {
-    if (coreContext.bloodpressureDataForPatient.length == 0) {
-      return (
-        <>
-          <div
-            style={{
-              height: 680,
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "10px",
-              alignItems: "center",
-            }}>
-            <Loader type="Circles" color="#00BFFF" height={100} width={100} />
-          </div>
-        </>
-      );
-    }
-
-    if (
-      coreContext.bloodpressureDataForPatient.length > 0 &&
-      coreContext.bloodpressureDataForPatient[0].UserName !== "undefined"
-    ) {
-      if (to.getDate() !== from.getDate()) {
-
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-
-        var finaldata = coreContext.bloodpressureDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
-        );
-      } else {
-        var SliderDays;
-        if (slider === 0) {
-          SliderDays = 0;
-        }
-        if (slider === 15) {
-          SliderDays = 1;
-        }
-        if (slider === 30) {
-          SliderDays = 7;
-        }
-        if (slider === 45) {
-          SliderDays = 30;
-        }
-        if (slider === 60) {
-          SliderDays = 60;
-        }
-        if (slider === 75) {
-          SliderDays = 90;
-        }
-        if (slider === 100) {
-          SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
-        }
-        // let today = new Date();
-        // var bfr = new Date().setDate(today.getDate() - SliderDays).setHours(0,0,0,0);
-        let today = new Date();
-        today.setHours(0, 0, 0, 0)
-        let bfr = today.setDate(today.getDate() - SliderDays);
-
-        var finaldata = coreContext.bloodpressureDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= new Date(bfr)
-        );
-
-      }
-
-      let Systolic = [];
-      let diastolic = [];
-      let labels = [];
-      let pulse = [];
-      let dates = [];
-
-      finaldata.map((curr) => {
-        Systolic.push(Number(curr.systolic));
-        diastolic.push(Number(curr.diastolic));
-        labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
-        pulse.push(curr.Pulse);
-
-        dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
-      });
-
-
-      let uniquedates = dates.filter(function (item, pos) {
-        return dates.indexOf(item) == pos;
-      });
-      let sorteddates = uniquedates.sort(function (a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b) - new Date(a);
-      });
-
-      let avgsys = Systolic.reduce((a, b) => a + b, 0) / finaldata.length;
-      let avgdia = diastolic.reduce((a, b) => a + b, 0) / finaldata.length;
-
-      let daydfrnc;
-      if (slider === 100) {
-        daydfrnc = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
-      } else {
-        daydfrnc = SliderDays;
-      }
-
-      if (index === 3) {
+  const getbpdata = React.useCallback(
+    (index) => {
+      if (coreContext.bloodpressureDataForPatient.length == 0) {
         return (
           <>
-            <div className="row">
-              <div className="col-xl-12">
-                <div className="table-responsive-sm mb-0">
-                  <table className="table table-bordered mb-0" >
-                    <thead>
-                      <tr className="bg-primary">
-                        <th width="30%" className="text-white">Date</th>
-                        <th width="30%" className="text-white">Blood Pressure(mmHG)</th>
-                        <th width="30%" className="text-white">Pulse(bpm)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sorteddates.map((curr) => {
-                        return (
-                          <>
-                            <tr
-                              className="text-dark"
-                              style={{ backgroundColor: "#a3a3a6" }}
-                              scope="row">
-                              <td colSpan="3">{curr}</td>
-                            </tr>
-                            {finaldata
-                              .filter(
-                                (item) =>
-                                  Moment(item.MeasurementDateTime).format("MM-DD-YYYY") ===
-                                  curr
-                              )
-                              .map((curr1) => {
-                                return (
-                                  <>
-                                    <tr scope="row">
-                                      <td>
-                                        {Moment(curr1.MeasurementDateTime).format("hh:mm A")}
-                                      </td>
-                                      <td>
-                                        {curr1.systolic}/{curr1.diastolic}
-                                      </td>
-                                      <td>{curr1.Pulse}</td>
-                                    </tr>
-                                  </>
-                                );
-                              })}
-                          </>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            <div
+              style={{
+                height: 680,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "10px",
+                alignItems: "center",
+              }}
+            >
+              <Loader type="Circles" color="#00BFFF" height={100} width={100} />
             </div>
           </>
         );
       }
 
-      if (index === 2) {
-        //var labels =[1,2,3,4,5];
-        
-        let Systolicgrap = [];
-        let diastolicgrap = [];
-        let labelsgrap = [];
-        let pulsegrap = [];
-        let thresolddiastolic = [];
-        let thresoldsystolic = [];
-        // Systolic.push(Number(curr.systolic));
-        // diastolic.push(Number(curr.diastolic));
-        // labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
-        // pulse.push(curr.Pulse);
-        // dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
-        var sortData = finaldata.sort(function (a, b) {
-          return (
-            new Date(Moment(a.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")) -
-            new Date(Moment(b.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"))
+      if (
+        coreContext.bloodpressureDataForPatient.length > 0 &&
+        coreContext.bloodpressureDataForPatient[0].UserName !== "undefined"
+      ) {
+        if (to.getDate() !== from.getDate()) {
+          from.setHours(0, 0, 0, 0);
+          to.setHours(23, 59, 59, 999);
+
+          var finaldata = coreContext.bloodpressureDataForPatient.filter(
+            (date) =>
+              date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
           );
-        });
+        } else {
+          var SliderDays;
+          if (slider === 0) {
+            SliderDays = 0;
+          }
+          if (slider === 15) {
+            SliderDays = 1;
+          }
+          if (slider === 30) {
+            SliderDays = 7;
+          }
+          if (slider === 45) {
+            SliderDays = 30;
+          }
+          if (slider === 60) {
+            SliderDays = 60;
+          }
+          if (slider === 75) {
+            SliderDays = 90;
+          }
+          if (slider === 100) {
+            SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
+          }
+          // let today = new Date();
+          // var bfr = new Date().setDate(today.getDate() - SliderDays).setHours(0,0,0,0);
+          let today = new Date();
+          today.setHours(0, 0, 0, 0);
+          let bfr = today.setDate(today.getDate() - SliderDays);
 
+          var finaldata = coreContext.bloodpressureDataForPatient.filter(
+            (date) => date.MeasurementDateTime >= new Date(bfr)
+          );
+        }
 
-        sortData.map((curr) => {
-          Systolicgrap.push(Number(curr.systolic));
-          diastolicgrap.push(Number(curr.diastolic));
-          { (tdiastolic === "0") ? thresolddiastolic.push(tadmindiastolic) : thresolddiastolic.push(tdiastolic) }
-          { (tsystolic === "0") ? thresoldsystolic.push(tadminsystolic) : thresoldsystolic.push(tsystolic) }
-          labelsgrap.push(
+        let Systolic = [];
+        let diastolic = [];
+        let labels = [];
+        let pulse = [];
+        let dates = [];
+
+        finaldata.map((curr) => {
+          Systolic.push(Number(curr.systolic));
+          diastolic.push(Number(curr.diastolic));
+          labels.push(
             Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
           );
-          pulsegrap.push(curr.Pulse);
+          pulse.push(curr.Pulse);
+
+          dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
         });
 
-        const data = {
-          // labels: labels.sort(function (a, b) {
+        let uniquedates = dates.filter(function (item, pos) {
+          return dates.indexOf(item) == pos;
+        });
+        let sorteddates = uniquedates.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b) - new Date(a);
+        });
 
-          //   return new Date(a) - new Date(b);
-          labels: labelsgrap,
-          datasets: [
-            {
-              label: "Systolic",
-              data: Systolicgrap,
-              fill: false,
-              backgroundColor: ["Blue"],
-              borderColor: ["Blue"],
-              pointRadius: 10,
-              pointStyle: "triangle",
-              pointBackgroundColor: "blue",
+        let avgsys = Systolic.reduce((a, b) => a + b, 0) / finaldata.length;
+        let avgdia = diastolic.reduce((a, b) => a + b, 0) / finaldata.length;
 
-              tension: 0,
-              //borderColor:["white"],
-            },
-            {
-              label: "Diastolic",
-              data: diastolicgrap,
-              fill: false,
-              backgroundColor: ["green"],
-              borderColor: ["green"],
-              radius: 10,
-              pointBackgroundColor: "green",
-              //pointRadius: 8,
-              pointStyle: "square",
-              tension: 0,
-              //borderColor:["white"],
-            },
-            {
-              label: "Pulse",
-              data: pulsegrap,
-              fill: false,
-              backgroundColor: ["orange"],
-              borderColor: ["orange"],
-              pointStyle: "rectRot",
-              pointBackgroundColor: "orange",
-              pointRadius: 10,
-              tension: 0,
-
-              //borderColor:["white"],
-            },
-            {
-              label: "Max Diastolic",
-              data: thresolddiastolic,
-              pointRadius: 0,
-              //pointBackgroundColor:"white",
-
-              backgroundColor: ["red"],
-              borderColor: ["red"],
-              fill: false,
-              borderWidth: 6,
-            },
-            {
-              label: "Max Systolic",
-              data: thresoldsystolic,
-              pointRadius: 0,
-              //pointBackgroundColor:"white",
-
-              backgroundColor: ["indigo"],
-              borderColor: ["indigo"],
-              fill: false,
-              borderWidth: 6,
-            },
-          ],
-        };
-
-        return (
-          <>
-            <div className="row mb-4">
-              <div className="col-xl-12">
-                <div className="card-body bg-dark text-white">Reading By Dates
-                </div>
-              </div>
-            </div>
-            <div className="row mb-4">
-              <div className="col-xl-12">
-                <Line
-                  data={data}
-                  options={{
-                    tooltips: {
-                      mode: "index",
-                    },
-                    legend: {
-                      display: true,
-                      position: "right",
-                    },
-                  }}
-                />
-              </div>
-            </div>
-
-          </>
-        );
-      }
-      if (index === 1) {
-        return (
-          <>
-
-
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape-1">Total Reading</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-orange"> {finaldata.length}</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">Average Reading per day</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{isNaN(
-                  Math.round(
-                    Number(
-                      Math.round(Number(finaldata.length / daydfrnc) * 10) / 10
-                    )
-                  )
-                )
-                  ? "0"
-                  : Math.round(
-                    Number(
-                      Math.round(Number(finaldata.length / daydfrnc) * 10) /
-                      10
-                    )
-                  )}</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">   Average Systolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {isNaN(avgsys) ? "0" : Number(Math.round(avgsys))} mm HG</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Average Diastolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{isNaN(avgdia) ? "0 " : Number(Math.round(avgsys))}
-                  mm HG</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Lowest Systolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{Systolic.length > 0 ? Math.min(...Systolic) : "0"} mm HG</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Highest Diastolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {diastolic.length > 0 ? Number(Math.max(...diastolic)) : "0"} mm
-                  HG</div>
-              </div>
-            </div>
-          </>
-        );
-      }
-    } else {
-      return <h1>no data found</h1>;
-    }
-  }, [coreContext.bloodpressureDataForPatient, slider, from, to]);
-  const getbpdatanew = React.useCallback((index, type) => {
-
-    if (coreContext.newbloodpressureDataForPatient.length == 0) {
-      return (
-        <>
-          <div
-            style={{
-              height: 680,
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "10px",
-              alignItems: "center",
-            }}>
-            <Loader type="Circles" color="#00BFFF" height={100} width={100} />
-          </div>
-        </>
-      );
-    }
-
-    if (
-      coreContext.newbloodpressureDataForPatient.length > 0 &&
-      coreContext.newbloodpressureDataForPatient[0].UserName !== "undefined"
-    ) {
-      if (to.getDate() !== from.getDate()) {
-
-        from.setHours(0, 0, 0, 0);
-        to.setHours(23, 59, 59, 999);
-
-        var finaldata = coreContext.newbloodpressureDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
-        );
-      } else {
-        var SliderDays;
-        if (slider === 0) {
-          SliderDays = 0;
-        }
-        if (slider === 15) {
-          SliderDays = 1;
-        }
-        if (slider === 30) {
-          SliderDays = 7;
-        }
-        if (slider === 45) {
-          SliderDays = 30;
-        }
-        if (slider === 60) {
-          SliderDays = 60;
-        }
-        if (slider === 75) {
-          SliderDays = 90;
-        }
+        let daydfrnc;
         if (slider === 100) {
-          SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
+          daydfrnc = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
+        } else {
+          daydfrnc = SliderDays;
         }
-        // let today = new Date();
-        // var bfr = new Date().setDate(today.getDate() - SliderDays).setHours(0,0,0,0);
-        let today = new Date();
-        today.setHours(0, 0, 0, 0)
-        let bfr = today.setDate(today.getDate() - SliderDays);
 
-        var finaldata = coreContext.newbloodpressureDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= new Date(bfr)
-        );
-
-      }
-
-      let Systolic = [];
-      let diastolic = [];
-      let labels = [];
-      let pulse = [];
-      let dates = [];
-
-      finaldata.map((curr) => {
-        Systolic.push(Number(curr.systolic));
-        diastolic.push(Number(curr.diastolic));
-        labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
-        pulse.push(curr.Pulse);
-
-        dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
-      });
-
-
-      let uniquedates = dates.filter(function (item, pos) {
-        return dates.indexOf(item) == pos;
-      });
-      let sorteddates = uniquedates.sort(function (a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b) - new Date(a);
-      });
-
-      let avgsys = Systolic.reduce((a, b) => a + b, 0) / finaldata.length;
-      let avgdia = diastolic.reduce((a, b) => a + b, 0) / finaldata.length;
-
-      let daydfrnc;
-      if (slider === 100) {
-        daydfrnc = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
-      } else {
-        daydfrnc = SliderDays;
-      }
-
-      if (index === 3) {
-        return (
-          <>
-            <div className="row">
-              <div className="col-xl-12">
-                <div className="table-responsive-sm mb-0">
-                  <table className="table table-bordered mb-0" >
-                    <thead>
-                      <tr className="bg-primary">
-                        <th width="30%" className="text-white">Date</th>
-                        <th width="30%" className="text-white">Blood Pressure(mmHG)</th>
-                        <th width="30%" className="text-white">Pulse(bpm)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sorteddates.map((curr) => {
-                        return (
-                          <>
-                            <tr
-                              className="text-dark"
-                              style={{ backgroundColor: "#a3a3a6" }}
-                              scope="row">
-                              <td colSpan="3">{curr}</td>
-                            </tr>
-                            {finaldata
-                              .filter(
-                                (item) =>
-                                  Moment(item.MeasurementDateTime).format("MM-DD-YYYY") ===
-                                  curr
-                              )
-                              .map((curr1) => {
-                                return (
-                                  <>
-                                    <tr scope="row">
-                                      <td>
-                                        {Moment(curr1.MeasurementDateTime).format("hh:mm A")}
-                                      </td>
-                                      <td>
-                                        {curr1.systolic}/{curr1.diastolic}
-                                      </td>
-                                      <td>{curr1.Pulse}</td>
-                                    </tr>
-                                  </>
-                                );
-                              })}
-                          </>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+        if (index === 3) {
+          return (
+            <>
+              <div className="row">
+                <div className="col-xl-12">
+                  <div className="table-responsive-sm mb-0">
+                    <table className="table table-bordered mb-0">
+                      <thead>
+                        <tr className="bg-primary">
+                          <th width="30%" className="text-white">
+                            Date
+                          </th>
+                          <th width="30%" className="text-white">
+                            Blood Pressure(mmHG)
+                          </th>
+                          <th width="30%" className="text-white">
+                            Pulse(bpm)
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sorteddates.map((curr) => {
+                          return (
+                            <>
+                              <tr
+                                className="text-dark"
+                                style={{ backgroundColor: "#a3a3a6" }}
+                                scope="row"
+                              >
+                                <td colSpan="3">{curr}</td>
+                              </tr>
+                              {finaldata
+                                .filter(
+                                  (item) =>
+                                    Moment(item.MeasurementDateTime).format(
+                                      "MM-DD-YYYY"
+                                    ) === curr
+                                )
+                                .map((curr1) => {
+                                  return (
+                                    <>
+                                      <tr scope="row">
+                                        <td>
+                                          {Moment(
+                                            curr1.MeasurementDateTime
+                                          ).format("hh:mm A")}
+                                        </td>
+                                        <td>
+                                          {curr1.systolic}/{curr1.diastolic}
+                                        </td>
+                                        <td>{curr1.Pulse}</td>
+                                      </tr>
+                                    </>
+                                  );
+                                })}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
+            </>
+          );
+        }
+
+        if (index === 2) {
+          //var labels =[1,2,3,4,5];
+
+          let Systolicgrap = [];
+          let diastolicgrap = [];
+          let labelsgrap = [];
+          let pulsegrap = [];
+          let thresolddiastolic = [];
+          let thresoldsystolic = [];
+          // Systolic.push(Number(curr.systolic));
+          // diastolic.push(Number(curr.diastolic));
+          // labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
+          // pulse.push(curr.Pulse);
+          // dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
+          var sortData = finaldata.sort(function (a, b) {
+            return (
+              new Date(
+                Moment(a.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+              ) -
+              new Date(
+                Moment(b.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+              )
+            );
+          });
+
+          sortData.map((curr) => {
+            Systolicgrap.push(Number(curr.systolic));
+            diastolicgrap.push(Number(curr.diastolic));
+            {
+              tdiastolic === "0"
+                ? thresolddiastolic.push(tadmindiastolic)
+                : thresolddiastolic.push(tdiastolic);
+            }
+            {
+              tsystolic === "0"
+                ? thresoldsystolic.push(tadminsystolic)
+                : thresoldsystolic.push(tsystolic);
+            }
+            labelsgrap.push(
+              Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+            );
+            pulsegrap.push(curr.Pulse);
+          });
+
+          const data = {
+            // labels: labels.sort(function (a, b) {
+
+            //   return new Date(a) - new Date(b);
+            labels: labelsgrap,
+            datasets: [
+              {
+                label: "Systolic",
+                data: Systolicgrap,
+                fill: false,
+                backgroundColor: ["Blue"],
+                borderColor: ["Blue"],
+                pointRadius: 10,
+                pointStyle: "triangle",
+                pointBackgroundColor: "blue",
+
+                tension: 0,
+                //borderColor:["white"],
+              },
+              {
+                label: "Diastolic",
+                data: diastolicgrap,
+                fill: false,
+                backgroundColor: ["green"],
+                borderColor: ["green"],
+                radius: 10,
+                pointBackgroundColor: "green",
+                //pointRadius: 8,
+                pointStyle: "square",
+                tension: 0,
+                //borderColor:["white"],
+              },
+              {
+                label: "Pulse",
+                data: pulsegrap,
+                fill: false,
+                backgroundColor: ["orange"],
+                borderColor: ["orange"],
+                pointStyle: "rectRot",
+                pointBackgroundColor: "orange",
+                pointRadius: 10,
+                tension: 0,
+
+                //borderColor:["white"],
+              },
+              {
+                label: "Max Diastolic",
+                data: thresolddiastolic,
+                pointRadius: 0,
+                //pointBackgroundColor:"white",
+
+                backgroundColor: ["red"],
+                borderColor: ["red"],
+                fill: false,
+                borderWidth: 6,
+              },
+              {
+                label: "Max Systolic",
+                data: thresoldsystolic,
+                pointRadius: 0,
+                //pointBackgroundColor:"white",
+
+                backgroundColor: ["indigo"],
+                borderColor: ["indigo"],
+                fill: false,
+                borderWidth: 6,
+              },
+            ],
+          };
+
+          return (
+            <>
+              <div className="row mb-4">
+                <div className="col-xl-12">
+                  <div className="card-body bg-dark text-white">
+                    Reading By Dates
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-4">
+                <div className="col-xl-12">
+                  <Line
+                    data={data}
+                    options={{
+                      tooltips: {
+                        mode: "index",
+                      },
+                      legend: {
+                        display: true,
+                        position: "right",
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            </>
+          );
+        }
+        if (index === 1) {
+          return (
+            <>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape-1">Total Reading</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-orange">
+                    {" "}
+                    {finaldata.length}
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape">Average Reading per day</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {isNaN(
+                      Math.round(
+                        Number(
+                          Math.round(Number(finaldata.length / daydfrnc) * 10) /
+                            10
+                        )
+                      )
+                    )
+                      ? "0"
+                      : Math.round(
+                          Number(
+                            Math.round(
+                              Number(finaldata.length / daydfrnc) * 10
+                            ) / 10
+                          )
+                        )}
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Average Systolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {" "}
+                    {isNaN(avgsys) ? "0" : Number(Math.round(avgsys))} mm HG
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Average Diastolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {isNaN(avgdia) ? "0 " : Number(Math.round(avgsys))}
+                    mm HG
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Lowest Systolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {Systolic.length > 0 ? Math.min(...Systolic) : "0"} mm HG
+                  </div>
+                </div>
+              </div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Highest Diastolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {" "}
+                    {diastolic.length > 0
+                      ? Number(Math.max(...diastolic))
+                      : "0"}{" "}
+                    mm HG
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        }
+      } else {
+        return <h1>no data found</h1>;
+      }
+    },
+    [coreContext.bloodpressureDataForPatient, slider, from, to]
+  );
+  const getbpdatanew = React.useCallback(
+    (index, type) => {
+      if (coreContext.newbloodpressureDataForPatient.length == 0) {
+        return (
+          <>
+            <div
+              style={{
+                height: 680,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "10px",
+                alignItems: "center",
+              }}
+            >
+              <Loader type="Circles" color="#00BFFF" height={100} width={100} />
             </div>
           </>
         );
       }
 
-      if (index === 2) {
-        //var labels =[1,2,3,4,5];
-   
-        let Systolicgrap = [];
-        let diastolicgrap = [];
-        let labelsgrap = [];
-        let pulsegrap = [];
-        let thresolddiastolic = [];
-        let thresoldsystolic = [];
-        // Systolic.push(Number(curr.systolic));
-        // diastolic.push(Number(curr.diastolic));
-        // labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
-        // pulse.push(curr.Pulse);
-        // dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
-        var sortData = finaldata.sort(function (a, b) {
-          return (
-            new Date(Moment(a.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")) -
-            new Date(Moment(b.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"))
+      if (
+        coreContext.newbloodpressureDataForPatient.length > 0 &&
+        coreContext.newbloodpressureDataForPatient[0].UserName !== "undefined"
+      ) {
+        if (to.getDate() !== from.getDate()) {
+          from.setHours(0, 0, 0, 0);
+          to.setHours(23, 59, 59, 999);
+
+          var finaldata = coreContext.newbloodpressureDataForPatient.filter(
+            (date) =>
+              date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
           );
-        });
+        } else {
+          var SliderDays;
+          if (slider === 0) {
+            SliderDays = 0;
+          }
+          if (slider === 15) {
+            SliderDays = 1;
+          }
+          if (slider === 30) {
+            SliderDays = 7;
+          }
+          if (slider === 45) {
+            SliderDays = 30;
+          }
+          if (slider === 60) {
+            SliderDays = 60;
+          }
+          if (slider === 75) {
+            SliderDays = 90;
+          }
+          if (slider === 100) {
+            SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
+          }
+          // let today = new Date();
+          // var bfr = new Date().setDate(today.getDate() - SliderDays).setHours(0,0,0,0);
+          let today = new Date();
+          today.setHours(0, 0, 0, 0);
+          let bfr = today.setDate(today.getDate() - SliderDays);
 
+          var finaldata = coreContext.newbloodpressureDataForPatient.filter(
+            (date) => date.MeasurementDateTime >= new Date(bfr)
+          );
+        }
 
-        sortData.map((curr) => {
-          Systolicgrap.push(Number(curr.systolic));
-          diastolicgrap.push(Number(curr.diastolic));
-          { (tdiastolic === "0") ? thresolddiastolic.push(tadmindiastolic) : thresolddiastolic.push(tdiastolic) }
-          { (tsystolic === "0") ? thresoldsystolic.push(tadminsystolic) : thresoldsystolic.push(tsystolic) }
-          labelsgrap.push(
+        let Systolic = [];
+        let diastolic = [];
+        let labels = [];
+        let pulse = [];
+        let dates = [];
+
+        finaldata.map((curr) => {
+          Systolic.push(Number(curr.systolic));
+          diastolic.push(Number(curr.diastolic));
+          labels.push(
             Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
           );
-          pulsegrap.push(curr.Pulse);
+          pulse.push(curr.Pulse);
+
+          dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
         });
 
-        const data = {
-          // labels: labels.sort(function (a, b) {
+        let uniquedates = dates.filter(function (item, pos) {
+          return dates.indexOf(item) == pos;
+        });
+        let sorteddates = uniquedates.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b) - new Date(a);
+        });
 
-          //   return new Date(a) - new Date(b);
-          labels: labelsgrap,
-          datasets: [
-            {
-              label: "Systolic",
-              data: Systolicgrap,
-              fill: false,
-              backgroundColor: ["Blue"],
-              borderColor: ["Blue"],
-              pointRadius: 10,
-              pointStyle: "triangle",
-              pointBackgroundColor: "blue",
+        let avgsys = Systolic.reduce((a, b) => a + b, 0) / finaldata.length;
+        let avgdia = diastolic.reduce((a, b) => a + b, 0) / finaldata.length;
 
-              tension: 0,
-              //borderColor:["white"],
-            },
-            {
-              label: "Diastolic",
-              data: diastolicgrap,
-              fill: false,
-              backgroundColor: ["green"],
-              borderColor: ["green"],
-              radius: 10,
-              pointBackgroundColor: "green",
-              //pointRadius: 8,
-              pointStyle: "square",
-              tension: 0,
-              //borderColor:["white"],
-            },
-            {
-              label: "Pulse",
-              data: pulsegrap,
-              fill: false,
-              backgroundColor: ["orange"],
-              borderColor: ["orange"],
-              pointStyle: "rectRot",
-              pointBackgroundColor: "orange",
-              pointRadius: 10,
-              tension: 0,
+        let daydfrnc;
+        if (slider === 100) {
+          daydfrnc = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
+        } else {
+          daydfrnc = SliderDays;
+        }
 
-              //borderColor:["white"],
-            },
-            {
-              label: "Max Diastolic",
-              data: thresolddiastolic,
-              pointRadius: 0,
-              //pointBackgroundColor:"white",
-
-              backgroundColor: ["red"],
-              borderColor: ["red"],
-              fill: false,
-              borderWidth: 6,
-            },
-            {
-              label: "Max Systolic",
-              data: thresoldsystolic,
-              pointRadius: 0,
-              //pointBackgroundColor:"white",
-
-              backgroundColor: ["indigo"],
-              borderColor: ["indigo"],
-              fill: false,
-              borderWidth: 6,
-            },
-          ],
-        };
-
-        return (
-          <>
-            <div className="row mb-4">
-              <div className="col-xl-12">
-                <div className="card-body bg-dark text-white">Reading By Dates
+        if (index === 3) {
+          return (
+            <>
+              <div className="row">
+                <div className="col-xl-12">
+                  <div className="table-responsive-sm mb-0">
+                    <table className="table table-bordered mb-0">
+                      <thead>
+                        <tr className="bg-primary">
+                          <th width="30%" className="text-white">
+                            Date
+                          </th>
+                          <th width="30%" className="text-white">
+                            Blood Pressure(mmHG)
+                          </th>
+                          <th width="30%" className="text-white">
+                            Pulse(bpm)
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sorteddates.map((curr) => {
+                          return (
+                            <>
+                              <tr
+                                className="text-dark"
+                                style={{ backgroundColor: "#a3a3a6" }}
+                                scope="row"
+                              >
+                                <td colSpan="3">{curr}</td>
+                              </tr>
+                              {finaldata
+                                .filter(
+                                  (item) =>
+                                    Moment(item.MeasurementDateTime).format(
+                                      "MM-DD-YYYY"
+                                    ) === curr
+                                )
+                                .map((curr1) => {
+                                  return (
+                                    <>
+                                      <tr scope="row">
+                                        <td>
+                                          {Moment(
+                                            curr1.MeasurementDateTime
+                                          ).format("hh:mm A")}
+                                        </td>
+                                        <td>
+                                          {curr1.systolic}/{curr1.diastolic}
+                                        </td>
+                                        <td>{curr1.Pulse}</td>
+                                      </tr>
+                                    </>
+                                  );
+                                })}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row mb-4">
-              <div className="col-xl-12">
-                <Line
-                  data={data}
-                  options={{
-                    tooltips: {
-                      mode: "index",
-                    },
-                    legend: {
-                      display: true,
-                      position: "right",
-                    },
-                  }}
-                />
-              </div>
-            </div>
+            </>
+          );
+        }
 
-          </>
-        );
-      }
-      if (index === 1) {
-        return (
-          <>
+        if (index === 2) {
+          //var labels =[1,2,3,4,5];
 
+          let Systolicgrap = [];
+          let diastolicgrap = [];
+          let labelsgrap = [];
+          let pulsegrap = [];
+          let thresolddiastolic = [];
+          let thresoldsystolic = [];
+          // Systolic.push(Number(curr.systolic));
+          // diastolic.push(Number(curr.diastolic));
+          // labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
+          // pulse.push(curr.Pulse);
+          // dates.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
+          var sortData = finaldata.sort(function (a, b) {
+            return (
+              new Date(
+                Moment(a.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+              ) -
+              new Date(
+                Moment(b.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+              )
+            );
+          });
 
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape-1">Total Reading</div>
+          sortData.map((curr) => {
+            Systolicgrap.push(Number(curr.systolic));
+            diastolicgrap.push(Number(curr.diastolic));
+            {
+              tdiastolic === "0"
+                ? thresolddiastolic.push(tadmindiastolic)
+                : thresolddiastolic.push(tdiastolic);
+            }
+            {
+              tsystolic === "0"
+                ? thresoldsystolic.push(tadminsystolic)
+                : thresoldsystolic.push(tsystolic);
+            }
+            labelsgrap.push(
+              Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+            );
+            pulsegrap.push(curr.Pulse);
+          });
+
+          const data = {
+            // labels: labels.sort(function (a, b) {
+
+            //   return new Date(a) - new Date(b);
+            labels: labelsgrap,
+            datasets: [
+              {
+                label: "Systolic",
+                data: Systolicgrap,
+                fill: false,
+                backgroundColor: ["Blue"],
+                borderColor: ["Blue"],
+                pointRadius: 10,
+                pointStyle: "triangle",
+                pointBackgroundColor: "blue",
+
+                tension: 0,
+                //borderColor:["white"],
+              },
+              {
+                label: "Diastolic",
+                data: diastolicgrap,
+                fill: false,
+                backgroundColor: ["green"],
+                borderColor: ["green"],
+                radius: 10,
+                pointBackgroundColor: "green",
+                //pointRadius: 8,
+                pointStyle: "square",
+                tension: 0,
+                //borderColor:["white"],
+              },
+              {
+                label: "Pulse",
+                data: pulsegrap,
+                fill: false,
+                backgroundColor: ["orange"],
+                borderColor: ["orange"],
+                pointStyle: "rectRot",
+                pointBackgroundColor: "orange",
+                pointRadius: 10,
+                tension: 0,
+
+                //borderColor:["white"],
+              },
+              {
+                label: "Max Diastolic",
+                data: thresolddiastolic,
+                pointRadius: 0,
+                //pointBackgroundColor:"white",
+
+                backgroundColor: ["red"],
+                borderColor: ["red"],
+                fill: false,
+                borderWidth: 6,
+              },
+              {
+                label: "Max Systolic",
+                data: thresoldsystolic,
+                pointRadius: 0,
+                //pointBackgroundColor:"white",
+
+                backgroundColor: ["indigo"],
+                borderColor: ["indigo"],
+                fill: false,
+                borderWidth: 6,
+              },
+            ],
+          };
+
+          return (
+            <>
+              <div className="row mb-4">
+                <div className="col-xl-12">
+                  <div className="card-body bg-dark text-white">
+                    Reading By Dates
+                  </div>
+                </div>
               </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-orange"> {finaldata.length}</div>
+              <div className="row mb-4">
+                <div className="col-xl-12">
+                  <Line
+                    data={data}
+                    options={{
+                      tooltips: {
+                        mode: "index",
+                      },
+                      legend: {
+                        display: true,
+                        position: "right",
+                      },
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">Average Reading per day</div>
+            </>
+          );
+        }
+        if (index === 1) {
+          return (
+            <>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape-1">Total Reading</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-orange">
+                    {" "}
+                    {finaldata.length}
+                  </div>
+                </div>
               </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{isNaN(
-                  Math.round(
-                    Number(
-                      Math.round(Number(finaldata.length / daydfrnc) * 10) / 10
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape">Average Reading per day</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {isNaN(
+                      Math.round(
+                        Number(
+                          Math.round(Number(finaldata.length / daydfrnc) * 10) /
+                            10
+                        )
+                      )
                     )
-                  )
-                )
-                  ? "0"
-                  : Math.round(
-                    Number(
-                      Math.round(Number(finaldata.length / daydfrnc) * 10) /
-                      10
-                    )
-                  )}</div>
+                      ? "0"
+                      : Math.round(
+                          Number(
+                            Math.round(
+                              Number(finaldata.length / daydfrnc) * 10
+                            ) / 10
+                          )
+                        )}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">   Average Systolic</div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Average Systolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {" "}
+                    {isNaN(avgsys) ? "0" : Number(Math.round(avgsys))} mm HG
+                  </div>
+                </div>
               </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {isNaN(avgsys) ? "0" : Number(Math.round(avgsys))} mm HG</div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Average Diastolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {isNaN(avgdia) ? "0 " : Number(Math.round(avgsys))}
+                    mm HG
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Average Diastolic</div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Lowest Systolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {Systolic.length > 0 ? Math.min(...Systolic) : "0"} mm HG
+                  </div>
+                </div>
               </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{isNaN(avgdia) ? "0 " : Number(Math.round(avgsys))}
-                  mm HG</div>
+              <div className="row mb-2">
+                <div className="col-xl-6 col-8 mb-1">
+                  <div className="dashboard-shape"> Highest Diastolic</div>
+                </div>
+                <div className="col-xl-2 col-4 mb-1">
+                  <div className="dashboard-shape-right-blue">
+                    {" "}
+                    {diastolic.length > 0
+                      ? Number(Math.max(...diastolic))
+                      : "0"}{" "}
+                    mm HG
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Lowest Systolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{Systolic.length > 0 ? Math.min(...Systolic) : "0"} mm HG</div>
-              </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Highest Diastolic</div>
-              </div>
-              <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {diastolic.length > 0 ? Number(Math.max(...diastolic)) : "0"} mm
-                  HG</div>
-              </div>
-            </div>
-          </>
-        );
+            </>
+          );
+        }
+      } else {
+        return <h1>no data found</h1>;
       }
-    } else {
-      return <h1>no data found</h1>;
-    }
-  }, [coreContext.newbloodpressureDataForPatient, slider, from, to]);
+    },
+    [coreContext.newbloodpressureDataForPatient, slider, from, to]
+  );
   const renderBloodGlucose = (index) => {
     if (coreContext.bloodglucoseDataForPatient.length == 0) {
       return (
@@ -1482,7 +1631,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Loader type="Circles" color="#00BFFF" height={100} width={100} />
         </div>
       );
@@ -1494,7 +1644,8 @@ const PatientSummary = (props) => {
     ) {
       if (slider === 100) {
         var finalbgdata = coreContext.bloodglucoseDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
+          (date) =>
+            date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
         );
       } else {
         var SliderDays;
@@ -1520,7 +1671,7 @@ const PatientSummary = (props) => {
           SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
         }
         let today = new Date();
-        today.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0);
         let bfr = today.setDate(today.getDate() - SliderDays);
         var finalbgdata = coreContext.bloodglucoseDataForPatient.filter(
           (date) => date.MeasurementDateTime >= new Date(bfr)
@@ -1558,13 +1709,16 @@ const PatientSummary = (props) => {
 
       finalbgdata.map((curr) => {
         bg.push(Number(curr.bloodglucosemgdl));
-        labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
+        labels.push(
+          Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+        );
         cdate.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
         {
-          (tvalue !== "0") ? thrshold.push(tvalue) : thrshold.push(tadminvalue);
-          (tMinvalue !== "0") ? thresholdmin.push(tMinvalue) : thresholdmin.push(tadminMinvalue);
+          tvalue !== "0" ? thrshold.push(tvalue) : thrshold.push(tadminvalue);
+          tMinvalue !== "0"
+            ? thresholdmin.push(tMinvalue)
+            : thresholdmin.push(tadminMinvalue);
         }
-
 
         uniquedates = cdate.filter(function (item, pos) {
           return cdate.indexOf(item) == pos;
@@ -1578,11 +1732,16 @@ const PatientSummary = (props) => {
           bgbefore.push(curr.bloodglucosemgdl);
           bgafter.push("");
           if (
-            Number(curr.bloodglucosemgdl) < Number((tvalue !== "0") ? tvalue : tadminvalue) &&
-            Number(curr.bloodglucosemgdl) > Number((tMinvalue !== "0") ? tMinvalue : tadminMinvalue)
+            Number(curr.bloodglucosemgdl) <
+              Number(tvalue !== "0" ? tvalue : tadminvalue) &&
+            Number(curr.bloodglucosemgdl) >
+              Number(tMinvalue !== "0" ? tMinvalue : tadminMinvalue)
           ) {
             pcolorb.push("green");
-          } else if (Number(curr.bloodglucosemgdl) > Number((tvalue !== "0") ? tvalue : tadminvalue)) {
+          } else if (
+            Number(curr.bloodglucosemgdl) >
+            Number(tvalue !== "0" ? tvalue : tadminvalue)
+          ) {
             pcolorb.push("red");
           } else {
             pcolorb.push("blue");
@@ -1594,10 +1753,9 @@ const PatientSummary = (props) => {
         if (curr.meal === "After Meal") {
           bgafter.push(curr.bloodglucosemgdl);
           bgbefore.push("0");
-          pcolorb.push("blue")
+          pcolorb.push("blue");
           pradiusAM.push(10);
           pradiusBM.push(0);
-
         }
       });
       let avgbg = bg.reduce((a, b) => a + b, 0) / finalbgdata.length;
@@ -1681,7 +1839,8 @@ const PatientSummary = (props) => {
           <>
             <div className="row mb-4">
               <div className="col-xl-12">
-                <div className="card-body bg-dark text-white">Reading By Dates
+                <div className="card-body bg-dark text-white">
+                  Reading By Dates
                 </div>
               </div>
             </div>
@@ -1749,7 +1908,8 @@ const PatientSummary = (props) => {
                     },
                   }}
                 />
-              </div></div>
+              </div>
+            </div>
           </>
         );
       }
@@ -1764,16 +1924,22 @@ const PatientSummary = (props) => {
                       <tr className="bg-primary">
                         <th width="10%" className="text-white"></th>
                         <th width="20%" className="text-white" colspan="2">
-                          Morning<br />12AM to 10AM
+                          Morning
+                          <br />
+                          12AM to 10AM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Afternoon<br /> 10AM to 3PM
+                          Afternoon
+                          <br /> 10AM to 3PM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Evening<br /> 3PM to 9PM
+                          Evening
+                          <br /> 3PM to 9PM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Night<br />9PM to 12AM
+                          Night
+                          <br />
+                          9PM to 12AM
                         </th>
                       </tr>
                       <tr>
@@ -1793,7 +1959,9 @@ const PatientSummary = (props) => {
                       {sorteddates.map((curr) => {
                         const filtereddarta = finalbgdata.filter(
                           (item) =>
-                            Moment(item.MeasurementDateTime).format("MM-DD-YYYY") === curr
+                            Moment(item.MeasurementDateTime).format(
+                              "MM-DD-YYYY"
+                            ) === curr
                         );
                         let dataBMAM = {
                           morningbm: [],
@@ -1814,52 +1982,100 @@ const PatientSummary = (props) => {
                           nightamtime: [],
                         };
                         filtereddarta.map((curr) => {
-                          if (Number(Moment(curr.MeasurementDateTime).format("HH")) < 10) {
+                          if (
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 10
+                          ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.morningbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.morningbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
-                             
+                              dataBMAM.morningbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.morningam.push(curr.bloodglucosemgdl);
-                              dataBMAM.morningamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.morningamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                           if (
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) >= 10 &&
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) < 15
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 10 &&
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 15
                           ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.noonbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.noonbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.noonbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.noonam.push(curr.bloodglucosemgdl);
-                              dataBMAM.noonamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.noonamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                           if (
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) >= 15 &&
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) < 21
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 15 &&
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 21
                           ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.eveningbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.eveningbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.eveningbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.eveningam.push(curr.bloodglucosemgdl);
-                              dataBMAM.eveningamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"));
+                              dataBMAM.eveningamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
-                          if (Number(Moment(curr.MeasurementDateTime).format("HH")) >= 21) {
+                          if (
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 21
+                          ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.nightbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.nightbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.nightbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.nightam.push(curr.bloodglucosemgdl);
-                              dataBMAM.nightamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.nightamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                         });
-                        let colorset = (tvalue !== "0") ? tvalue : tadminvalue
-                        let colorsetmin = (tvalue !== "0") ? tvaluemin : tadminvaluemin
+                        let colorset = tvalue !== "0" ? tvalue : tadminvalue;
+                        let colorsetmin =
+                          tvalue !== "0" ? tvaluemin : tadminvaluemin;
                         return (
                           <>
                             {/* <tr>
@@ -1878,90 +2094,186 @@ const PatientSummary = (props) => {
                               <td rowspan="2">{curr}</td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.morningbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.morningbm[index]) < Number(colorset) && Number(dataBMAM.morningbm[index]) > Number(colorsetmin) && Number(dataBMAM.morningbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}><p>{dataBMAM.morningbm[index]}<br />{dataBMAM.morningbmtime[index]}</p></td>
-
-                                    ))
-
-
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr >
-                                  {
-                                    dataBMAM.morningam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.morningam[index]) < Number(colorset) && Number(dataBMAM.morningam[index]) > Number(colorsetmin) && Number(dataBMAM.morningam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.morningam[index]}<br />{dataBMAM.morningamtime[index]}</td>
-                                    ))
-
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>
-                                  {
-                                    dataBMAM.noonbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.noonbm[index]) < Number(colorset) && Number(dataBMAM.noonbm[index]) > Number(colorsetmin) && Number(dataBMAM.noonbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.noonbm[index]}<br />{dataBMAM.noonbmtime[index]}</td>
-                                    ))
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>{
-                                  dataBMAM.noonam.map((data, index) => (
-                                    <td style={{ backgroundColor: (Number(dataBMAM.noonam[index]) < Number(colorset) && Number(dataBMAM.noonam[index]) > Number(colorsetmin) && Number(dataBMAM.noonam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.noonam[index]}<br />{dataBMAM.noonamtime[index]}</td>
-                                  ))
-                                }
-
+                                  {dataBMAM.morningbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.morningbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.morningbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.morningbm[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      <p>
+                                        {dataBMAM.morningbm[index]}
+                                        <br />
+                                        {dataBMAM.morningbmtime[index]}
+                                      </p>
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.eveningbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.eveningbm[index]) < Number(colorset) && Number(dataBMAM.eveningbm[index]) > Number(colorsetmin) && Number(dataBMAM.eveningbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.eveningbm[index]}<br />{dataBMAM.eveningbmtime[index]}</td>
-                                    ))
-                                  }
-
+                                  {dataBMAM.morningam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.morningam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.morningam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.morningam[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.morningam[index]}
+                                      <br />
+                                      {dataBMAM.morningamtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.eveningam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.eveningam[index]) < Number(colorset) && Number(dataBMAM.eveningam[index]) > Number(colorsetmin) && Number(dataBMAM.eveningam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.eveningam[index]}<br />{dataBMAM.eveningamtime[index]}</td>
-                                    ))
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>{
-                                  dataBMAM.nightbm.map((data, index) => (
-                                    <td style={{ backgroundColor: (Number(dataBMAM.nightbm[index]) < Number(colorset) && Number(dataBMAM.nightbm[index]) > Number(colorsetmin) && Number(dataBMAM.nightbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.nightbm[index]}<br />{dataBMAM.nightbmtime[index]}</td>
-                                  ))
-                                }
-
+                                  {dataBMAM.noonbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.noonbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.noonbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.noonbm[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.noonbm[index]}
+                                      <br />
+                                      {dataBMAM.noonbmtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.nightam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.nightam[index]) < Number(colorset) && Number(dataBMAM.nightam[index]) > Number(colorsetmin) && Number(dataBMAM.nightam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.nightam[index]}<br />{dataBMAM.nightamtime[index]}</td>
-                                    ))
-
-                                  }
-
+                                  {dataBMAM.noonam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.noonam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.noonam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.noonam[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.noonam[index]}
+                                      <br />
+                                      {dataBMAM.noonamtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
-                              </td >
-
-
-
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.eveningbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.eveningbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.eveningbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.eveningbm[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.eveningbm[index]}
+                                      <br />
+                                      {dataBMAM.eveningbmtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.eveningam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.eveningam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.eveningam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.eveningam[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.eveningam[index]}
+                                      <br />
+                                      {dataBMAM.eveningamtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.nightbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.nightbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.nightbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.nightbm[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.nightbm[index]}
+                                      <br />
+                                      {dataBMAM.nightbmtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.nightam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.nightam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.nightam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.nightam[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.nightam[index]}
+                                      <br />
+                                      {dataBMAM.nightamtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
                             </tr>
                             <tr>
                               <td></td>
@@ -1992,7 +2304,6 @@ const PatientSummary = (props) => {
                 </div>
               </div>
             </div>
-
           </>
         );
       }
@@ -2001,22 +2312,29 @@ const PatientSummary = (props) => {
           <>
             <div className="row mb-2">
               <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Total Readings</div>
+                <div className="dashboard-shape"> Total Readings</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{finalbgdata.length}</div>
+                <div className="dashboard-shape-right-blue">
+                  {finalbgdata.length}
+                </div>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape-1">  Average Reading per day</div>
+                <div className="dashboard-shape-1">
+                  {" "}
+                  Average Reading per day
+                </div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-orange">{finalbgdata.length > 0 || daydfrnc == "undefined"
-                  ? Math.round(
-                    Math.round((finalbgdata.length / daydfrnc) * 10) / 10
-                  )
-                  : "0"}</div>
+                <div className="dashboard-shape-right-orange">
+                  {finalbgdata.length > 0 || daydfrnc == "undefined"
+                    ? Math.round(
+                        Math.round((finalbgdata.length / daydfrnc) * 10) / 10
+                      )
+                    : "0"}
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2024,7 +2342,10 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Average Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {isNaN(avgbg) ? "0" : Number(Math.round(avgbg))} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {" "}
+                  {isNaN(avgbg) ? "0" : Number(Math.round(avgbg))} mg/dl
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2032,7 +2353,9 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Lowest Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{bg.length > 0 ? Number(Math.min(...bg)) : "0"} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {bg.length > 0 ? Number(Math.min(...bg)) : "0"} mg/dl
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2040,12 +2363,13 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Highest Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {bg.length > 0 ? Math.max(...bg) : "0"} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {" "}
+                  {bg.length > 0 ? Math.max(...bg) : "0"} mg/dl
+                </div>
               </div>
             </div>
-
           </>
-
         );
       }
       //coreContext.bloodpressureDataForPatient  = coreContext.bloodpressureDataForPatient.sort((a,b) => new Moment(b.sortDateColumn) - new Moment(a.sortDateColumn));
@@ -2059,7 +2383,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <h1>No data Found</h1>
         </div>
       );
@@ -2076,7 +2401,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Loader type="Circles" color="#00BFFF" height={100} width={100} />
         </div>
       );
@@ -2088,7 +2414,8 @@ const PatientSummary = (props) => {
     ) {
       if (slider === 100) {
         var finalbgdata = coreContext.newbloodglucoseDataForPatient.filter(
-          (date) => date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
+          (date) =>
+            date.MeasurementDateTime >= from && date.MeasurementDateTime <= to
         );
       } else {
         var SliderDays;
@@ -2114,7 +2441,7 @@ const PatientSummary = (props) => {
           SliderDays = Math.ceil(Math.abs(to - from) / (1000 * 60 * 60 * 24));
         }
         let today = new Date();
-        today.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0);
         let bfr = today.setDate(today.getDate() - SliderDays);
         var finalbgdata = coreContext.newbloodglucoseDataForPatient.filter(
           (date) => date.MeasurementDateTime >= new Date(bfr)
@@ -2152,13 +2479,16 @@ const PatientSummary = (props) => {
 
       finalbgdata.map((curr) => {
         bg.push(Number(curr.bloodglucosemgdl));
-        labels.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A"));
+        labels.push(
+          Moment(curr.MeasurementDateTime).format("MM-DD-YYYY hh:mm A")
+        );
         cdate.push(Moment(curr.MeasurementDateTime).format("MM-DD-YYYY"));
         {
-          (tvalue !== "0") ? thrshold.push(tvalue) : thrshold.push(tadminvalue);
-          (tMinvalue !== "0") ? thresholdmin.push(tMinvalue) : thresholdmin.push(tadminMinvalue);
+          tvalue !== "0" ? thrshold.push(tvalue) : thrshold.push(tadminvalue);
+          tMinvalue !== "0"
+            ? thresholdmin.push(tMinvalue)
+            : thresholdmin.push(tadminMinvalue);
         }
-
 
         uniquedates = cdate.filter(function (item, pos) {
           return cdate.indexOf(item) == pos;
@@ -2172,11 +2502,16 @@ const PatientSummary = (props) => {
           bgbefore.push(curr.bloodglucosemgdl);
           bgafter.push("");
           if (
-            Number(curr.bloodglucosemgdl) < Number((tvalue !== "0") ? tvalue : tadminvalue) &&
-            Number(curr.bloodglucosemgdl) > Number((tMinvalue !== "0") ? tMinvalue : tadminMinvalue)
+            Number(curr.bloodglucosemgdl) <
+              Number(tvalue !== "0" ? tvalue : tadminvalue) &&
+            Number(curr.bloodglucosemgdl) >
+              Number(tMinvalue !== "0" ? tMinvalue : tadminMinvalue)
           ) {
             pcolorb.push("green");
-          } else if (Number(curr.bloodglucosemgdl) > Number((tvalue !== "0") ? tvalue : tadminvalue)) {
+          } else if (
+            Number(curr.bloodglucosemgdl) >
+            Number(tvalue !== "0" ? tvalue : tadminvalue)
+          ) {
             pcolorb.push("red");
           } else {
             pcolorb.push("blue");
@@ -2188,10 +2523,9 @@ const PatientSummary = (props) => {
         if (curr.meal === "After Meal") {
           bgafter.push(curr.bloodglucosemgdl);
           bgbefore.push("0");
-          pcolorb.push("blue")
+          pcolorb.push("blue");
           pradiusAM.push(10);
           pradiusBM.push(0);
-
         }
       });
       let avgbg = bg.reduce((a, b) => a + b, 0) / finalbgdata.length;
@@ -2275,7 +2609,8 @@ const PatientSummary = (props) => {
           <>
             <div className="row mb-4">
               <div className="col-xl-12">
-                <div className="card-body bg-dark text-white">Reading By Dates
+                <div className="card-body bg-dark text-white">
+                  Reading By Dates
                 </div>
               </div>
             </div>
@@ -2343,7 +2678,8 @@ const PatientSummary = (props) => {
                     },
                   }}
                 />
-              </div></div>
+              </div>
+            </div>
           </>
         );
       }
@@ -2358,16 +2694,22 @@ const PatientSummary = (props) => {
                       <tr className="bg-primary">
                         <th width="10%" className="text-white"></th>
                         <th width="20%" className="text-white" colspan="2">
-                          Morning<br />12AM to 10AM
+                          Morning
+                          <br />
+                          12AM to 10AM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Afternoon<br /> 10AM to 3PM
+                          Afternoon
+                          <br /> 10AM to 3PM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Evening<br /> 3PM to 9PM
+                          Evening
+                          <br /> 3PM to 9PM
                         </th>
                         <th width="20%" className="text-white" colspan="2">
-                          Night<br />9PM to 12AM
+                          Night
+                          <br />
+                          9PM to 12AM
                         </th>
                       </tr>
                       <tr>
@@ -2387,7 +2729,9 @@ const PatientSummary = (props) => {
                       {sorteddates.map((curr) => {
                         const filtereddarta = finalbgdata.filter(
                           (item) =>
-                            Moment(item.MeasurementDateTime).format("MM-DD-YYYY") === curr
+                            Moment(item.MeasurementDateTime).format(
+                              "MM-DD-YYYY"
+                            ) === curr
                         );
                         let dataBMAM = {
                           morningbm: [],
@@ -2408,52 +2752,100 @@ const PatientSummary = (props) => {
                           nightamtime: [],
                         };
                         filtereddarta.map((curr) => {
-                          if (Number(Moment(curr.MeasurementDateTime).format("HH")) < 10) {
+                          if (
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 10
+                          ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.morningbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.morningbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
-                             
+                              dataBMAM.morningbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.morningam.push(curr.bloodglucosemgdl);
-                              dataBMAM.morningamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.morningamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                           if (
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) >= 10 &&
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) < 15
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 10 &&
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 15
                           ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.noonbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.noonbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.noonbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.noonam.push(curr.bloodglucosemgdl);
-                              dataBMAM.noonamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.noonamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                           if (
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) >= 15 &&
-                            Number(Moment(curr.MeasurementDateTime).format("HH")) < 21
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 15 &&
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) < 21
                           ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.eveningbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.eveningbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.eveningbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.eveningam.push(curr.bloodglucosemgdl);
-                              dataBMAM.eveningamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"));
+                              dataBMAM.eveningamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
-                          if (Number(Moment(curr.MeasurementDateTime).format("HH")) >= 21) {
+                          if (
+                            Number(
+                              Moment(curr.MeasurementDateTime).format("HH")
+                            ) >= 21
+                          ) {
                             if (curr.meal === "Before Meal") {
                               dataBMAM.nightbm.push(curr.bloodglucosemgdl);
-                              dataBMAM.nightbmtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.nightbmtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             } else {
                               dataBMAM.nightam.push(curr.bloodglucosemgdl);
-                              dataBMAM.nightamtime.push(Moment(curr.MeasurementDateTime).format("hh:mm A"))
+                              dataBMAM.nightamtime.push(
+                                Moment(curr.MeasurementDateTime).format(
+                                  "hh:mm A"
+                                )
+                              );
                             }
                           }
                         });
-                        let colorset = (tvalue !== "0") ? tvalue : tadminvalue
-                        let colorsetmin = (tvalue !== "0") ? tvaluemin : tadminvaluemin
+                        let colorset = tvalue !== "0" ? tvalue : tadminvalue;
+                        let colorsetmin =
+                          tvalue !== "0" ? tvaluemin : tadminvaluemin;
                         return (
                           <>
                             {/* <tr>
@@ -2472,90 +2864,186 @@ const PatientSummary = (props) => {
                               <td rowspan="2">{curr}</td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.morningbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.morningbm[index]) < Number(colorset) && Number(dataBMAM.morningbm[index]) > Number(colorsetmin) && Number(dataBMAM.morningbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}><p>{dataBMAM.morningbm[index]}<br />{dataBMAM.morningbmtime[index]}</p></td>
-
-                                    ))
-
-
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr >
-                                  {
-                                    dataBMAM.morningam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.morningam[index]) < Number(colorset) && Number(dataBMAM.morningam[index]) > Number(colorsetmin) && Number(dataBMAM.morningam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.morningam[index]}<br />{dataBMAM.morningamtime[index]}</td>
-                                    ))
-
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>
-                                  {
-                                    dataBMAM.noonbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.noonbm[index]) < Number(colorset) && Number(dataBMAM.noonbm[index]) > Number(colorsetmin) && Number(dataBMAM.noonbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.noonbm[index]}<br />{dataBMAM.noonbmtime[index]}</td>
-                                    ))
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>{
-                                  dataBMAM.noonam.map((data, index) => (
-                                    <td style={{ backgroundColor: (Number(dataBMAM.noonam[index]) < Number(colorset) && Number(dataBMAM.noonam[index]) > Number(colorsetmin) && Number(dataBMAM.noonam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.noonam[index]}<br />{dataBMAM.noonamtime[index]}</td>
-                                  ))
-                                }
-
+                                  {dataBMAM.morningbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.morningbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.morningbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.morningbm[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      <p>
+                                        {dataBMAM.morningbm[index]}
+                                        <br />
+                                        {dataBMAM.morningbmtime[index]}
+                                      </p>
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.eveningbm.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.eveningbm[index]) < Number(colorset) && Number(dataBMAM.eveningbm[index]) > Number(colorsetmin) && Number(dataBMAM.eveningbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.eveningbm[index]}<br />{dataBMAM.eveningbmtime[index]}</td>
-                                    ))
-                                  }
-
+                                  {dataBMAM.morningam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.morningam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.morningam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.morningam[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.morningam[index]}
+                                      <br />
+                                      {dataBMAM.morningamtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.eveningam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.eveningam[index]) < Number(colorset) && Number(dataBMAM.eveningam[index]) > Number(colorsetmin) && Number(dataBMAM.eveningam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.eveningam[index]}<br />{dataBMAM.eveningamtime[index]}</td>
-                                    ))
-                                  }
-
-                                </tr>
-                              </td>
-                              <td style={{ backgroundColor: "white" }}>
-                                <tr>{
-                                  dataBMAM.nightbm.map((data, index) => (
-                                    <td style={{ backgroundColor: (Number(dataBMAM.nightbm[index]) < Number(colorset) && Number(dataBMAM.nightbm[index]) > Number(colorsetmin) && Number(dataBMAM.nightbm[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.nightbm[index]}<br />{dataBMAM.nightbmtime[index]}</td>
-                                  ))
-                                }
-
+                                  {dataBMAM.noonbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.noonbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.noonbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.noonbm[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.noonbm[index]}
+                                      <br />
+                                      {dataBMAM.noonbmtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
                               </td>
                               <td style={{ backgroundColor: "white" }}>
                                 <tr>
-                                  {
-                                    dataBMAM.nightam.map((data, index) => (
-                                      <td style={{ backgroundColor: (Number(dataBMAM.nightam[index]) < Number(colorset) && Number(dataBMAM.nightam[index]) > Number(colorsetmin) && Number(dataBMAM.nightam[index]) !== "") ? "rgba(0, 255, 0, 0.15)" : "rgba(255, 0, 0, 0.2)" }}>{dataBMAM.nightam[index]}<br />{dataBMAM.nightamtime[index]}</td>
-                                    ))
-
-                                  }
-
+                                  {dataBMAM.noonam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.noonam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.noonam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.noonam[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.noonam[index]}
+                                      <br />
+                                      {dataBMAM.noonamtime[index]}
+                                    </td>
+                                  ))}
                                 </tr>
-                              </td >
-
-
-
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.eveningbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.eveningbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.eveningbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.eveningbm[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.eveningbm[index]}
+                                      <br />
+                                      {dataBMAM.eveningbmtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.eveningam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.eveningam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.eveningam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.eveningam[index]) !==
+                                            ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.eveningam[index]}
+                                      <br />
+                                      {dataBMAM.eveningamtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.nightbm.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.nightbm[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.nightbm[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.nightbm[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.nightbm[index]}
+                                      <br />
+                                      {dataBMAM.nightbmtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
+                              <td style={{ backgroundColor: "white" }}>
+                                <tr>
+                                  {dataBMAM.nightam.map((data, index) => (
+                                    <td
+                                      style={{
+                                        backgroundColor:
+                                          Number(dataBMAM.nightam[index]) <
+                                            Number(colorset) &&
+                                          Number(dataBMAM.nightam[index]) >
+                                            Number(colorsetmin) &&
+                                          Number(dataBMAM.nightam[index]) !== ""
+                                            ? "rgba(0, 255, 0, 0.15)"
+                                            : "rgba(255, 0, 0, 0.2)",
+                                      }}
+                                    >
+                                      {dataBMAM.nightam[index]}
+                                      <br />
+                                      {dataBMAM.nightamtime[index]}
+                                    </td>
+                                  ))}
+                                </tr>
+                              </td>
                             </tr>
                             <tr>
                               <td></td>
@@ -2586,7 +3074,6 @@ const PatientSummary = (props) => {
                 </div>
               </div>
             </div>
-
           </>
         );
       }
@@ -2595,22 +3082,29 @@ const PatientSummary = (props) => {
           <>
             <div className="row mb-2">
               <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape">  Total Readings</div>
+                <div className="dashboard-shape"> Total Readings</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{finalbgdata.length}</div>
+                <div className="dashboard-shape-right-blue">
+                  {finalbgdata.length}
+                </div>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col-xl-6 col-8 mb-1">
-                <div className="dashboard-shape-1">  Average Reading per day</div>
+                <div className="dashboard-shape-1">
+                  {" "}
+                  Average Reading per day
+                </div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-orange">{finalbgdata.length > 0 || daydfrnc == "undefined"
-                  ? Math.round(
-                    Math.round((finalbgdata.length / daydfrnc) * 10) / 10
-                  )
-                  : "0"}</div>
+                <div className="dashboard-shape-right-orange">
+                  {finalbgdata.length > 0 || daydfrnc == "undefined"
+                    ? Math.round(
+                        Math.round((finalbgdata.length / daydfrnc) * 10) / 10
+                      )
+                    : "0"}
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2618,7 +3112,10 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Average Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {isNaN(avgbg) ? "0" : Number(Math.round(avgbg))} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {" "}
+                  {isNaN(avgbg) ? "0" : Number(Math.round(avgbg))} mg/dl
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2626,7 +3123,9 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Lowest Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue">{bg.length > 0 ? Number(Math.min(...bg)) : "0"} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {bg.length > 0 ? Number(Math.min(...bg)) : "0"} mg/dl
+                </div>
               </div>
             </div>
             <div className="row mb-2">
@@ -2634,12 +3133,13 @@ const PatientSummary = (props) => {
                 <div className="dashboard-shape">Highest Glucose Level</div>
               </div>
               <div className="col-xl-2 col-4 mb-1">
-                <div className="dashboard-shape-right-blue"> {bg.length > 0 ? Math.max(...bg) : "0"} mg/dl</div>
+                <div className="dashboard-shape-right-blue">
+                  {" "}
+                  {bg.length > 0 ? Math.max(...bg) : "0"} mg/dl
+                </div>
               </div>
             </div>
-
           </>
-
         );
       }
       //coreContext.newnewbloodpressureDataForPatient  = coreContext.newnewbloodpressureDataForPatient.sort((a,b) => new Moment(b.sortDateColumn) - new Moment(a.sortDateColumn));
@@ -2653,7 +3153,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <h1>No data Found</h1>
         </div>
       );
@@ -2794,31 +3295,33 @@ const PatientSummary = (props) => {
       field: "",
       headerName: "Action",
       width: 120,
-      renderCell: (params) => (
-        (!localStorage.getItem("userType").includes("test")) ?
+      renderCell: (params) =>
+        !localStorage.getItem("userType").includes("test") ? (
           <div style={{ width: "100px" }}>
             <a
               style={{ marginRight: "5px" }}
               href="#"
-              onClick={() => setCurrentTL(params.row)}>
+              onClick={() => setCurrentTL(params.row)}
+            >
               {" "}
               <PencilSquare />
             </a>
             <a
               style={{ marginRight: "5px" }}
               href="#"
-              onClick={() => deleteTimeLog(params.row)}>
+              onClick={() => deleteTimeLog(params.row)}
+            >
               {" "}
               <Trash />
             </a>
-          </div> : <div>Access Denied</div>
-
-      ),
+          </div>
+        ) : (
+          <div>Access Denied</div>
+        ),
     },
   ];
 
   const deleteTimeLog = (tl) => {
-
     // renderTimelogs();
     // fetchtotaltime();
     swal({
@@ -2827,17 +3330,15 @@ const PatientSummary = (props) => {
       icon: "warning",
       buttons: true,
       dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          coreContext.DeleteTimeLog(tl);
-          coreContext.fetchTimeLog("PATIENT_" + patientId);
-        } else {
-          swal("Delete Cancelled");
-        }
-      });
+    }).then((willDelete) => {
+      if (willDelete) {
+        coreContext.DeleteTimeLog(tl);
+        coreContext.fetchTimeLog("PATIENT_" + patientId);
+      } else {
+        swal("Delete Cancelled");
+      }
+    });
   };
-
 
   const setCurrentTL = (tl) => {
     setShowModal(true);
@@ -2868,11 +3369,11 @@ const PatientSummary = (props) => {
 
   //   const renderTimelogs = () =>{
   //     if (coreContext.timeLogData.length > 0) {
-  //       
+  //
   //         return coreContext.timeLogData.map((tl, index) => {
 
   //             return <tr>
-  //              
+  //
   //                 <td>{tl.taskType} </td>
   //                 <td>{tl.performedBy} </td>
   //                 <td>{tl.performedOn} </td>
@@ -2891,11 +3392,12 @@ const PatientSummary = (props) => {
   //     }
   // }
   const renderthresold = () => {
-    return (
-      <Thresold></Thresold>
-    )
-  }
-  const thresoldbars = React.useMemo(() => renderthresold(), [JSON.stringify(coreContext.thresoldData)])
+    return <Thresold></Thresold>;
+  };
+  const thresoldbars = React.useMemo(
+    () => renderthresold(),
+    [JSON.stringify(coreContext.thresoldData)]
+  );
   const renderTaskTimer = () => {
     if (coreContext.tasktimerUserData.length > 0) {
       return coreContext.tasktimerUserData.map((tl, index) => {
@@ -2920,7 +3422,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           {/* <h6>No data Found</h6> */}
           <Loader type="Circles" color="#00BFFF" height={100} width={100} />
         </div>
@@ -2945,11 +3448,12 @@ const PatientSummary = (props) => {
       );
     }
   };
-  const rendertimelog = React.useMemo(() => renderTimelogs(), [JSON.stringify(coreContext.timeLogData), deleteTimeLog])
+  const rendertimelog = React.useMemo(
+    () => renderTimelogs(),
+    [JSON.stringify(coreContext.timeLogData), deleteTimeLog]
+  );
   //useEffect(renderTimelogs, [JSON.stringify(coreContext.timeLogData)]);
-  useEffect(fetchtime, [JSON.stringify(coreContext.timeLogData)]);
-
-
+  useEffect(fetchtime, [JSON.stringify(coreContext?.timeLogData)]);
 
   //  }
 
@@ -2960,21 +3464,15 @@ const PatientSummary = (props) => {
       icon: "warning",
       buttons: true,
       dangerMode: true,
-    })
-      .then((willDelete) => {
-        if (willDelete) {
-          coreContext.DeleteDeviceData(deviceData, patientId, userName);
-          setdeviceflag(adddeviceflag + 1)
-
-
-        } else {
-          swal("Delete Cancelled");
-        }
-      });
-
+    }).then((willDelete) => {
+      if (willDelete) {
+        coreContext.DeleteDeviceData(deviceData, patientId, userName);
+        setdeviceflag(adddeviceflag + 1);
+      } else {
+        swal("Delete Cancelled");
+      }
+    });
   };
-
-
 
   const renderDeviceData = () => {
     if (coreContext.deviceDataForPatient.length === 0) {
@@ -2987,20 +3485,23 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
-
+          }}
+        >
           <Loader type="Circles" color="#00BFFF" height={90} width={90} />
         </div>
       );
     }
 
-    if (coreContext.deviceDataForPatient.length > 0 && coreContext.deviceDataForPatient[0].id !== undefined) {
+    if (
+      coreContext.deviceDataForPatient.length > 0 &&
+      coreContext.deviceDataForPatient[0].id !== undefined
+    ) {
       return coreContext.deviceDataForPatient.map((deviceData, index) => {
         return (
           <tr>
             <td>{deviceData.DeviceType} </td>
             <td>{deviceData.deviceID} </td>
-            {(!localStorage.getItem("userType").includes("test")) ?
+            {!localStorage.getItem("userType").includes("test") ? (
               <td>
                 {" "}
                 {deviceData.Action}{" "}
@@ -3008,23 +3509,24 @@ const PatientSummary = (props) => {
                   style={{ marginRight: "5px" }}
                   href="#"
                   onClick={() => {
-                    deleteDevice(deviceData)
-
-
-                  }}>
+                    deleteDevice(deviceData);
+                  }}
+                >
                   {" "}
                   <Trash />
                 </a>
-              </td> : <td>Access Denied</td>}
+              </td>
+            ) : (
+              <td>Access Denied</td>
+            )}
           </tr>
         );
       });
-    }
-    else {
-      return ("No Device Found")
+    } else {
+      return "No Device Found";
     }
   };
-  useEffect(renderDeviceData, [coreContext.deviceDataForPatient.length]);
+  useEffect(renderDeviceData, [coreContext?.deviceDataForPatient?.length]);
 
   const renderThreads = () => {
     if (coreContext.threads.length > 0) {
@@ -3032,11 +3534,13 @@ const PatientSummary = (props) => {
         return (
           <div
             style={{ fontWeight: "bold", lineHeight: 1 }}
-            className="card-body">
+            className="card-body"
+          >
             <span
               className={
                 message.direction === "inbound" ? "float-left" : "float-right"
-              }>
+              }
+            >
               {message.body}
             </span>
             <br />
@@ -3044,7 +3548,8 @@ const PatientSummary = (props) => {
               className={
                 message.direction === "inbound" ? "float-left" : "float-right"
               }
-              style={{ fontSize: 8 }}>
+              style={{ fontSize: 8 }}
+            >
               Time : {message.date}
             </span>
           </div>
@@ -3133,7 +3638,8 @@ const PatientSummary = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Loader type="Circles" color="#00BFFF" height={50} width={50} />
         </div>
       );
@@ -3141,29 +3647,40 @@ const PatientSummary = (props) => {
     if (coreContext.patientsForPatient.length > 0)
       return (
         <>
-
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Name</strong></p>
+            <p className="mb-0">
+              <strong>Name</strong>
+            </p>
             {coreContext.patientsForPatient[0].name}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Email</strong></p>
+            <p className="mb-0">
+              <strong>Email</strong>
+            </p>
             {coreContext.patientsForPatient[0].email}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Phone</strong></p>
+            <p className="mb-0">
+              <strong>Phone</strong>
+            </p>
             {coreContext.patientsForPatient[0].mobile}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Program</strong></p>
+            <p className="mb-0">
+              <strong>Program</strong>
+            </p>
             {coreContext.patientsForPatient[0].program}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>DOB</strong></p>
+            <p className="mb-0">
+              <strong>DOB</strong>
+            </p>
             {coreContext.patientsForPatient[0].dob}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Gender</strong></p>
+            <p className="mb-0">
+              <strong>Gender</strong>
+            </p>
             {coreContext.patientsForPatient[0].gender === "Male" ? (
               <GenderMale />
             ) : (
@@ -3172,7 +3689,9 @@ const PatientSummary = (props) => {
             {coreContext.patientsForPatient[0].gender}
           </div>
           <div className="col-xl-2 mb-1">
-            <p className="mb-0"><strong>Diagnosis</strong></p>
+            <p className="mb-0">
+              <strong>Diagnosis</strong>
+            </p>
             {coreContext.patientsForPatient[0].diagnosisId}
           </div>
         </>
@@ -3188,8 +3707,14 @@ const PatientSummary = (props) => {
       return (
         <div className="row">
           <div className="col-xl-12 mb-2 mt-2">
-            <p className="mb-0">Flags : {(coreContext.patientsForPatient[0].reading == "true") ? <img src="https://i.im.ge/2022/07/25/FLR13r.png" width="25em" /> : ""} </p>
-
+            <p className="mb-0">
+              Flags :{" "}
+              {coreContext.patientsForPatient[0].reading == "true" ? (
+                <img src="https://i.im.ge/2022/07/25/FLR13r.png" width="25em" />
+              ) : (
+                ""
+              )}{" "}
+            </p>
           </div>
         </div>
       );
@@ -3198,22 +3723,43 @@ const PatientSummary = (props) => {
   const renderAddNotes = () => {
     if (coreContext.patient)
       return (
-
         <>
           <hr className="mt-0" />
           <div className="row">
             <div className="col-xl-12 mb-1">
               <p className="mb-0">Internal Notes:</p>
-              <textarea className="form-control" rows="3" placeholder="Enter notes" value={notes != "undefined" ? notes : ""} onChange={(e) => setNotes(e.target.value)}></textarea>
+              <textarea
+                className="form-control"
+                rows="3"
+                placeholder="Enter notes"
+                value={notes != "undefined" ? notes : ""}
+                onChange={(e) => setNotes(e.target.value)}
+              ></textarea>
             </div>
-            <div className="col-xl-12 mb-1 text-center">	{
-              (!localStorage.getItem("userType").includes("test")) ?
-                <button type="button" className="btn btn-danger mt-2" onClick={() => {
-                  coreContext.UpdateNotes(coreContext.patientsForPatient[0], notes, "", "");
-                }}>Save Note</button>
-                : ""
-            }
-
+            <div className="col-xl-12 mb-1 text-center">
+              {" "}
+              {!localStorage.getItem("userType").includes("test") ? (
+                <button
+                  type="button"
+                  className="btn btn-danger mt-2"
+                  onClick={() => {
+                    if (notes != "") {
+                      coreContext.UpdateNotes(
+                        coreContext.patientsForPatient[0],
+                        notes,
+                        "",
+                        ""
+                      );
+                    } else {
+                      alert("Please add some notes !");
+                    }
+                  }}
+                >
+                  Save Note
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </>
@@ -3226,8 +3772,20 @@ const PatientSummary = (props) => {
         <>
           <div className="row">
             <div className="col-xl-12 mb-1">
-              <a href="#" onClick={() => setShowNotesTextBox(false)} className="fs-5 me-5">Expand All</a>
-              <a href="#" onClick={() => setShowNotesTextBox(false)} className="fs-5">Collapse All</a>
+              <a
+                href="#"
+                onClick={() => setShowNotesTextBox(false)}
+                className="fs-5 me-5"
+              >
+                Expand All
+              </a>
+              <a
+                href="#"
+                onClick={() => setShowNotesTextBox(false)}
+                className="fs-5"
+              >
+                Collapse All
+              </a>
             </div>
           </div>
         </>
@@ -3236,16 +3794,20 @@ const PatientSummary = (props) => {
 
   const fetchtotaltime = () => {
     let d = 0;
-    coreContext.timeLogData.map((curr) => {
+    coreContext?.timeLogData?.map((curr) => {
       d = d + Number(curr.timeAmount);
     });
     var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
- 
+    var m = Math.floor((d % 3600) / 60);
+    var s = Math.floor((d % 3600) % 60);
 
-
-    return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2)
+    return (
+      ("0" + h).slice(-2) +
+      ":" +
+      ("0" + m).slice(-2) +
+      ":" +
+      ("0" + s).slice(-2)
+    );
   };
   useEffect(() => {
     fetchtotaltime();
@@ -3261,15 +3823,21 @@ const PatientSummary = (props) => {
     if (coreContext.patient) {
       localStorage.setItem("ehrId", coreContext.patient.ehrId);
       return (
-
         <div className="row">
           <div className="col-xl-6">
             <div className="card mb-0 border border-primary">
               <div className="card-body">
                 <h4>Patient Information</h4>
-                <p className="mb-1"><strong>Height (Inches):</strong> {coreContext.patient.height}</p>
-                <p className="mb-1"><strong>Weight (Pounds): </strong>  {coreContext.patient.Weight}</p>
-                <p className="mb-1"><strong>BMI:</strong> {coreContext.patient.BMI}</p>
+                <p className="mb-1">
+                  <strong>Height (Inches):</strong> {coreContext.patient.height}
+                </p>
+                <p className="mb-1">
+                  <strong>Weight (Pounds): </strong>{" "}
+                  {coreContext.patient.Weight}
+                </p>
+                <p className="mb-1">
+                  <strong>BMI:</strong> {coreContext.patient.BMI}
+                </p>
               </div>
             </div>
           </div>
@@ -3277,11 +3845,16 @@ const PatientSummary = (props) => {
             <div className="card mb-0 border border-primary">
               <div className="card-body">
                 <h4>Care Team</h4>
-                <p className="mb-1"><strong>Provider:</strong>  {coreContext.patient.ProviderName}</p>
-                <p className="mb-1"><strong>Care Coordinator:</strong>   {coreContext.patient.CareName}</p>
-                <p className="mb-1"><strong>Coach:</strong>  {coreContext.patient.CoachName}</p>
-
-
+                <p className="mb-1">
+                  <strong>Provider:</strong> {coreContext.patient.ProviderName}
+                </p>
+                <p className="mb-1">
+                  <strong>Care Coordinator:</strong>{" "}
+                  {coreContext.patient.CareName}
+                </p>
+                <p className="mb-1">
+                  <strong>Coach:</strong> {coreContext.patient.CoachName}
+                </p>
               </div>
             </div>
           </div>
@@ -3291,12 +3864,11 @@ const PatientSummary = (props) => {
   };
 
   const [timelogIdCounter, settimelogIdCounter] = useState(1);
-  const calctime = () => { };
+  const calctime = () => {};
 
   const handleSelect = (index) => {
     let _timerLog = {};
     if (index == 7) {
-
       fetchtotaltime();
       coreContext.fetchTimeLog("PATIENT_" + patientId);
     }
@@ -3308,7 +3880,6 @@ const PatientSummary = (props) => {
     }
 
     if (index === 8) {
-
     }
   };
 
@@ -3323,7 +3894,6 @@ const PatientSummary = (props) => {
     setTlvalueseconds(seconds);
     const time = toHHMMSS(seconds);
     setTlValue(time);
-
   };
 
   const getSecondsFromHHMMSS = (value) => {
@@ -3366,33 +3936,30 @@ const PatientSummary = (props) => {
     }
   };
 
-  function doSomething(value) {
-
-  }
+  function doSomething(value) {}
 
   const renderTabs = () => {
-    if (coreContext.patient)
+    if (coreContext?.patient)
       return (
         <div className="card mb-5">
           <div className="card-header border-0 pb-0">
             <Tabs
               onSelect={(index) => handleSelect(index)}
-              onMouseLeave={(index) => handleLeaveTab(index)}>
+              onMouseLeave={(index) => handleLeaveTab(index)}
+            >
               <TabList>
+                <Tab>Programs</Tab>
 
-                <Tab >Programs</Tab>
+                <Tab>Clinical Data</Tab>
+                <Tab>Billing</Tab>
 
-                <Tab >Clinical Data</Tab>
-                <Tab >Billing</Tab>
-
-                <Tab >Task Timer</Tab>
+                <Tab>Task Timer</Tab>
 
                 <Tab>Time Logs</Tab>
-                <Tab >Devices</Tab>
-                <Tab >Portal</Tab>
-                <Tab >Claims</Tab>
+                <Tab>Devices</Tab>
+                <Tab>Portal</Tab>
+                <Tab>Claims</Tab>
               </TabList>
-
 
               <TabPanel>
                 <div className="card">
@@ -3427,16 +3994,21 @@ const PatientSummary = (props) => {
                   <h4 className="card-header">Clinical Data</h4>
                   <div className="card-body">
                     <Tabs>
-                      <TabList>
-
-                      </TabList>
+                      <TabList></TabList>
 
                       <TabPanel>
                         <Tabs>
                           <TabList>
-                            <Tab >Blood Pressure</Tab>
+                            <Tab>Blood Pressure</Tab>
 
-                            <Tab onClick={() => { fetchTd(); fetchadmintd() }}>Blood Glucose</Tab>
+                            <Tab
+                              onClick={() => {
+                                fetchTd();
+                                fetchadmintd();
+                              }}
+                            >
+                              Blood Glucose
+                            </Tab>
 
                             <Tab>Weight</Tab>
 
@@ -3446,12 +4018,11 @@ const PatientSummary = (props) => {
                             <Tab>New Weight</Tab>
                           </TabList>
                           <TabPanel>
-
                             <Tabs>
                               <TabList>
-                                <Tab >Dashboard</Tab>
-                                <Tab >LogBook</Tab>
-                                <Tab >Charts</Tab>
+                                <Tab>Dashboard</Tab>
+                                <Tab>LogBook</Tab>
+                                <Tab>Charts</Tab>
                               </TabList>
                               <TabPanel>
                                 {renderDates()}
@@ -3473,9 +4044,9 @@ const PatientSummary = (props) => {
                           <TabPanel>
                             <Tabs>
                               <TabList>
-                                <Tab >Dashboard</Tab>
-                                <Tab >LogBook</Tab>
-                                <Tab >Charts</Tab>
+                                <Tab>Dashboard</Tab>
+                                <Tab>LogBook</Tab>
+                                <Tab>Charts</Tab>
                               </TabList>
                               <TabPanel>
                                 {renderDates()}
@@ -3502,18 +4073,14 @@ const PatientSummary = (props) => {
                           </TabPanel>
 
                           <TabPanel>
-                            <div className="card-body">
-                              {thresoldbars}
-                            </div>
-
+                            <div className="card-body">{thresoldbars}</div>
                           </TabPanel>
                           <TabPanel>
-
                             <Tabs>
                               <TabList>
-                                <Tab >Dashboard</Tab>
-                                <Tab >LogBook</Tab>
-                                <Tab >Charts</Tab>
+                                <Tab>Dashboard</Tab>
+                                <Tab>LogBook</Tab>
+                                <Tab>Charts</Tab>
                               </TabList>
                               <TabPanel>
                                 {renderDates()}
@@ -3535,9 +4102,9 @@ const PatientSummary = (props) => {
                           <TabPanel>
                             <Tabs>
                               <TabList>
-                                <Tab >Dashboard</Tab>
-                                <Tab >LogBook</Tab>
-                                <Tab >Charts</Tab>
+                                <Tab>Dashboard</Tab>
+                                <Tab>LogBook</Tab>
+                                <Tab>Charts</Tab>
                               </TabList>
                               <TabPanel>
                                 {renderDates()}
@@ -3566,7 +4133,6 @@ const PatientSummary = (props) => {
                       </TabPanel>
                     </Tabs>
                     <br /> <br />
-
                   </div>
                 </div>
               </TabPanel>
@@ -3574,9 +4140,7 @@ const PatientSummary = (props) => {
                 <div className="card">
                   <h4 className="card-header">Billing</h4>
                   <div className="card-body ps-0 pe-0">
-                    <div className="row mb-4">
-
-                    </div>
+                    <div className="row mb-4"></div>
                     <div className="row">
                       <div className="col-xl-12">
                         <div className="table-responsive-sm mb-0">
@@ -3601,7 +4165,6 @@ const PatientSummary = (props) => {
                   </div>
                 </div>
               </TabPanel>
-
 
               <TabPanel>
                 {/* <div className="card">
@@ -3742,51 +4305,69 @@ const PatientSummary = (props) => {
                     <div className="card-body ps-0 pe-0">
                       <div className="row mb-4">
                         <div className="col-xl-3">
-                          {(!localStorage.getItem("userType").includes("test")) ?
-                            <button className="btn btn-lg btn-success" type="button" onClick={() => {
-                              reset();
-                              coreContext.AddTimeLog(
-                                taskType,
-                                performedBy,
-                                date,
-                                tlvalue !== "00:00:00"
-                                  ? tlvalueseconds
-                                  : minutes * 60 + seconds,
-                                startDT,
-                                patientId,
-                                userName
-                              );
+                          {!localStorage
+                            .getItem("userType")
+                            .includes("test") ? (
+                            <button
+                              className="btn btn-lg btn-success"
+                              type="button"
+                              onClick={() => {
+                                reset();
+                                coreContext.AddTimeLog(
+                                  taskType,
+                                  performedBy,
+                                  date,
+                                  tlvalue !== "00:00:00"
+                                    ? tlvalueseconds
+                                    : minutes * 60 + seconds,
+                                  startDT,
+                                  patientId,
+                                  userName
+                                );
 
-                              setPristine();
+                                setPristine();
 
-                              setPerformedBy("");
-                              setTaskType("");
-                              setDate(new Date());
-                              sett1("");
-                              settimevalue("");
-                              setTlValue("00:00:00");
-
-                            }}> Add Time Log</button> : ""}
+                                setPerformedBy("");
+                                setTaskType("");
+                                setDate(new Date());
+                                sett1("");
+                                settimevalue("");
+                                setTlValue("00:00:00");
+                              }}
+                            >
+                              {" "}
+                              Add Time Log
+                            </button>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-xl-3">
                           <label>Task Type</label>
-                          <select className="form-select" value={t1 === "Other" ? t1 : taskType}
+                          <select
+                            className="form-select"
+                            value={t1 === "Other" ? t1 : taskType}
                             onChange={(e) => {
                               setTaskType(e.target.value);
                               setDirty();
                               sett1(e.target.value);
-                            }}>
-                            <option value="SelectTask">Select a Task Type</option>
+                            }}
+                          >
+                            <option value="SelectTask">
+                              Select a Task Type
+                            </option>
                             <option value="CareCoordination">
                               Care Coordination
                             </option>
                             <option value="CarePlanReconciliation">
                               Care Plan Reconciliation
                             </option>
-                            <option value="DataReview">Data Review  & Management</option>
+                            <option value="DataReview">
+                              Data Review & Management
+                            </option>
                             <option value="Other">Others...</option>
                           </select>
 
@@ -3799,7 +4380,6 @@ const PatientSummary = (props) => {
                               onChange={(e) => setTaskType(e.target.value)}
                             />
                           ) : null}
-
                         </div>
                         <div className="col-xl-3">
                           <label>Performed By</label>
@@ -3809,12 +4389,14 @@ const PatientSummary = (props) => {
                               setPerformedBy(e.target.value);
                               setDirty();
                             }}
-                            className="form-select">
+                            className="form-select"
+                          >
                             <option value="SelectUser">Select a User</option>
                             {tt.map((curr) => {
                               return (
                                 <option
-                                  value={!curr.name ? curr.provider : curr.name}>
+                                  value={!curr.name ? curr.provider : curr.name}
+                                >
                                   {" "}
                                   {!curr.name ? curr.provider : curr.name}
                                 </option>
@@ -3824,8 +4406,7 @@ const PatientSummary = (props) => {
                         </div>
                         <div className="col-xl-3">
                           <div className="row">
-                            <label>Performed On
-                            </label>
+                            <label>Performed On</label>
                           </div>
                           <div className="row">
                             <DatePicker
@@ -3834,7 +4415,6 @@ const PatientSummary = (props) => {
                               showTimeSelect
                               timeFormat="HH:mm"
                               timeIntervals={15}
-
                               onChange={(date) => {
                                 setDate(date);
                                 setDirty();
@@ -3847,15 +4427,18 @@ const PatientSummary = (props) => {
                         </div>
                         <div className="col-xl-3">
                           <label>Enter Total Time:</label>
-                          <input type="text" className="form-control" onChange={onChange}
+                          <input
+                            type="text"
+                            className="form-control"
+                            onChange={onChange}
                             onBlur={onBlur}
-                            value={tlvalue} />
+                            value={tlvalue}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </TabPanel>
 
               <TabPanel>
@@ -3878,9 +4461,6 @@ const PatientSummary = (props) => {
                 <div className="card">
                   <h4 className="card-header">Devices</h4>
                   <div className="card-body">
-
-
-
                     <div className="row">
                       <div className="col-md-8">
                         <h6>
@@ -3910,7 +4490,8 @@ const PatientSummary = (props) => {
                           <select
                             value={deviceType}
                             onChange={(e) => setDeviceType(e.target.value)}
-                            className="form-control mb-2 mr-sm-2">
+                            className="form-control mb-2 mr-sm-2"
+                          >
                             <option value="">Select Device</option>
                             <option value="BP">Blood Pressure</option>
                             <option value="BG">Blood Glucose</option>
@@ -3923,20 +4504,29 @@ const PatientSummary = (props) => {
                             className="form-control mb-2 mr-sm-2"
                             placeholder="Enter device ID "
                           />
-                          {(!localStorage.getItem("userType").includes("test")) ?
+                          {!localStorage
+                            .getItem("userType")
+                            .includes("test") ? (
                             <button
                               type="button"
                               onClick={() => {
-                                setdeviceflag(adddeviceflag + 1)
-                                coreContext.addDevice(deviceType, deviceId, patientId, userName)
+                                setdeviceflag(adddeviceflag + 1);
+                                coreContext.addDevice(
+                                  deviceType,
+                                  deviceId,
+                                  patientId,
+                                  userName
+                                );
                                 setDeviceId("");
                                 setDeviceType("");
-
-                              }
-                              }
-                              className="btn btn-primary mb-2">
+                              }}
+                              className="btn btn-primary mb-2"
+                            >
                               Add Device
-                            </button> : ""}
+                            </button>
+                          ) : (
+                            ""
+                          )}
                         </form>
                       </div>
                     </div>
@@ -3949,7 +4539,6 @@ const PatientSummary = (props) => {
                     You will NOT be able to bill for 99453 or 99454.{" "}
                   </div>
                 </div> */}
-
                   </div>
                 </div>
               </TabPanel>
@@ -3966,31 +4555,29 @@ const PatientSummary = (props) => {
                 <div className="card">
                   <h4 className="card-header">Billing</h4>
                   <div className="card-body p-2 pe-0">
-                    <div className="row mb-4">
-                      {renderBilling()}
-                    </div>
-
+                    <div className="row mb-4">{renderBilling()}</div>
                   </div>
                 </div>
               </TabPanel>
             </Tabs>
-          </div></div>
+          </div>
+        </div>
       );
   };
   useEffect(renderTabs, []);
   useEffect(() => {
     return () => {
-      coreContext.cleanup()
-    }
+      coreContext?.cleanup();
+    };
   }, []);
   return (
     <div className="col">
       <div className="page-title-container mb-3">
         <div className="row">
           <div className="col mb-2">
-            <h1 className="mb-2 pb-0 display-4" id="title">Patient Summary
+            <h1 className="mb-2 pb-0 display-4" id="title">
+              Patient Summary
             </h1>
-
           </div>
         </div>
       </div>
@@ -4034,44 +4621,42 @@ const PatientSummary = (props) => {
           <div className="card mb-3 border border-primary">
             <div className="card-body">
               <div className="row">
-
                 <div className="col-xl-10 col-xs-10 text-end pt-1">
-                  <button className="btn btn-md btn-success" onClick={start}>Start</button>&nbsp;&nbsp;
-                  <button className="btn btn-md btn-warning" onClick={pause}>Pause</button>&nbsp;&nbsp;
-                  <button className="btn btn-md btn-danger" onClick={reset}>Reset</button>
+                  <button className="btn btn-md btn-success" onClick={start}>
+                    Start
+                  </button>
+                  &nbsp;&nbsp;
+                  <button className="btn btn-md btn-warning" onClick={pause}>
+                    Pause
+                  </button>
+                  &nbsp;&nbsp;
+                  <button className="btn btn-md btn-danger" onClick={reset}>
+                    Reset
+                  </button>
                 </div>
                 <div className="col-xl-2 col-xs-2">
                   <span className="fs-2 pt-2">{minutes}</span>
                   <span className="fs-2 pt-2">:</span>
                   <span className="fs-2 pt-2">{seconds}</span>
-
-
                 </div>
-
               </div>
             </div>
           </div>
 
           <div className="card mb-3">
             <div className="card-body pt-0">
-              <div className="row bg-muted p-2">
-                {rendertop}
-              </div>
+              <div className="row bg-muted p-2">{rendertop}</div>
               {renderAddModifyFlags()}
               {renderAddNotes()}
-
             </div>
           </div>
-
 
           <div className="card-body">
             {renderExpandCollapse()}
             {renderPatientinformation()}
           </div>
 
-
           {Prompt}
-
 
           <React.Fragment>
             <Modal show={showModal} onHide={handleModalClose} size="lg">
@@ -4084,7 +4669,6 @@ const PatientSummary = (props) => {
                   <div className="card-body">
                     <div className="row">
                       <div className="col-md-4">
-
                         <label>Task Type</label>
                         {/* //  {setTaskType("CarePlanReconciliation")} */}
                         <select
@@ -4094,7 +4678,8 @@ const PatientSummary = (props) => {
                             setDirty();
                             sett1(e.target.value);
                           }}
-                          className="form-control mb-2 mr-sm-2">
+                          className="form-control mb-2 mr-sm-2"
+                        >
                           <option value="SelectTask">Select a Task Type</option>
                           <option value="CareCoordination">
                             Care Coordination
@@ -4114,7 +4699,6 @@ const PatientSummary = (props) => {
                             onChange={(e) => setTaskType(e.target.value)}
                           />
                         ) : null}
-
                       </div>
                       <div className="col-md-4">
                         Performed By
@@ -4125,14 +4709,14 @@ const PatientSummary = (props) => {
                             setPerformedBy(e.target.value);
                             setDirty();
                           }}
-                          className="form-control mb-2 mr-sm-2">
+                          className="form-control mb-2 mr-sm-2"
+                        >
                           <option value="SelectUser">Select a User</option>
                           {tt.map((curr) => {
                             return (
                               <option
-                                value={
-                                  !curr.name ? curr.provider : curr.name
-                                }>
+                                value={!curr.name ? curr.provider : curr.name}
+                              >
                                 {" "}
                                 {!curr.name ? curr.provider : curr.name}
                               </option>
@@ -4141,7 +4725,8 @@ const PatientSummary = (props) => {
                         </select>
                       </div>
                       <div className="col-md-4">
-                        Performed On<br />
+                        Performed On
+                        <br />
                         <div className="col-md-12">
                           <DatePicker
                             className="form-control"
@@ -4172,8 +4757,6 @@ const PatientSummary = (props) => {
                         />
                         {/* <input className="form-control mb-2 mr-sm-2" type="time" value={timevalue} onChange={(e)=>{settimevalue(e.target.value);}} step="1"/> */}
                       </div>
-
-
                     </div>
                   </div>
                   <button
@@ -4190,7 +4773,8 @@ const PatientSummary = (props) => {
                       );
                       handleUpdate();
                     }}
-                    className="btn btn-lg btn-success">
+                    className="btn btn-lg btn-success"
+                  >
                     {" "}
                     Update Time Log
                   </button>
@@ -4199,9 +4783,7 @@ const PatientSummary = (props) => {
             </Modal>
           </React.Fragment>
 
-
           {renderTabs()}
-
         </div>
       </div>
     </div>

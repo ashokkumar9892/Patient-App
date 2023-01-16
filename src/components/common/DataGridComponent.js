@@ -1,98 +1,88 @@
-import React from 'react'
+import React from "react";
 import {
-    DataGrid,
-    GridColDef,
-    GridApi,
-    GridCellValue,
-  } from "@material-ui/data-grid";
-  import { makeStyles } from "@material-ui/core/styles";
+  DataGrid,
+  GridColDef,
+  GridApi,
+  GridCellValue,
+} from "@material-ui/data-grid";
+import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
-    root: {
-      "& .MuiDataGrid-columnHeaderCheckbox": {
-        display: "block",
-        pointerEvents: "none",
-        disabled: "disabled",
-      },
-      "& .MuiDataGrid-columnHeaderWrapper":{
-          backgroundColor:"#0c71c3",
-          color:"white",
-          lineHeight:"unset !important",
-          maxHeight:"none !important",
-          whiteSpace:"normal",
-          minWidth:"normal",
-          textAlign:"center"
-
-      
-      },
-      "& .MuiDataGrid-cell":{
-          border: "1px solid #dfdddd",
-          lineHeight:"unset !important",
-          maxHeight:"none !important",
-          whiteSpace:"normal",
-          textAlign:"center",
-          paddingTop:"1em",
-          paddingBottom:"1em"
-      },
-      "& .MuiDataGrid-row.Mui-odd": {
-        backgroundColor: "#e9e9e9",
-        
-        
-      },
-      "& .MuiDataGrid-columnHeaderTitle": {
-        overflow: "visible",
-        lineHeight: "1.43rem",
-        whiteSpace: "normal",
-        textAlign:"center",
-        
-      },
-      
-      "& .MuiDataGrid-root": {
-        overflow: "visible",
-        lineHeight: "1.43rem",
-        whiteSpace: "normal",
-        textAlign:"center",
-        
-      }
-     
+  root: {
+    "& .MuiDataGrid-columnHeaderCheckbox": {
+      display: "block",
+      pointerEvents: "none",
+      disabled: "disabled",
     },
-  }));
+    "& .MuiDataGrid-columnHeaderWrapper": {
+      backgroundColor: "#0c71c3",
+      color: "white",
+      lineHeight: "unset !important",
+      maxHeight: "none !important",
+      whiteSpace: "normal",
+      minWidth: "normal",
+      textAlign: "center",
+    },
+    "& .MuiDataGrid-cell": {
+      border: "1px solid #dfdddd",
+      lineHeight: "unset !important",
+      maxHeight: "none !important",
+      whiteSpace: "normal",
+      textAlign: "center",
+      paddingTop: "1em",
+      paddingBottom: "1em",
+    },
+    "& .MuiDataGrid-row.Mui-odd": {
+      backgroundColor: "#e9e9e9",
+    },
+    "& .MuiDataGrid-columnHeaderTitle": {
+      overflow: "visible",
+      lineHeight: "1.43rem",
+      whiteSpace: "normal",
+      textAlign: "center",
+    },
+
+    "& .MuiDataGrid-root": {
+      overflow: "visible",
+      lineHeight: "1.43rem",
+      whiteSpace: "normal",
+      textAlign: "center",
+    },
+  },
+}));
 
 const DataGridComponent = (props) => {
-    const {rows,columns,sortModal}=props;
-    const classes = useStyles();
+  const { rows, columns, sortModal } = props;
+  const classes = useStyles();
   return (
-    
-
-
-<div class="table-responsive-sm mb-0">
-<div style={{ height: 680, width: "100%" }}>
+    <div class="table-responsive-sm mb-0">
+      <div style={{ height: 680, width: "100%" }}>
         <DataGrid
-              className={classes.root}
-              
-              rows={rows}
-              columns={columns}
-              pageSize={20}
-              // sortModel={sortModal}
-              //             checkboxSelection
+          className={classes.root}
+          rows={rows}
+          columns={columns}
+          pageSize={50}
+          // sortModel={sortModal}
+          //             checkboxSelection
 
-              // onSelectionModelChange={(selection) => {
-              //   const newSelectionModel = selection.selectionModel;
+          // onSelectionModelChange={(selection) => {
+          //   const newSelectionModel = selection.selectionModel;
 
-              //   if (newSelectionModel.length > 1) {
-              //     const selectionSet = new Set(selectionModel);
-              //     const result = newSelectionModel.filter(
-              //       (s) => !selectionSet.has(s)
-              //     );
+          //   if (newSelectionModel.length > 1) {
+          //     const selectionSet = new Set(selectionModel);
+          //     const result = newSelectionModel.filter(
+          //       (s) => !selectionSet.has(s)
+          //     );
 
-              //     setSelectionModel(result);
-              //   } else {
-              //     setSelectionModel(newSelectionModel);
-              //   }
-              // }}
-              // selectionModel={selectionModel}
-            />
-            </div>
-    </div>  )
-}
+          //     setSelectionModel(result);
+          //   } else {
+          //     setSelectionModel(newSelectionModel);
+          //   }
+          // }}
+          // selectionModel={selectionModel}
+        />
+      </div>
+    </div>
+  );
+};
 
-export default DataGridComponent
+export default DataGridComponent;

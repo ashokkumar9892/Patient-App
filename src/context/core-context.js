@@ -35,12 +35,10 @@ export const CoreContextProvider = (props) => {
   const [bloodglucoseDataForPatient, setbloodglucoseDataForPatient] = useState(
     []
   );
-  const [newbloodpressureDataForPatient, setnewbloodpressureDataForPatient] = useState(
-    []
-  );
-  const [newbloodglucoseDataForPatient, setnewbloodglucoseDataForPatient] = useState(
-    []
-  );
+  const [newbloodpressureDataForPatient, setnewbloodpressureDataForPatient] =
+    useState([]);
+  const [newbloodglucoseDataForPatient, setnewbloodglucoseDataForPatient] =
+    useState([]);
 
   const [
     bloodpressureDataForNotification,
@@ -198,7 +196,10 @@ export const CoreContextProvider = (props) => {
           setIsAuthenticated(true);
           setMessage("");
           setUserId(email);
-          localStorage.setItem("app_authTime", (Date.now() + (20 * 60 * 1000)).toString());
+          localStorage.setItem(
+            "app_authTime",
+            (Date.now() + 20 * 60 * 1000).toString()
+          );
           localStorage.setItem("app_isAuth", "yes");
           localStorage.setItem("app_jwt", response.data.idToken);
           localStorage.setItem("app_userId", email);
@@ -209,7 +210,8 @@ export const CoreContextProvider = (props) => {
 
           userDetails(email, url);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   });
@@ -228,7 +230,8 @@ export const CoreContextProvider = (props) => {
 
           //  window.location.assign();
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -248,7 +251,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert("there is some error");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -316,7 +320,8 @@ export const CoreContextProvider = (props) => {
           //     {
           //         window.location.assign('/dashboard');
           //     }
-        }).catch(() => {
+        })
+        .catch(() => {
           relogin();
         });
     }
@@ -809,14 +814,14 @@ export const CoreContextProvider = (props) => {
           wtdata.id = wt.id;
           if (wt.gsI1PK !== undefined) {
             wtdata.gSI1PK = wt.gsI1PK;
-            wtdata.userId = wt.gsI1PK.split("_").pop();
+            wtdata.userId = wt?.gsI1PK?.split("_").pop();
           }
           if (wt.userName !== undefined) {
             wtdata.UserName = wt.userName;
           }
 
           if (wt.sk !== undefined) {
-            wtdata.readingId = wt.sk.split("_").pop();
+            wtdata.readingId = wt?.sk?.split("_").pop();
           }
           if (wt.deviceId !== undefined) {
             wtdata.DeviceId = wt.deviceId;
@@ -850,7 +855,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setweightData(dataSetwt);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -891,14 +897,14 @@ export const CoreContextProvider = (props) => {
           wtdata.id = wt.id;
           if (wt.gsI1PK !== undefined) {
             wtdata.gSI1PK = wt.gsI1PK;
-            wtdata.userId = wt.gsI1PK.split("_").pop();
+            wtdata.userId = wt?.gsI1PK?.split("_").pop();
           }
           if (wt.userName !== undefined) {
             wtdata.UserName = wt.userName;
           }
 
           if (wt.sk !== undefined) {
-            wtdata.readingId = wt.sk.split("_").pop();
+            wtdata.readingId = wt?.sk?.split("_").pop();
           }
           if (wt.deviceId !== undefined) {
             wtdata.DeviceId = wt.deviceId;
@@ -932,7 +938,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setweightDataForPatient(dataSetwt);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -982,13 +989,13 @@ export const CoreContextProvider = (props) => {
 
             // bpdata.date_recorded = bp.date_recorded.s;
 
-
             dataSetwt.push(wtdata);
-          })
-        };
+          });
+        }
 
         setnewweightDataForPatient(dataSetwt);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1004,15 +1011,12 @@ export const CoreContextProvider = (props) => {
       relogin();
     }
     await axios
-      .get(
-        apiUrl2 + "threshold",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "text/plain",
-          },
-        }
-      )
+      .get(apiUrl2 + "threshold", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "text/plain",
+        },
+      })
       .then((response) => {
         const thresholdData = response.data;
         const dataSetthresold = [];
@@ -1072,7 +1076,8 @@ export const CoreContextProvider = (props) => {
             dataSetthresold.filter((curr) => curr.UserId.includes(userid))
           );
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1087,15 +1092,12 @@ export const CoreContextProvider = (props) => {
       relogin();
     }
     await axios
-      .get(
-        apiUrl2 + "threshold",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "text/plain",
-          },
-        }
-      )
+      .get(apiUrl2 + "threshold", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "text/plain",
+        },
+      })
       .then((response) => {
         const thresholdData = response.data;
         const dataSetthresold = [];
@@ -1156,7 +1158,8 @@ export const CoreContextProvider = (props) => {
             "dataSetthresold.filter((curr)=>curr.userId.includes(userid))"
           );
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1222,7 +1225,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setTimeLogData(dataSettimeLog);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1286,7 +1290,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setAllTimeLogData(dataSettimeLog);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1340,7 +1345,8 @@ export const CoreContextProvider = (props) => {
             "patient"
           );
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1380,7 +1386,8 @@ export const CoreContextProvider = (props) => {
           swal("error", "Threshold did not Update.", "error");
           // alert("");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
     //Update
@@ -1393,12 +1400,12 @@ export const CoreContextProvider = (props) => {
     dob,
     height,
     weight,
-    bmi, image
+    bmi,
+    image
   ) => {
     const token = localStorage.getItem("app_jwt");
     const isAuth = localStorage.getItem("app_isAuth");
     if (isAuth === "yes") {
-
       setIsAuthenticated(true);
       setJwt(token);
       setUserId(userId);
@@ -1465,7 +1472,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Patient Deleted Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1607,7 +1615,8 @@ export const CoreContextProvider = (props) => {
               "error"
             );
           }
-        }).catch(() => {
+        })
+        .catch(() => {
           relogin();
         });
     }
@@ -1694,7 +1703,8 @@ export const CoreContextProvider = (props) => {
           // alert("");
           swal("error", "Data did did not Update  Successfully.", "error");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1735,7 +1745,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert("data not updated");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1783,7 +1794,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert("data not updated");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1826,7 +1838,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert("Patient data did not Update  Successfully.");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1891,7 +1904,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Patient Deleted Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1956,7 +1970,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "CPT Code Added Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -1985,7 +2000,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Patient Deleted Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2053,7 +2069,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Updated Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2082,7 +2099,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Care Coordinator Deleted Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2112,7 +2130,8 @@ export const CoreContextProvider = (props) => {
           swal("success", "Coach Deleted Successfully.", "success");
           fetchCoach();
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2174,7 +2193,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Patient Activated Successfully.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2192,7 +2212,8 @@ export const CoreContextProvider = (props) => {
             "success"
           );
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2220,7 +2241,8 @@ export const CoreContextProvider = (props) => {
         if (response.data === "Updated") {
           alert(careTeamTypeMsg + " Deleted Successfully.");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2242,7 +2264,8 @@ export const CoreContextProvider = (props) => {
         } else {
           swal("error", "Server Error", "error");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2277,7 +2300,8 @@ export const CoreContextProvider = (props) => {
 
           if (url) window.location.assign(url);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2318,7 +2342,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert(response.data);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2445,7 +2470,8 @@ export const CoreContextProvider = (props) => {
             response.data = "Email already exists";
           alert(response.data);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2487,7 +2513,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert(response.data);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2529,7 +2556,8 @@ export const CoreContextProvider = (props) => {
         } else {
           alert(response.data);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2596,7 +2624,8 @@ export const CoreContextProvider = (props) => {
         }
         if (type == "Blood Glucose") {
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2617,15 +2646,12 @@ export const CoreContextProvider = (props) => {
       relogin();
     }
     await axios
-      .get(
-        apiUrl2 + "device",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "text/plain",
-          },
-        }
-      )
+      .get(apiUrl2 + "device", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "text/plain",
+        },
+      })
       .then((response) => {
         const deviceData = response.data;
         const dataSetdevice = [];
@@ -2671,7 +2697,8 @@ export const CoreContextProvider = (props) => {
         }
         if (type == "Blood Glucose") {
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -2937,7 +2964,7 @@ export const CoreContextProvider = (props) => {
           bpdata.id = bp.id;
           if (bp.gsI1PK !== undefined) {
             bpdata.gSI1PK = bp.gsI1PK;
-            bpdata.UserId = bp.gsI1PK.split("_").pop();
+            bpdata.UserId = bp?.gsI1PK?.split("_").pop();
           }
           if (bp.userName !== undefined) {
             bpdata.UserName = bp.userName;
@@ -2981,7 +3008,7 @@ export const CoreContextProvider = (props) => {
           }
 
           if (bp.sk !== undefined) {
-            bpdata.readingId = bp.sk.split("_").pop();
+            bpdata.readingId = bp?.sk?.split("_").pop();
           }
 
           if (bp.actionTaken !== undefined) {
@@ -2998,7 +3025,8 @@ export const CoreContextProvider = (props) => {
               curr.CreatedDate < new Date(to)
           )
         );
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -3042,7 +3070,7 @@ export const CoreContextProvider = (props) => {
           bpdata.id = bp.id;
           if (bp.gsI1PK !== undefined) {
             bpdata.gSI1PK = bp.gsI1PK;
-            bpdata.UserId = bp.gsI1PK.split("_").pop();
+            bpdata.UserId = bp?.gsI1PK?.split("_").pop();
           }
           if (bp.userName !== undefined) {
             bpdata.UserName = bp.userName;
@@ -3086,7 +3114,7 @@ export const CoreContextProvider = (props) => {
           }
 
           if (bp.sk !== undefined) {
-            bpdata.readingId = bp.sk.split("_").pop();
+            bpdata.readingId = bp?.sk?.split("_").pop();
           }
 
           if (bp.actionTaken !== undefined) {
@@ -3103,12 +3131,13 @@ export const CoreContextProvider = (props) => {
               curr.CreatedDate < new Date(to)
           )
         );
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
   const fetchBloodPressureForPatient = async (userid, usertype, deviceId) => {
-    const user = userid.split("_")[1];
+    const user = userid?.split("_")[1];
     let data = "";
     // if(deviceId.length!==0){
     //   data=deviceId.toString()
@@ -3148,9 +3177,9 @@ export const CoreContextProvider = (props) => {
           bpdata.id = bp.id;
           if (bp.gsI1PK) {
             bpdata.gSI1PK = bp.gsI1PK;
-            bpdata.UserId = bp.gsI1PK.split("_").pop();
+            bpdata.UserId = bp?.gsI1PK?.split("_").pop();
           }
-         if (bp.userName !== undefined) {
+          if (bp.userName !== undefined) {
             bpdata.UserName = bp.userName;
           }
           if (bp.irregular !== undefined) {
@@ -3186,7 +3215,7 @@ export const CoreContextProvider = (props) => {
             bpdata.DeviceId = bp.IMEI;
           }
           if (bp.sk) {
-            bpdata.readingId = bp.sk.split("_").pop();
+            bpdata.readingId = bp?.sk?.split("_").pop();
           }
           if (bp.actionTaken !== undefined) {
             bpdata.actionTaken = bp.actionTaken;
@@ -3194,15 +3223,20 @@ export const CoreContextProvider = (props) => {
           dataSetbp.push(bpdata);
         });
         setbloodpressureDataForPatient(dataSetbp);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
-  const fetchnewBloodPressureForPatient = async (userid, usertype, deviceId) => {
-    const user = userid.split("_")[1];
+  const fetchnewBloodPressureForPatient = async (
+    userid,
+    usertype,
+    deviceId
+  ) => {
+    const user = userid?.split("_")[1];
     let data = "";
     // if(deviceId.length!==0){
-    data = deviceId.toString()
+    data = deviceId.toString();
     // }
     // else{
     //   data = "DEVICE_BP_" + user;
@@ -3240,7 +3274,7 @@ export const CoreContextProvider = (props) => {
             bpdata.id = bp.id;
             if (bp.gsI1PK) {
               bpdata.gSI1PK = bp.gsI1PK;
-              bpdata.UserId = bp.gsI1PK.split("_").pop();
+              bpdata.UserId = bp.gsI1PK?.split("_").pop();
             }
 
             if (bp.userName !== undefined) {
@@ -3283,7 +3317,7 @@ export const CoreContextProvider = (props) => {
             }
 
             if (bp.sk) {
-              bpdata.readingId = bp.sk.split("_").pop();
+              bpdata.readingId = bp?.sk?.split("_").pop();
             }
 
             if (bp.actionTaken !== undefined) {
@@ -3291,19 +3325,20 @@ export const CoreContextProvider = (props) => {
             }
 
             dataSetbp.push(bpdata);
-          })
+          });
         }
 
         setnewbloodpressureDataForPatient(dataSetbp);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
   const fetchnewBloodGlucoseForPatient = async (userid, usertype, deviceId) => {
-    const user = userid.split("_")[1];
+    const user = userid?.split("_")[1];
     let data = "";
     // if(deviceId.length!==0){
-    data = deviceId.toString()
+    data = deviceId.toString();
     // }
     // else{
     //   data = "DEVICE_BP_" + user;
@@ -3334,8 +3369,7 @@ export const CoreContextProvider = (props) => {
         const dataSetbg = [];
         if (bloodglucoseData.length === 0) {
           dataSetbg.push("No Data Found");
-        }
-        else {
+        } else {
           bloodglucoseData.forEach((bg, index) => {
             let bgdata = {};
             bgdata.id = bg.id;
@@ -3400,7 +3434,8 @@ export const CoreContextProvider = (props) => {
           });
         }
         setnewbloodglucoseDataForPatient(dataSetbg);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -3488,7 +3523,7 @@ export const CoreContextProvider = (props) => {
           }
 
           if (bp.sk !== undefined) {
-            bpdata.readingId = bp.sk.split("_").pop();
+            bpdata.readingId = bp?.sk?.split("_").pop();
           }
 
           if (bp.actionTaken !== undefined) {
@@ -3499,7 +3534,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setbloodpressureData(dataSetbp);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -3536,14 +3572,13 @@ export const CoreContextProvider = (props) => {
         const dataSetbg = [];
         if (bloodglucoseData.length === 0) {
           dataSetbg.push("No Data Found");
-        }
-        else {
+        } else {
           bloodglucoseData.forEach((bg, index) => {
             let bgdata = {};
             bgdata.id = index;
             if (bg.gsI1PK !== undefined) {
               bgdata.gSI1PK = bg.gsI1PK;
-              bgdata.userId = bg.gsI1PK.split("_").pop();
+              bgdata.userId = bg?.gsI1PK?.split("_").pop();
             }
             if (bg.userName !== undefined) {
               bgdata.UserName = bg.userName;
@@ -3585,7 +3620,7 @@ export const CoreContextProvider = (props) => {
               // bgdata.CreatedDate =Moment(bgdata.CreatedDate);
             }
             if (bg.sk !== undefined) {
-              bgdata.readingId = bg.sk.split("_").pop();
+              bgdata.readingId = bg?.sk?.split("_").pop();
             }
             if (bg.deviceId !== undefined) {
               bgdata.DeviceId = bg.deviceId;
@@ -3629,14 +3664,13 @@ export const CoreContextProvider = (props) => {
         const dataSetbg = [];
         if (bloodglucoseData.length === 0) {
           dataSetbg.push("No Data Found");
-        }
-        else {
+        } else {
           bloodglucoseData.forEach((bg, index) => {
             let bgdata = {};
             bgdata.id = index;
             if (bg.gsI1PK !== undefined) {
               bgdata.gSI1PK = bg.gsI1PK;
-              bgdata.userId = bg.gsI1PK.split("_").pop();
+              bgdata.userId = bg?.gsI1PK?.split("_").pop();
             }
             if (bg.userName !== undefined) {
               bgdata.UserName = bg.userName;
@@ -3684,7 +3718,7 @@ export const CoreContextProvider = (props) => {
             }
 
             if (bg.sk !== undefined) {
-              bgdata.readingId = bg.sk.split("_").pop();
+              bgdata.readingId = bg?.sk?.split("_").pop();
             }
 
             if (bg.deviceId !== undefined) {
@@ -3696,7 +3730,8 @@ export const CoreContextProvider = (props) => {
         }
 
         setbloodglucoseDataForPatient(dataSetbg);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -3737,14 +3772,13 @@ export const CoreContextProvider = (props) => {
         const dataSetbg = [];
         if (bloodglucoseData.length === 0) {
           dataSetbg.push("No Data Found");
-        }
-        else {
+        } else {
           bloodglucoseData.forEach((bg, index) => {
             let bgdata = {};
             bgdata.id = index;
             if (bg.gsI1PK !== undefined) {
               bgdata.gSI1PK = bg.gsI1PK;
-              bgdata.userId = bg.gsI1PK.split("_").pop();
+              bgdata.userId = bg?.gsI1PK?.split("_").pop();
             }
             if (bg.userName !== undefined) {
               bgdata.UserName = bg.userName;
@@ -3792,7 +3826,7 @@ export const CoreContextProvider = (props) => {
             }
 
             if (bg.sk !== undefined) {
-              bgdata.readingId = bg.sk.split("_").pop();
+              bgdata.readingId = bg?.sk?.split("_").pop();
             }
 
             if (bg.deviceId !== undefined) {
@@ -3809,7 +3843,8 @@ export const CoreContextProvider = (props) => {
               curr.CreatedDate < new Date(to)
           )
         );
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -3852,7 +3887,7 @@ export const CoreContextProvider = (props) => {
           bgdata.id = index;
           if (bg.gsI1PK !== undefined) {
             bgdata.gSI1PK = bg.gsI1PK;
-            bgdata.userId = bg.gsI1PK.split("_").pop();
+            bgdata.userId = bg?.gsI1PK?.split("_").pop();
           }
           if (bg.userName !== undefined) {
             bgdata.UserName = bg.userName;
@@ -3894,7 +3929,7 @@ export const CoreContextProvider = (props) => {
             // bgdata.CreatedDate =Moment(bgdata.CreatedDate);
           }
           if (bg.sk !== undefined) {
-            bgdata.readingId = bg.sk.split("_").pop();
+            bgdata.readingId = bg?.sk?.split("_").pop();
           }
           if (bg.deviceId !== undefined) {
             bgdata.DeviceId = bg.deviceId;
@@ -3909,41 +3944,47 @@ export const CoreContextProvider = (props) => {
               curr.CreatedDate < new Date(to)
           )
         );
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
 
   const backUpMessages = () => {
-    axios.get("/backup-messages").then((response) => {
-      const messages = response.data.messages;
-      const inb = messages.filter((message) => message.direction === "inbound");
-      let inbs = [];
-      let outbs = [];
-      let iset = new Set();
-      inb.forEach((imessage) => {
-        //     alert(iset.has(imessage.from));
-        if (!iset.has(imessage.from)) {
-          iset.add(imessage.from);
-          inbs.push(imessage);
-        }
-      });
-      setInbox(inbs);
-      const out = messages.filter(
-        (message) => message.direction === "outbound-api"
-      );
+    axios
+      .get("/backup-messages")
+      .then((response) => {
+        const messages = response.data.messages;
+        const inb = messages.filter(
+          (message) => message.direction === "inbound"
+        );
+        let inbs = [];
+        let outbs = [];
+        let iset = new Set();
+        inb.forEach((imessage) => {
+          //     alert(iset.has(imessage.from));
+          if (!iset.has(imessage.from)) {
+            iset.add(imessage.from);
+            inbs.push(imessage);
+          }
+        });
+        setInbox(inbs);
+        const out = messages.filter(
+          (message) => message.direction === "outbound-api"
+        );
 
-      let oset = new Set();
-      out.forEach((omessage) => {
-        if (!oset.has(omessage.to)) {
-          oset.add(omessage.to);
-          outbs.push(omessage);
-        }
+        let oset = new Set();
+        out.forEach((omessage) => {
+          if (!oset.has(omessage.to)) {
+            oset.add(omessage.to);
+            outbs.push(omessage);
+          }
+        });
+        setOutbox(outbs);
+      })
+      .catch(() => {
+        relogin();
       });
-      setOutbox(outbs);
-    }).catch(() => {
-      relogin();
-    });
   };
 
   const fetchMessages = () => {
@@ -4014,7 +4055,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setbgChartData(dataSetbg);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4067,7 +4109,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setbpChartData(dataSetbp);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4129,7 +4172,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setwsChartData(dataSetweight);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4191,7 +4235,8 @@ export const CoreContextProvider = (props) => {
           swal("success", "TimeLog has been added successfully", "success");
           fetchTimeLog("PATIENT_" + patientId);
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4212,7 +4257,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           swal("success", "Notification has been marked as read.", "success");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4241,7 +4287,8 @@ export const CoreContextProvider = (props) => {
           notificationarray.push(curr.sk);
         });
         setNotifications(notificationarray);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4267,7 +4314,8 @@ export const CoreContextProvider = (props) => {
         }
 
         setBillingCodes(BillingData);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4310,7 +4358,8 @@ export const CoreContextProvider = (props) => {
         if (response.status === 200) {
           alert("TimeLog has been updated");
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4357,7 +4406,8 @@ export const CoreContextProvider = (props) => {
         });
 
         setPatientWDevice(dataSetdevice);
-      }).catch(() => {
+      })
+      .catch(() => {
         relogin();
       });
   };
@@ -4538,7 +4588,7 @@ export const CoreContextProvider = (props) => {
         fetchnewBloodPressureForPatient,
         fetchnewBloodGlucoseForPatient,
         fetchnewWSDataForPatient,
-        newweightDataForPatient
+        newweightDataForPatient,
       }}
     >
       {props.children}
