@@ -1,139 +1,162 @@
-import React,{useEffect,useContext,useState} from 'react';
+import React, { useEffect, useContext, useState } from "react";
 import { CoreContext } from "../context/core-context";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import Loader from "react-loader-spinner";
-import Modal from 'react-bootstrap/Modal';
-import Iframe from 'react-iframe'
-import { render } from '@testing-library/react';
+import Modal from "react-bootstrap/Modal";
+import Iframe from "react-iframe";
+import { render } from "@testing-library/react";
 
 const signal = require("@microsoft/signalr");
 const ChatLink = () => {
-    const coreContext = useContext(CoreContext);
-    const [doctorid,setdoctorid]=useState();
-    const [message,setMessage]=useState();
-    const [show, setShow] = useState(false);
-    const [frame, setframe] = useState("");
-    const [pid,setpid]=useState();
+  const coreContext = useContext(CoreContext);
+  const [doctorid, setdoctorid] = useState();
+  const [message, setMessage] = useState();
+  const [show, setShow] = useState(false);
+  const [frame, setframe] = useState("");
+  const [pid, setpid] = useState();
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-    
-
-    useEffect(()=>{
-
-      try{
-        
-        if(localStorage.getItem("userType").includes("doctor") || localStorage.getItem("userType").includes("coach")){
-          coreContext.fetchChatLink(coreContext.userinfo[0].sno);
-          setdoctorid(coreContext.userinfo[0].sno)
-
-        }}
-        catch(err)
-        {
-          //console.warn(err)
-          coreContext.relogin();
-           //window.location.assign("/login");
-        }
-        //console.log(coreContext.userinfo,"sahill")
-        
-
-    },[])
-    const renderframe=()=>{
-      return(
-        <Iframe url={frame}
+  useEffect(() => {
+    try {
+      if (
+        localStorage.getItem("userType").includes("doctor") ||
+        localStorage.getItem("userType").includes("coach")
+      ) {
+        coreContext.fetchChatLink(coreContext.userinfo[0].sno);
+        setdoctorid(coreContext.userinfo[0].sno);
+      }
+    } catch (err) {
+      //console.warn(err)
+      coreContext.relogin();
+      //window.location.assign("/login");
+    }
+    //console.log(coreContext.userinfo,"sahill")
+  }, []);
+  const renderframe = () => {
+    return (
+      <Iframe
+        url={frame}
         width="100%"
         height="450px"
         display="initial"
-        position="relative"/>
+        position="relative"
+      />
+    );
+  };
+  useEffect(() => {
+    renderframe();
+  }, [frame]);
+  const handleNewUserMessage = (pid, newMessage) => {
+    console.log(`New message incoming! ${newMessage}`);
+    const token = localStorage.getItem("app_jwt");
+    var connection = new signal.HubConnectionBuilder()
+      .withUrl("https://annexappapi.apatternplus.com/chatHub")
+      .build();
+    //connection.serverTimeoutInMilliseconds = 6000000;
+    const chat = () => {
+      const sendmessage = () => {
+        var req = {
+          SenderSK: "DOCTOR_" + doctorid, //// PATIENT_Id from PatientTable
+          ReceiverSK: "PATIENT_" + pid,
+          Message: newMessage,
+          MessageType: "Text",
+          AuthToken: token,
+        };
 
-      )
+        connection.invoke("SendMessages", req).catch(function (err) {
+          return console.error(err.toString());
+        });
+      };
+      sendmessage();
+      const ReceiveMessages = () => {
+        connection.on("ReceiveMessage", function (data) {
+          alert("Message Sent Succesfully");
+        });
+      };
+
+      ReceiveMessages();
+    };
+    connection.start().then(() => chat());
+
+    connection.on("disconnect", function () {
+      setTimeout(function () {
+        connection.start();
+      }, 5000); // Restart connection after 5 seconds.
+    });
+  };
+
+  const renderuser = (curr) => {
+    if (coreContext.patients.length === 0) {
+      return (
+        <div
+          style={{
+            height: 680,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10px",
+            alignItems: "center",
+          }}
+        >
+          <Loader type="Circles" color="#00BFFF" height={100} width={100} />
+        </div>
+      );
     }
-    useEffect(()=>{
-      renderframe()
-    },[frame])
-    const handleNewUserMessage=(pid,newMessage)=>{
-      console.log(`New message incoming! ${newMessage}`);
-      const token = localStorage.getItem("app_jwt");
-      var connection = new signal.HubConnectionBuilder().withUrl("https://annexappapi.apatternplus.com/chatHub").build();
-      //connection.serverTimeoutInMilliseconds = 6000000;
-      const chat=()=>{
-  const sendmessage=()=>{
-    var req = 
-  {   SenderSK: "DOCTOR_"+doctorid ,   //// PATIENT_Id from PatientTable  
-  ReceiverSK: "PATIENT_"+pid, Message: newMessage, MessageType: "Text", AuthToken:token }
-  
-  connection.invoke("SendMessages", req).catch(function (err) {
-    return console.error(err.toString())
-  
-  }      )
-  }
-  sendmessage();
-  const ReceiveMessages=()=>{
-    connection.on("ReceiveMessage", function (data) {
-      alert("Message Sent Succesfully")    
-    }); 
-    
-  }
-  
-  ReceiveMessages()
-  
-  
-  }    
-  connection.start().then(()=>chat())
-  
-  connection.on("disconnect", function () {
-    setTimeout(function () {
-       connection.start();
-    }, 5000); // Restart connection after 5 seconds.
-  }); 
-  
+    if (coreContext.patients.length > 0) {
+      const Name =
+        coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)
+          .length !== 0
+          ? coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)[
+              coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)
+                .length - 1
+            ].chatLink.split(" ")[2]
+          : "No Message from" + curr.name;
+      const Link =
+        coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)
+          .length !== 0
+          ? coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)[
+              coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)
+                .length - 1
+            ].chatLink.split(" ")[3]
+          : "#";
+      const disable =
+        coreContext.ChatLink.filter((curr1) => curr1.senderId == curr.id)
+          .length == 0;
+      return (
+        <div className="col-xl-4 mt-2">
+          <div className="card">
+            <div className="card-body">
+              <h4 className="card-title">{Name}</h4>
+              <p className="card-text">
+                Please Click on below Link to continue existing Chat
+              </p>
+              <Button
+                variant="primary"
+                onClick={() => setframe(Link)}
+                className="card-link mt-2"
+                disabled={disable}
+              >
+                Click Me!!
+              </Button>
+              <Button
+                variant="primary"
+                style={{ float: "right" }}
+                onClick={() => {
+                  handleShow();
+                  setpid(curr.id);
+                }}
+                className="card-link"
+              >
+                Initiate Chat
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
     }
-   
-
-
-    const renderuser = (curr) => {
-        if (coreContext.patients.length === 0) {
-          return (
-            <div
-              style={{
-                height: 680,
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "10px",
-                alignItems: "center",
-              }}>
-              <Loader type="Circles" color="#00BFFF" height={100} width={100} />
-    
-            </div>
-          );
-        }
-        if (coreContext.patients.length > 0) {
-            
-                const Name=(coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id).length!==0)?coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id)[coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id).length-1].chatLink.split(" ")[2]:"No Message from"+ curr.name
-                const Link=(coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id).length!==0)?coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id)[coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id).length-1].chatLink.split(" ")[3]:"#"
-                const disable=coreContext.ChatLink.filter((curr1)=>curr1.senderId==curr.id).length==0
-return(
-<div className="col-xl-4 mt-2">
-            
-                <div className="card">
-              <div className="card-body">
-                <h4 className="card-title">{Name}</h4>
-                <p className="card-text">Please Click on below Link to continue existing Chat</p>
-                <Button variant="primary" onClick={()=>setframe(Link)} className="card-link mt-2" disabled={disable} >Click Me!!</Button>
-                <Button variant="primary" style={{float:"right"}} onClick={()=>{handleShow();setpid(curr.id)}} className="card-link">Initiate Chat</Button>
-                
-              </div>
-            </div>
-                    
-                    
-                    
-                    </div>)
-            
-           
-           
-      }};
+  };
   return (
     <div className="col">
     <div className="page-title-container mb-3">
@@ -174,4 +197,4 @@ return(
   )
 }
 
-export default ChatLink
+export default ChatLink;

@@ -11,7 +11,7 @@ import {
   Route,
   Switch,
   Redirect,
-  Link
+  Link,
 } from "react-router-dom";
 
 import ClearIcon from "@material-ui/icons/Clear";
@@ -66,7 +66,8 @@ function QuickSearchToolbar(props) {
               aria-label="Clear"
               size="small"
               style={{ visibility: props.value ? "visible" : "hidden" }}
-              onClick={props.clearSearch}>
+              onClick={props.clearSearch}
+            >
               <ClearIcon fontSize="small" />
             </IconButton>
           ),
@@ -130,15 +131,16 @@ const BloodPressure = (props) => {
       headerName: "Patient Name",
       width: 200,
       type: "string",
-      headerAlign: 'left',
+      headerAlign: "left",
       renderCell: (params) => (
-        <div style={{marginLeft:"1em",paddingBottom:"1em"}}>
-        <Link
-          disable={disablelink}
-          to={`/patient-summary/${btoa(params.row.userId)}`}>
-          {" "}
-          {params.row.UserName}{" "}
-        </Link>
+        <div style={{ marginLeft: "1em", paddingBottom: "1em" }}>
+          <Link
+            disable={disablelink}
+            to={`/patient-summary/${btoa(params?.row?.UserId)}`}
+          >
+            {" "}
+            {params.row.UserName}{" "}
+          </Link>
         </div>
       ),
     },
@@ -146,7 +148,7 @@ const BloodPressure = (props) => {
       field: "systolic",
       headerName: "Systolic",
       type: "number",
-      headerAlign: 'left',
+      headerAlign: "left",
       editable: false,
       width: 150,
     },
@@ -155,14 +157,14 @@ const BloodPressure = (props) => {
       headerName: "Diastolic",
       type: "number",
       editable: false,
-      headerAlign: 'left',
+      headerAlign: "left",
       width: 150,
     },
 
     {
       field: "Pulse",
       headerName: "Pulse",
-      headerAlign: 'left',
+      headerAlign: "left",
       type: "number",
       editable: false,
       width: 150,
@@ -173,7 +175,7 @@ const BloodPressure = (props) => {
       headerName: "Date Recorded",
       editable: false,
       type: "dateTime",
-      headerAlign: 'left',
+      headerAlign: "left",
       width: 150,
       valueFormatter: (params) => {
         const valueFormatted = Moment(params.value).format(
@@ -187,7 +189,7 @@ const BloodPressure = (props) => {
       headerName: "Date Received",
       width: 150,
       editable: false,
-      headerAlign: 'left',
+      headerAlign: "left",
       type: "dateTime",
 
       valueFormatter: (params) => {
@@ -240,7 +242,7 @@ const BloodPressure = (props) => {
       headerName: "Systolic",
       type: "number",
       editable: false,
-      headerAlign: 'left',
+      headerAlign: "left",
       width: 150,
     },
     {
@@ -249,7 +251,7 @@ const BloodPressure = (props) => {
       type: "number",
       editable: false,
       width: 150,
-      headerAlign: 'left',
+      headerAlign: "left",
     },
 
     {
@@ -257,9 +259,9 @@ const BloodPressure = (props) => {
       headerName: "Signal Strength",
       type: "number",
       editable: false,
-      headerAlign: 'left',
-      width: 150,  
-          headerAlign: 'left',
+      headerAlign: "left",
+      width: 150,
+      headerAlign: "left",
     },
 
     {
@@ -268,7 +270,7 @@ const BloodPressure = (props) => {
       type: "number",
       editable: false,
       width: 150,
-      headerAlign: 'left',
+      headerAlign: "left",
     },
     {
       field: "MeasurementDateTime",
@@ -276,7 +278,7 @@ const BloodPressure = (props) => {
       editable: false,
       type: "date",
       width: 150,
-      headerAlign: 'left',
+      headerAlign: "left",
       valueFormatter: (params) => {
         const valueFormatted = Moment(params.value).format(
           "MM-DD-YYYY hh:mm A"
@@ -290,7 +292,7 @@ const BloodPressure = (props) => {
       width: 150,
       editable: false,
       type: "dateTime",
-      headerAlign: 'left',
+      headerAlign: "left",
 
       valueFormatter: (params) => {
         const valueFormatted = Moment(params.value).format(
@@ -305,19 +307,19 @@ const BloodPressure = (props) => {
       headerName: "Device Id",
       width: 150,
       editable: false,
-      headerAlign: 'left',
+      headerAlign: "left",
     },
     {
       field: "readingId",
       headerName: "Reading Id",
       width: 150,
       editable: false,
-      headerAlign: 'left',
+      headerAlign: "left",
     },
     {
       field: "sortDateColumn",
       headerName: "Action",
-      headerAlign: 'left',
+      headerAlign: "left",
     },
   ];
 
@@ -332,7 +334,8 @@ const BloodPressure = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Loader type="Circles" color="#00BFFF" height={100} width={100} />
         </div>
       );
@@ -347,9 +350,11 @@ const BloodPressure = (props) => {
       coreContext.bloodpressureData[0].UserName !== undefined
     ) {
       //coreContext.bloodpressureData  = coreContext.bloodpressureData.sort((a,b) => new Moment(b.sortDateColumn) - new Moment(a.sortDateColumn));
-      const id=coreContext.patients.map((curr)=>curr.userId)
-      const rows1=coreContext.bloodpressureData.filter((curr)=>id.includes(curr.UserId))
-      console.log(rows,"bith data")
+      const id = coreContext.patients.map((curr) => curr.userId);
+      const rows1 = coreContext.bloodpressureData.filter((curr) =>
+        id.includes(curr.UserId)
+      );
+      console.log(rows, "bith data");
       return (
         // <div style={{ height: 680, width: "100%" }}>
         //   <DataGrid
@@ -368,7 +373,11 @@ const BloodPressure = (props) => {
         //     }}
         //   />
         // </div>
-        <DataGridComponent rows={rows1} columns={dgcolumns} sortModal={[{ field: "MeasurementDateTime", sort: "desc" }]}/>
+        <DataGridComponent
+          rows={rows1}
+          columns={dgcolumns}
+          sortModal={[{ field: "MeasurementDateTime", sort: "desc" }]}
+        />
       );
     } else {
       return (
@@ -380,7 +389,8 @@ const BloodPressure = (props) => {
             justifyContent: "center",
             marginTop: "10px",
             alignItems: "center",
-          }}>
+          }}
+        >
           <h1>No data Found</h1>
         </div>
       );
@@ -389,42 +399,32 @@ const BloodPressure = (props) => {
 
   return (
     <div className="col">
-    <div className="page-title-container mb-3">
-    <div className="row">
-    <div className="col mb-2">
-    <h1 className="mb-2 pb-0 display-4" id="title">Blood Pressure Information
-    </h1>
-    </div>
-    </div>
-    </div>
-    
-    <div className="row">
-    <div className="col-xl-12">
-   
-    <div className="card mb-3">	
-    
-    <div className="card-body">
-    <div className="row">
-    <div className="col-xl-12">
-    <div className="table-responsive-sm mb-0">
-      {renderBloodPressure()}
-    
-    </div>
-      
-    
-      
-    </div>
-      
-    
-    
-    
-    </div>
-    
-    </div>
+      <div className="page-title-container mb-3">
+        <div className="row">
+          <div className="col mb-2">
+            <h1 className="mb-2 pb-0 display-4" id="title">
+              Blood Pressure Information
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-xl-12">
+          <div className="card mb-3">
+            <div className="card-body">
+              <div className="row">
+                <div className="col-xl-12">
+                  <div className="table-responsive-sm mb-0">
+                    {renderBloodPressure()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-      </div>
   );
 };
 
