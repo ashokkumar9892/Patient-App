@@ -2611,10 +2611,11 @@ export const CoreContextProvider = (props) => {
 
           if (devicedata.username !== undefined) dataSetdevice.push(devicedata);
         });
-
-        if (dataSetdevice[0] !== "no device found") {
-          setdeviceData(dataSetdevice);
-        }
+        console.log("check device", deviceData);
+        setdeviceData(deviceData);
+        // if (dataSetdevice[0] !== "no device found") {
+        //   setdeviceData(dataSetdevice);
+        // }
 
         if (type == "Weight") {
           fetchWSData(patientId, username, usertype, dataSetdevice);
