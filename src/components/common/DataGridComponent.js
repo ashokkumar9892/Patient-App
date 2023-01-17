@@ -55,6 +55,7 @@ const DataGridComponent = (props) => {
   const classes = useStyles();
   return (
     <div class="table-responsive-sm mb-0">
+      {console.log(props, "check props data ")}
       <div style={{ height: 680, width: "100%" }}>
         <DataGrid
           className={classes.root}
