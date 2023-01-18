@@ -161,13 +161,13 @@ const MyProfile = (props) => {
 
   const columns = [
     {
-      field: "deviceType",
+      field: "DeviceType",
       headerName: "Device Name",
       width: 200,
       type: "string",
     },
     {
-      field: "deviceId",
+      field: "deviceID",
       headerName: "Device ID",
       type: "number",
       width: 200,
@@ -184,6 +184,9 @@ const MyProfile = (props) => {
     //         </tr>
     //     });
     // }
+    {
+      console.log(coreContext.deviceData, "coreContext.deviceData");
+    }
     if (coreContext.deviceData.length > 0) {
       return (
         <DataGridComponent rows={coreContext.deviceData} columns={columns} />
