@@ -3416,7 +3416,7 @@ const PatientSummary = (props) => {
       return (
         <div
           style={{
-            height: 500,
+            height: 200,
             width: "100%",
             display: "flex",
             justifyContent: "center",
@@ -3424,8 +3424,8 @@ const PatientSummary = (props) => {
             alignItems: "center",
           }}
         >
-          {/* <h6>No data Found</h6> */}
-          <Loader type="Circles" color="#00BFFF" height={100} width={100} />
+          <h2>No data Found</h2>
+          {/* <Loader type="Circles" color="#00BFFF" height={100} width={100} /> */}
         </div>
       );
     }
