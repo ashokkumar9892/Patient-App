@@ -256,8 +256,8 @@ const TopMenu = ({ changestyle, showSidebar }) => {
 
   }, []);
 
-  const pushNotificationdata=(obj)=>{
-    if(notificationValue.find((item, index)=> JSON.stringify(item) === JSON.stringify(obj))== undefined){
+  const pushNotificationdata = (obj) => {
+    if (notificationValue.find((item, index) => JSON.stringify(item) === JSON.stringify(obj)) == undefined) {
       notificationValue.push(obj)
     }
   }
@@ -688,17 +688,17 @@ const TopMenu = ({ changestyle, showSidebar }) => {
         // </NavDropdown>
         <li className="list-inline-item mr-10">
           <div className="btn-group">
-          <Link className=" mb-1 text-white" to="/preregisted" style={{marginTop:"28px", marginRight:"16px"}}>Appointments</Link>
+            <Link className=" mb-1 text-white" to="/preregisted" style={{ marginTop: "28px", marginRight: "16px" }}>Appointments</Link>
             <div className="dropdown pt-4">
-            
+
               <Link className="dropdown-toggle dropdown-toggle-1 mb-1 text-white" to="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i className="icon text-white bi-person-circle"></i> Patients
               </Link>
-              
+
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <Link className="dropdown-item" to="/patients"><i className="icon bi-list-ul"></i> List</Link>     
+                <Link className="dropdown-item" to="/patients"><i className="icon bi-list-ul"></i> List</Link>
                 <Link className="dropdown-item" to="#" onClick={handleShow}><i className="icon bi-file-plus-fill"></i> Add</Link>
-                
+
               </div>
             </div>
           </div>
@@ -925,12 +925,12 @@ const TopMenu = ({ changestyle, showSidebar }) => {
               <li className="list-inline-item mr-10">
                 <div className="btn-group">
                   <div className="dropdown pt-4">
-                    
-{(localStorage.getItem('userType')=='doctor' || localStorage.getItem('userType')=='testdoctor' || localStorage.getItem('userType')=='coach')?
-<Link className="dropdown-toggle dropdown-toggle-1 mb-1 text-white"  to="/chat">
-<i className="icon text-white bi-envelope-open"></i>  Chat
-</Link>	:""}
-                    
+
+                    {(localStorage.getItem('userType') == 'doctor' || localStorage.getItem('userType') == 'testdoctor' || localStorage.getItem('userType') == 'coach') ?
+                      <Link className="dropdown-toggle dropdown-toggle-1 mb-1 text-white" to="/chat">
+                        <i className="icon text-white bi-envelope-open"></i>  Chat
+                      </Link> : ""}
+
                   </div>
                 </div>
               </li>
@@ -992,6 +992,7 @@ const TopMenu = ({ changestyle, showSidebar }) => {
         </div>
 
         <Modal
+          backdrop="static"
           show={coreContext.showPatientConfirmationModal}
           onHide={coreContext.handlePatientConfirmationModalClose}>
           <Modal.Header closeButton>
@@ -1025,6 +1026,7 @@ const TopMenu = ({ changestyle, showSidebar }) => {
           </Modal.Footer>
         </Modal>
         <Modal
+        backdrop="static"
           show={showSearch}
           onHide={handleSearchClose}>
           <Modal.Header closeButton>
@@ -1084,7 +1086,7 @@ const TopMenu = ({ changestyle, showSidebar }) => {
 
         </Modal>
 
-        <Modal show={showMessageModal} onHide={handleMessageModalClose}>
+        <Modal show={showMessageModal} backdrop="static" onHide={handleMessageModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>Send SMS</Modal.Title>
           </Modal.Header>
@@ -1149,7 +1151,7 @@ maxLength="50" size="sm" type="text" onChange={e => setMobilePhone(e.target.valu
           </Modal.Footer>
         </Modal>
 
-        <Modal size="lg" show={show} onHide={handleClose}>
+        <Modal size="lg" backdrop="static" show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Create Patient</Modal.Title>
           </Modal.Header>

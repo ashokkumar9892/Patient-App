@@ -9,7 +9,7 @@ const MyModal = (props) => {
     //const handleShow = () => props.handleModalOpenClose(true);
 
     return (
-        <Modal show={props.showModal} onHide={handleClose} animation={false}>
+        <Modal show={props.showModal} onHide={handleClose} backdrop="static" animation={false}>
             <Modal.Header closeButton>
                 <Modal.Title>Message</Modal.Title>
             </Modal.Header>

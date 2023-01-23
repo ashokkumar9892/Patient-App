@@ -687,7 +687,6 @@ const Dashboard = (props) => {
             curr.program.includes("RPM")
           ) {
             // setOnetonine(onetonine+1)
-
             sixty1.push(curr.userId);
             if (BillingRPM.length < 1) {
               BillingRPM.push({

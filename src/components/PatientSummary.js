@@ -4659,7 +4659,7 @@ const PatientSummary = (props) => {
           {Prompt}
 
           <React.Fragment>
-            <Modal show={showModal} onHide={handleModalClose} size="lg">
+            <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
               <Modal.Header closeButton>
                 <Modal.Title>Edit Task Type </Modal.Title>
               </Modal.Header>

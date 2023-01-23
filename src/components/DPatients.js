@@ -409,7 +409,7 @@ const DPatients = (props) => {
     </div>
     </div>
       </div>
-      <Modal show={showModal} onHide={handleModalClose} size="lg">
+      <Modal show={showModal} onHide={handleModalClose} backdrop="static" size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit Patient </Modal.Title>
         </Modal.Header>
@@ -543,7 +543,7 @@ const DPatients = (props) => {
         </Modal.Body>
       </Modal>
      
-        <Modal show={showAssignDrModal} onHide={handleAssignDrModalClose}>
+        <Modal show={showAssignDrModal} onHide={handleAssignDrModalClose} backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Assign Care Team </Modal.Title>
           </Modal.Header>
