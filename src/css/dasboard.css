@@ -1,3 +1,38 @@
 .card_body {
     overflow: auto;
 }
+.filterDiv {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  justify-content: space-between
+}
+.datePicker{
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
+.filterdiv{
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 480px) {
+    .filterDiv {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        
+    }
+    .datePicker{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .filterdiv{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

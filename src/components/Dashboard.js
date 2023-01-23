@@ -21,8 +21,13 @@ import { Widget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
 
 const Dashboard = (props) => {
+  const currdate = new Date();
   const [date, setDate] = useState();
   const [userType, setUserType] = useState("");
+  const [fromDate, setFromDate] = useState(
+    new Date(currdate.getFullYear(), currdate.getMonth(), 1)
+  );
+  const [toDate, setToDate] = useState(new Date());
   const d = new Date();
   const e = new Date();
   let Currmonth = d.getMonth();
@@ -130,7 +135,6 @@ const Dashboard = (props) => {
       to = Moment(today).format("YYYY-MM-DD");
       today.setDate(1);
       from = Moment(today).format("YYYY-MM-DD");
-      console.log(from, to, "form");
     }
     // check page if left side menu.
     if (window.location.href.substring("weight") > 0) {
@@ -147,7 +151,7 @@ const Dashboard = (props) => {
     coreContext.fetchBloodPressureForDashboard(patientId, userType, from, to);
   };
 
-  useEffect(fetchWeight, [coreContext.weightData.length, month]);
+  useEffect(fetchWeight, [coreContext.weightData.length, toDate]);
   const renderSelect = () => {
     return (
       <>
@@ -168,7 +172,7 @@ const Dashboard = (props) => {
       </>
     );
   };
-  const selectmonth = React.useMemo(() => renderSelect(), [month]);
+  const selectmonth = React.useMemo(() => renderSelect(), [toDate]);
 
   const wd = coreContext.weightData
     .map((curr) => curr.userId)
@@ -183,8 +187,6 @@ const Dashboard = (props) => {
 
   // useEffect(fetchdpatient, []);
   const setPatient = (p, description) => {
-    console.log("sahil", p);
-
     let k = [];
     p.map((curr) => {
       if (curr.includes(",")) {
@@ -201,9 +203,19 @@ const Dashboard = (props) => {
     localStorage.setItem("DInformaion", description);
   };
   const setBPatient = (p) => {
-    console.log("sahil", p);
     //   coreContext.setPatient(p);
     localStorage.setItem("B_patient", JSON.stringify(p));
+  };
+
+  const compairdate = (date) => {
+    let dateTime = new Date(date).getTime();
+    let fromDateloc = new Date(fromDate).getTime();
+    let toDateloc = new Date(toDate).getTime();
+    if (fromDateloc <= dateTime && toDateloc >= dateTime) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderTimeLogs = () => {
@@ -230,35 +242,20 @@ const Dashboard = (props) => {
       );
 
       coreContext.patients.map((curr) => {
-        console.log("sahilg", coreContext.AlltimeLogData);
-
         let patientTimelog = coreContext.AlltimeLogData.filter(
-          (app) =>
-            app.UserId == curr.userId &&
-            Number(app.performedOn.substring(5, 7)) == Number(month) + 1 &&
-            Number(app.performedOn.substring(0, 4)) == 2022
+          (app) => app.UserId == curr.userId && compairdate(app.performedOn)
         );
         let BP = coreContext.bloodpressureDataForDashboard.filter(
-          (app) =>
-            app.UserId == curr.userId &&
-            Number(app.sortDateColumn.substring(5, 7)) == Number(month) + 1 &&
-            Number(app.sortDateColumn.substring(0, 4)) == 2022
+          (app) => app.UserId == curr.userId && compairdate(app.sortDateColumn)
         );
         let BG = coreContext.bloodglucoseDataForDashboard.filter(
-          (app) =>
-            app.userId == curr.userId &&
-            Number(app.sortDateColumn.substring(5, 7)) == Number(month) + 1 &&
-            Number(app.sortDateColumn.substring(0, 4)) == 2022
+          (app) => app.userId == curr.userId && compairdate(app.sortDateColumn)
         );
         let WS = coreContext.weightData.filter(
-          (app) =>
-            app.userId == curr.userId &&
-            Number(app.sortDateColumn.substring(5, 7)) == Number(month) + 1 &&
-            Number(app.sortDateColumn.substring(0, 4)) == 2022
+          (app) => app.userId == curr.userId && compairdate(app.sortDateColumn)
         );
         // let patientTimelog = patientTimelogAll.filter(
         //   (app) => Number(app.performedOn.substring(5,7))==Number(month)+1       );
-        console.log(patientTimelog, BP, BG, WS, "patienttimelog");
         let bpdates = [];
 
         BP.map((bpcurr) => {
@@ -282,7 +279,6 @@ const Dashboard = (props) => {
             bpdates.push(Moment(wscurr.CreatedDate).format("YYYY-MM-DD"));
           }
         });
-        console.log("check days", bpdates);
         if (curr.program.includes("CCM")) {
           CCMPatient.push(curr.userId + "," + bpdates.length);
         }
@@ -328,13 +324,6 @@ const Dashboard = (props) => {
               totalTimeLogForDataReview =
                 Number(timelog.timeAmount) + totalTimeLogForDataReview;
           });
-
-          console.log(
-            "checking timelog",
-            totalTimeLogForDataReview,
-            curr,
-            totalTimeLog
-          );
           if (
             totalTimeLog >= 0 &&
             totalTimeLog <= 60 &&
@@ -417,7 +406,6 @@ const Dashboard = (props) => {
                   diagnosisId: curr.diagnosisId,
                   otp: curr.otp,
                 });
-                console.log(bpdates);
               }
             }
             //nine=nine+1;
@@ -451,7 +439,6 @@ const Dashboard = (props) => {
                 diagnosisId: curr.diagnosisId,
                 otp: curr.otp,
               });
-              console.log(bpdates);
             } else {
               let count = 0;
               BillingCCM.map((obj) => {
@@ -512,13 +499,6 @@ const Dashboard = (props) => {
                 diagnosisId: curr.diagnosisId,
                 otp: curr.otp,
               });
-              console.log(
-                "ridlley 5764",
-                Math.floor((totalTimeLog / 60).toFixed(3)) % 20,
-                Math.floor((totalTimeLog / 60).toFixed(3)),
-                totalTimeLog,
-                (totalTimeLog / 60).toFixed(3)
-              );
             } else {
               let count = 0;
               BillingCCM.map((obj) => {
@@ -635,7 +615,6 @@ const Dashboard = (props) => {
                   diagnosisId: curr.diagnosisId,
                   otp: curr.otp,
                 });
-                console.log(bpdates);
               }
             }
           } else if (
@@ -668,7 +647,6 @@ const Dashboard = (props) => {
                 diagnosisId: curr.diagnosisId,
                 otp: curr.otp,
               });
-              console.log(bpdates);
             } else {
               let count = 0;
               BillingRPM.map((obj) => {
@@ -709,7 +687,7 @@ const Dashboard = (props) => {
             curr.program.includes("RPM")
           ) {
             // setOnetonine(onetonine+1)
-            console.log("sixty1", curr);
+
             sixty1.push(curr.userId);
             if (BillingRPM.length < 1) {
               BillingRPM.push({
@@ -734,13 +712,6 @@ const Dashboard = (props) => {
                 diagnosisId: curr.diagnosisId,
                 otp: curr.otp,
               });
-              console.log(
-                "ridlley 5764",
-                Math.floor(totalTimeLogForDataReview / 60) % 20,
-                Math.floor(totalTimeLogForDataReview / 60),
-                totalTimeLogForDataReview,
-                totalTimeLogForDataReview / 60
-              );
             } else {
               let count = 0;
               BillingRPM.map((obj) => {
@@ -771,15 +742,6 @@ const Dashboard = (props) => {
                   diagnosisId: curr.diagnosisId,
                   otp: curr.otp,
                 });
-                console.log(
-                  "ridlley 5764",
-                  Math.floor(totalTimeLogForDataReview / 60) % 20,
-                  Math.floor(totalTimeLogForDataReview / 60),
-                  totalTimeLogForDataReview,
-                  totalTimeLogForDataReview / 60,
-                  [...new Set(bpdates)].length,
-                  bpdates
-                );
               }
             }
             //billing.push({"id":BillingRPM.length+1,"userId":curr.userId,"name":curr.name,"totalTime":totalTimeLogForDataReview,"ccmbills":0,"rpmbills":(Math.floor(totalTimeLogForDataReview/1200)>3)?3:Math.floor(totalTimeLogForDataReview/1200),"timeLeft":Math.floor(totalTimeLogForDataReview/60)%20})
@@ -787,8 +749,6 @@ const Dashboard = (props) => {
         } else {
           inactive.push(curr.userId);
         }
-
-        console.log(BillingRPM, "BillingRPM");
       });
     }
   };
@@ -813,12 +773,10 @@ const Dashboard = (props) => {
           (p) => p.ehrId === patientData.patientId
         );
         if (patient.length > 0) {
-          console.log("dshhsdffdfdhfdfd", patient);
           patientwdevice.push(patient[0].ehrId);
         }
       });
     }
-    console.log("patientwdevice", patientwdevice);
   };
 
   const fetchDevice = () => {
@@ -857,8 +815,6 @@ const Dashboard = (props) => {
     );
   }
 
-  console.log("vdevide", v_devices);
-
   return (
     <div className="col">
       <div className="page-title-container mb-3">
@@ -871,15 +827,12 @@ const Dashboard = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col-xl-12">
-          <div className="card mb-3">
+        <div className="col-xl-12 py-2">
+          {/* <div className="card mb-3">
             <div className="card-body">
               <div className="row g-0 align-items-center">
                 <div className="col-lg-3 col-6">
-                  <div className="form-check">
-                    {/* <input className="form-check-input" type="checkbox"/>
-<label className="form-check-label" for="gridCheck">Check me out</label> */}
-                  </div>
+                  <div className="form-check"></div>
                 </div>
                 <div className="col-lg-1">
                   <label for="gridCheck">Select Month: </label>
@@ -888,6 +841,36 @@ const Dashboard = (props) => {
                 <div className="col-lg-8">{selectmonth}</div>
               </div>
             </div>
+          </div> */}
+          <div className="datePicker">
+            <div>
+              <label>From:</label>
+            </div>
+            <div style={{ marginLeft: "12px" }}>
+              <DatePicker
+                selected={fromDate}
+                onChange={(e) => {
+                  setFromDate(e);
+                  // setFromDate(e);
+                }}
+                value={fromDate}
+                dateFormat="MM/dd/yyyy "
+              />
+            </div>
+            <div style={{ marginLeft: "12px" }}>
+              <label>To:</label>
+            </div>
+            <div style={{ marginLeft: "12px" }}>
+              <DatePicker
+                selected={toDate}
+                onChange={(e) => {
+                  setToDate(e);
+                }}
+                value={toDate}
+                dateFormat="MM/dd/yyyy "
+              />
+            </div>
+            <div></div>
           </div>
           <div className="card mb-3">
             <div className="card-header bg-primary pt-2 pb-2">
@@ -1359,7 +1342,6 @@ const Dashboard = (props) => {
                               }
                             >
                               {checkBills(BillingRPM, BillingCCM)}
-                              {console.log(BillingRPM, "BillingRPM")}
                             </Link>
                           </td>
                           <td>
