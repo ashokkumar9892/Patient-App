@@ -3223,7 +3223,7 @@ export const CoreContextProvider = (props) => {
           }
           dataSetbp.push(bpdata);
         });
-        setbloodpressureDataForPatient(dataSetbp);
+        setbloodpressureDataForPatient([...dataSetbp]);
       })
       .catch(() => {
         relogin();
@@ -3330,6 +3330,7 @@ export const CoreContextProvider = (props) => {
         }
 
         setnewbloodpressureDataForPatient(dataSetbp);
+        setbloodpressureDataForPatient(dataSetbp);
       })
       .catch(() => {
         relogin();
@@ -3435,6 +3436,7 @@ export const CoreContextProvider = (props) => {
           });
         }
         setnewbloodglucoseDataForPatient(dataSetbg);
+        setbloodglucoseDataForPatient(dataSetbg);
       })
       .catch(() => {
         relogin();
@@ -3630,6 +3632,7 @@ export const CoreContextProvider = (props) => {
           });
         }
         setbloodglucoseData(dataSetbg);
+        setbloodglucoseDataForPatient(dataSetbg);
       });
   };
   const fetchBloodGlucoseForPatient = async (userid, usertype) => {
@@ -3837,6 +3840,7 @@ export const CoreContextProvider = (props) => {
             dataSetbg.push(bgdata);
           });
         }
+        setbloodglucoseDataForPatient(dataSetbg);
         setbloodglucoseDataForNotification(
           dataSetbg.filter(
             (curr) =>
@@ -3937,7 +3941,7 @@ export const CoreContextProvider = (props) => {
           }
           dataSetbg.push(bgdata);
         });
-
+        setbloodglucoseDataForPatient(dataSetbg);
         setbloodglucoseDataForDashboard(
           dataSetbg.filter(
             (curr) =>
@@ -4056,6 +4060,7 @@ export const CoreContextProvider = (props) => {
         });
 
         setbgChartData(dataSetbg);
+        setbloodglucoseDataForPatient(dataSetbg);
       })
       .catch(() => {
         relogin();
