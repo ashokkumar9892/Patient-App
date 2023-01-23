@@ -159,7 +159,6 @@ const ChatLink = () => {
   };
   return (
     <div className="col">
-<<<<<<< HEAD
       <div className="page-title-container mb-3">
         <div className="row">
           <div className="col mb-2">
@@ -209,44 +208,5 @@ const ChatLink = () => {
     </div>
   );
 };
-=======
-    <div className="page-title-container mb-3">
-    <div className="row">
-    <div className="col mb-2">
-    <h1 className="mb-2 pb-0 display-4" id="title">Chat
-    </h1>
-    <Modal show={show} backdrop="static" onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Chat</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <label> Type your Message</label>
-          <input className='form-control' value={message} onChange={(e)=>setMessage(e.target.value)}/>
-        
-        
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={()=>{handleClose();handleNewUserMessage(pid,message);setMessage("")}}>
-            Send Message
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    <div className="row">
-        {coreContext.patients.map((curr)=>renderuser(curr))}
-   </div>
-   <div className="row" style={{display:"flex",justifyContent:"flex-end"}}>
-    <div className='col-xl-4'>
-   { renderframe()
-   }
-   </div>
-   </div>
-    
-    </div></div></div></div>
-  )
-}
->>>>>>> 6f7e656464d6758c4d5f5506a02c515280671048
 
 export default ChatLink;
